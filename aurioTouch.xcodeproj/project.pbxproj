@@ -30,6 +30,7 @@
 		D78F4AFE1D60C01A00012A69 /* EAGLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78F4AFB1D60C01A00012A69 /* EAGLView.swift */; };
 		D78F4AFF1D60C05500012A69 /* BufferManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78F4AF31D60BF3300012A69 /* BufferManager.swift */; };
 		D79AEF1C1D60C37E00584688 /* DCRejectionFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79AEF1B1D60C37E00584688 /* DCRejectionFilter.swift */; };
+		F0A7FC142085803B00BFED0E /* mfzw.m4a in Resources */ = {isa = PBXBuildFile; fileRef = F0A7FC132085803A00BFED0E /* mfzw.m4a */; };
 		F7CF73110EB1258D0099AA71 /* sonogram.png in Resources */ = {isa = PBXBuildFile; fileRef = F7CF73100EB1258D0099AA71 /* sonogram.png */; };
 		F7CF73160EB126740099AA71 /* fft_off.png in Resources */ = {isa = PBXBuildFile; fileRef = F7CF73120EB126740099AA71 /* fft_off.png */; };
 		F7CF73170EB126740099AA71 /* fft_on.png in Resources */ = {isa = PBXBuildFile; fileRef = F7CF73130EB126740099AA71 /* fft_on.png */; };
@@ -68,6 +69,7 @@
 		D79AEF171D60C2F200584688 /* README2.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README2.md; sourceTree = "<group>"; };
 		D79AEF181D60C2F200584688 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		D79AEF1B1D60C37E00584688 /* DCRejectionFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DCRejectionFilter.swift; sourceTree = "<group>"; };
+		F0A7FC132085803A00BFED0E /* mfzw.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; name = mfzw.m4a; path = ../../../../Documents/cough/mfzw.m4a; sourceTree = "<group>"; };
 		F7CF73100EB1258D0099AA71 /* sonogram.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sonogram.png; sourceTree = "<group>"; };
 		F7CF73120EB126740099AA71 /* fft_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fft_off.png; sourceTree = "<group>"; };
 		F7CF73130EB126740099AA71 /* fft_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fft_on.png; sourceTree = "<group>"; };
@@ -192,6 +194,7 @@
 		F7D3FD760FD49018003CBAE4 /* audio */ = {
 			isa = PBXGroup;
 			children = (
+				F0A7FC132085803A00BFED0E /* mfzw.m4a */,
 				F7DF06DC0DF4AD57005687F5 /* button_press.caf */,
 			);
 			path = audio;
@@ -277,6 +280,7 @@
 				F7CF73160EB126740099AA71 /* fft_off.png in Resources */,
 				2B86B2B218F35C2300347397 /* MainWindow.xib in Resources */,
 				F7CF73170EB126740099AA71 /* fft_on.png in Resources */,
+				F0A7FC142085803B00BFED0E /* mfzw.m4a in Resources */,
 				F7CF73180EB126740099AA71 /* mute_off.png in Resources */,
 				F7CF73190EB126740099AA71 /* mute_on.png in Resources */,
 			);

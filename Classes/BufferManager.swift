@@ -37,6 +37,8 @@ class BufferManager {
     
     var FFTOutputBufferLength: Int {return mFFTInputBufferLen / 2}
     
+    var coughCount: Float = 0.0
+    
     private var mDrawBufferIndex: Int
     
     private var mFFTInputBuffer: UnsafeMutablePointer<Float32>?
@@ -46,6 +48,7 @@ class BufferManager {
     private var mNeedsNewFFTData: Int32 //volatile
     
     private var mFFTHelper: FFTHelper
+    
     
     
     init(maxFramesPerSlice inMaxFramesPerSlice: Int) {
@@ -93,6 +96,11 @@ class BufferManager {
     }
     
     
+    func getCoughCount()  {
+        //let array = Array(UnsafeBufferPointer(start: drawBuffers[0], count: currentDrawBufferLength))
+        //coughCount = array[1];
+    }
+    
     func cycleDrawBuffers() {
         // Cycle the lines in our draw buffer so that they age and fade. The oldest line is discarded.
         for drawBuffer_i in stride(from: (kNumDrawBuffers - 2), through: 0, by: -1) {
@@ -114,6 +122,8 @@ class BufferManager {
     
     func GetFFTOutput(_ outFFTData: UnsafeMutablePointer<Float32>) {
         mFFTHelper.computeFFT(mFFTInputBuffer, outFFTData: outFFTData)
+        let array = Array<Float32>(UnsafeBufferPointer(start: outFFTData, count: 256))
+        coughCount = array.max()!;
         mFFTInputBufferFrameIndex = 0
         OSAtomicDecrement32Barrier(&mHasNewFFTData)
         OSAtomicIncrement32Barrier(&mNeedsNewFFTData)

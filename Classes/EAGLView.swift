@@ -337,6 +337,10 @@ class EAGLView: UIView {
         
         spectrumRect = CGRect(x: 10.0, y: 10.0, width: 460.0, height: 300.0)
         
+        //For cough count
+        sampleSizeText.text = String("Cough")
+        self.addSubview(sampleSizeOverlay)
+        
         // The bit buffer for the texture needs to be 512 pixels, because OpenGL textures are powers of
         // two in either dimensions. Our texture is drawing a strip of 300 vertical pixels on the screen,
         // so we need to step up to 512 (the nearest power of 2 greater than 300).
@@ -686,8 +690,14 @@ class EAGLView: UIView {
             } else if displayMode == .spectrum {
                 if !initted_spectrum { self.setupViewForSpectrum() }
                 self.drawSpectrum()
+                self.drawCoughCount()
             }
         }
+    }
+    
+    private func drawCoughCount() {
+        let bufferManager = audioController.bufferManagerInstance
+        sampleSizeText.text = String(format: "%lf #", bufferManager.coughCount)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -839,6 +849,7 @@ class EAGLView: UIView {
         // any tap in sonogram view will exit back to the waveform
         if displayMode == .spectrum {
             audioController.playButtonPressedSound()
+            sampleSizeOverlay.removeFromSuperview()
             displayMode = .oscilloscopeWaveform
             bufferManager.displayMode = displayMode
             return
