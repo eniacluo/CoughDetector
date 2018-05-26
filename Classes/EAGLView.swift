@@ -91,6 +91,7 @@ class EAGLView: UIView {
     private var lastPinchDist: CGFloat = 0.0
     private var l_fftData: UnsafeMutablePointer<Float32>!
     private var oscilLine: UnsafeMutablePointer<GLfloat>!
+    private var coefficientLine: UnsafeMutablePointer<GLfloat>!
     
     private var audioController: AudioController = AudioController()
     
@@ -129,8 +130,11 @@ class EAGLView: UIView {
         l_fftData = UnsafeMutablePointer.allocate(capacity: audioController.bufferManagerInstance.FFTOutputBufferLength)
         bzero(l_fftData, size_t(audioController.bufferManagerInstance.FFTOutputBufferLength * MemoryLayout<Float32>.size))
         
-        oscilLine = UnsafeMutablePointer.allocate(capacity: kDefaultDrawSamples * 2)
+        oscilLine = UnsafeMutablePointer.allocate(capacity: kDefaultDrawSamples * 2) // x and y
         bzero(oscilLine, size_t(kDefaultDrawSamples * 2 * MemoryLayout<GLfloat>.size))
+        
+        coefficientLine = UnsafeMutablePointer.allocate(capacity: kMaxCoefficients * 2)
+        bzero(coefficientLine, size_t(kMaxCoefficients * 2 * MemoryLayout<GLfloat>.size))
         
         animationInterval = 1.0 / 60.0
         
@@ -690,14 +694,87 @@ class EAGLView: UIView {
             } else if displayMode == .spectrum {
                 if !initted_spectrum { self.setupViewForSpectrum() }
                 self.drawSpectrum()
-                self.drawCoughCount()
+                self.drawFilterCoefficient()
             }
         }
     }
     
-    private func drawCoughCount() {
+    private func drawFilterCoefficient() {
+        
         let bufferManager = audioController.bufferManagerInstance
-        sampleSizeText.text = String(format: "%lf #", bufferManager.coughCount)
+        let filterCoefficients = bufferManager.filterCoefficients
+        bufferManager.getFilterOutput(audioController.matchingFilter, audioController.matchingFilterLength)
+        
+        glPushMatrix()
+        // xy coord. offset for various devices
+        let offsetY = GLfloat((self.bounds.size.height - 480) / 2)
+        let offsetX = GLfloat((self.bounds.size.width - 320) / 2)
+        
+        glTranslatef(offsetX, 480 + offsetY, 0.0)
+        glRotatef(-90.0, 0.0, 0.0, 1.0)
+        
+        // Translate to the left side and vertical center of the screen, and scale so that the screen coordinates
+        // go from 0 to 1 along the X, and -1 to 1 along the Y
+        
+        glTranslatef(10.0, 160.0, 0.0)
+        glScalef(460.0, 140.0, 1.0)
+        
+        // Set up some GL state for our oscilloscope lines
+        glEnableClientState(GL_VERTEX_ARRAY.ui)
+        glDisable(GL_TEXTURE_2D.ui)
+        glDisableClientState(GL_TEXTURE_COORD_ARRAY.ui)
+        glDisableClientState(GL_COLOR_ARRAY.ui)
+        glDisable(GL_LINE_SMOOTH.ui)
+        glLineWidth(2.0)
+
+        // Draw a line for cross-correlation coefficients
+        var coefficientLine_ptr: UnsafeMutablePointer<GLfloat>
+        let max = GLfloat(kMaxCoefficients)
+        var filterCoefficients_ptr: UnsafeMutablePointer<Float32>
+        
+        coefficientLine_ptr = coefficientLine
+        filterCoefficients_ptr = filterCoefficients!
+        
+        // Fill our vertex array with points
+        var i: GLfloat = 0.0
+
+        while i < max {
+            coefficientLine_ptr.pointee = 1 - i / max
+            coefficientLine_ptr += 1
+            coefficientLine_ptr.pointee = Float32(filterCoefficients_ptr.pointee)
+            coefficientLine_ptr += 1
+            filterCoefficients_ptr += 1
+            i += 1.0
+        }
+        
+        glColor4f(1.0, 1.0, 0.0, 1.0)
+        
+        //let test: [Float32] = [0, 0, 0, -1, 1, -1, 1, 1, 0, 1, 0, 0]
+        
+        // Set up vertex pointer,
+        glVertexPointer(2, GL_FLOAT.ui, 0, coefficientLine)
+        
+        coefficientLine_ptr = coefficientLine
+        
+        // and draw the line.
+        glDrawArrays(GL_LINE_STRIP.ui, 0, Int32(kMaxCoefficients))
+        
+        glPopMatrix()
+
+        glFlush()
+        
+        if bufferManager.xcorr_coeff > 0.2 {
+            sampleSizeText.text = String("Cough")
+        } else {
+            sampleSizeText.text = "-"
+        }
+        /*
+        print("0: \(coefficientLine![0])")
+        print("1: \(coefficientLine![1])")
+        print("2: \(coefficientLine![2])")
+        print("3: \(coefficientLine![3])")
+        print("4: \(coefficientLine![4])")
+         */
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

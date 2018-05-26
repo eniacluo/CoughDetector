@@ -24,7 +24,7 @@
 		D78F4AF01D60BEAF00012A69 /* CADebugMacros.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78F4AEC1D60BEAF00012A69 /* CADebugMacros.swift */; };
 		D78F4AF11D60BEAF00012A69 /* CAStreamBasicDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78F4AED1D60BEAF00012A69 /* CAStreamBasicDescription.swift */; };
 		D78F4AF21D60BEAF00012A69 /* CAXException.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78F4AEE1D60BEAF00012A69 /* CAXException.swift */; };
-		D78F4AF81D60BF3300012A69 /* FFTHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78F4AF51D60BF3300012A69 /* FFTHelper.swift */; };
+		D78F4AF81D60BF3300012A69 /* DSPHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78F4AF51D60BF3300012A69 /* DSPHelper.swift */; };
 		D78F4AFC1D60C01A00012A69 /* AudioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78F4AF91D60C01A00012A69 /* AudioController.swift */; };
 		D78F4AFD1D60C01A00012A69 /* aurioTouchAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78F4AFA1D60C01A00012A69 /* aurioTouchAppDelegate.swift */; };
 		D78F4AFE1D60C01A00012A69 /* EAGLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78F4AFB1D60C01A00012A69 /* EAGLView.swift */; };
@@ -62,7 +62,7 @@
 		D78F4AED1D60BEAF00012A69 /* CAStreamBasicDescription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CAStreamBasicDescription.swift; sourceTree = "<group>"; };
 		D78F4AEE1D60BEAF00012A69 /* CAXException.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CAXException.swift; sourceTree = "<group>"; };
 		D78F4AF31D60BF3300012A69 /* BufferManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BufferManager.swift; sourceTree = "<group>"; };
-		D78F4AF51D60BF3300012A69 /* FFTHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FFTHelper.swift; sourceTree = "<group>"; };
+		D78F4AF51D60BF3300012A69 /* DSPHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DSPHelper.swift; sourceTree = "<group>"; };
 		D78F4AF91D60C01A00012A69 /* AudioController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioController.swift; sourceTree = "<group>"; };
 		D78F4AFA1D60C01A00012A69 /* aurioTouchAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = aurioTouchAppDelegate.swift; sourceTree = "<group>"; };
 		D78F4AFB1D60C01A00012A69 /* EAGLView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EAGLView.swift; sourceTree = "<group>"; };
@@ -106,7 +106,7 @@
 				D78F4AFA1D60C01A00012A69 /* aurioTouchAppDelegate.swift */,
 				D78F4AF91D60C01A00012A69 /* AudioController.swift */,
 				D78F4AF31D60BF3300012A69 /* BufferManager.swift */,
-				D78F4AF51D60BF3300012A69 /* FFTHelper.swift */,
+				D78F4AF51D60BF3300012A69 /* DSPHelper.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -242,7 +242,7 @@
 				LastUpgradeCheck = 0930;
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
-						DevelopmentTeam = 9ANK389UVJ;
+						DevelopmentTeam = 8D96QHUAP6;
 						LastSwiftMigration = 0930;
 					};
 				};
@@ -300,7 +300,7 @@
 				D78F4AF21D60BEAF00012A69 /* CAXException.swift in Sources */,
 				D78F4AFD1D60C01A00012A69 /* aurioTouchAppDelegate.swift in Sources */,
 				D71281B52071FDED003CAAFC /* OOPExceptions.swift in Sources */,
-				D78F4AF81D60BF3300012A69 /* FFTHelper.swift in Sources */,
+				D78F4AF81D60BF3300012A69 /* DSPHelper.swift in Sources */,
 				D78F4AFF1D60C05500012A69 /* BufferManager.swift in Sources */,
 				D78F4AEF1D60BEAF00012A69 /* CABitOperations.swift in Sources */,
 				D79AEF1C1D60C37E00584688 /* DCRejectionFilter.swift in Sources */,
@@ -330,14 +330,14 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = 9ANK389UVJ;
+				DEVELOPMENT_TEAM = 8D96QHUAP6;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = aurioTouch_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.sensorweb.uga.aurioTouch;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sensorweb.uga.coughdetection;
 				PRODUCT_NAME = aurioTouch;
 				SDKROOT = iphoneos.internal;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -353,12 +353,12 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COPY_PHASE_STRIP = YES;
-				DEVELOPMENT_TEAM = 9ANK389UVJ;
+				DEVELOPMENT_TEAM = 8D96QHUAP6;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = aurioTouch_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.sensorweb.uga.aurioTouch;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sensorweb.uga.coughdetection;
 				PRODUCT_NAME = aurioTouch;
 				SDKROOT = iphoneos.internal;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";

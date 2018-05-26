@@ -55,6 +55,8 @@ class AudioController: NSObject, AURenderCallbackDelegate {
     var _audioPlayer: AVAudioPlayer?   // for button pressed sound
     
     var muteAudio: Bool
+    var matchingFilter: [Float]?
+    var matchingFilterLength: Int = 0
     private(set) var audioChainIsBeingReconstructed: Bool = false
     
     enum aurioTouchDisplayMode {
@@ -84,12 +86,13 @@ class AudioController: NSObject, AURenderCallbackDelegate {
             // based on the current display mode, copy the required data to the buffer manager
             if _bufferManager.displayMode == .oscilloscopeWaveform {
                 _bufferManager.copyAudioDataToDrawBuffer(ioPtr[0].mData?.assumingMemoryBound(to: Float32.self), inNumFrames: Int(inNumberFrames))
-                
             } else if _bufferManager.displayMode == .spectrum || _bufferManager.displayMode == .oscilloscopeFFT {
                 if _bufferManager.needsNewFFTData {
                     _bufferManager.CopyAudioDataToFFTInputBuffer(ioPtr[0].mData!.assumingMemoryBound(to: Float32.self), numFrames: Int(inNumberFrames))
                 }
+                _bufferManager.copyAudioDataToFilterBuffer(ioPtr[0].mData?.assumingMemoryBound(to: Float32.self), inNumFrames: Int(inNumberFrames))
             }
+            
             
             // mute audio if needed
             if muteAudio {
@@ -108,6 +111,7 @@ class AudioController: NSObject, AURenderCallbackDelegate {
         _dcRejectionFilter = nil
         muteAudio = true
         super.init()
+        self.loadMatchingFilter()
         self.setupAudioChain()
     }
     
@@ -329,6 +333,21 @@ class AudioController: NSObject, AURenderCallbackDelegate {
             _audioPlayer = nil
         }
         
+    }
+    
+    private func loadMatchingFilter() {
+        let url = URL(fileURLWithPath: Bundle.main.path(forResource: "mfzw", ofType: "m4a")!)
+        let file = try! AVAudioFile(forReading: url)
+        let format = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: file.fileFormat.sampleRate, channels: 1, interleaved: false)
+        
+        if let buf = AVAudioPCMBuffer(pcmFormat: format!, frameCapacity: 32768) {
+            try! file.read(into: buf)
+            matchingFilterLength = Int(buf.frameLength)
+            matchingFilter = Array(UnsafeBufferPointer(start: buf.floatChannelData![0], count: matchingFilterLength))
+            
+        } else {
+            NSLog("Matching filter open failed")
+        }
     }
     
     func playButtonPressedSound() {
