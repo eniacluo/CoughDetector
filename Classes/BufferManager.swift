@@ -56,7 +56,7 @@ class BufferManager {
     private var mDSPHelper: DSPHelper
     
     init(maxFramesPerSlice inMaxFramesPerSlice: Int) {//4096
-        displayMode = .oscilloscopeWaveform
+        displayMode = .spectrum
         drawBuffers = UnsafeMutablePointer.allocate(capacity: Int(kNumDrawBuffers))
         mDrawBufferIndex = 0
         mFilterBufferIndex = 0

@@ -83,7 +83,7 @@ class EAGLView: UIView {
     private var fftOnTexture: GLuint = 0
     private var sonoTexture: GLuint = 0
     
-    private var displayMode: AudioController.aurioTouchDisplayMode = .oscilloscopeFFT
+    private var displayMode: AudioController.aurioTouchDisplayMode = .spectrum
     
     private var firstTex: UnsafeMutablePointer<SpectrumLinkedTexture>? = nil
     
@@ -94,6 +94,11 @@ class EAGLView: UIView {
     private var coefficientLine: UnsafeMutablePointer<GLfloat>!
     
     private var audioController: AudioController = AudioController()
+    
+    private var buttonStart: UIButton = UIButton(type: UIButtonType.roundedRect)
+    private var buttonStop: UIButton = UIButton(type: UIButtonType.roundedRect)
+
+    private var isStartSession: Bool = false;
     
     
     // You must implement this
@@ -139,9 +144,9 @@ class EAGLView: UIView {
         animationInterval = 1.0 / 60.0
         
         self.setupView()
-        self.drawView()
+        //self.drawView()
         
-        displayMode = .oscilloscopeWaveform
+        displayMode = .spectrum
         
         // Set up our overlay view that pops up when we are pinching/zooming the oscilloscope
         var img_ui: UIImage? = nil
@@ -181,15 +186,51 @@ class EAGLView: UIView {
         
         // Add the text view as a subview of the overlay BG
         sampleSizeOverlay.addSubview(sampleSizeText)
+        
+        buttonStart.frame = CGRect(x: 25, y: 75, width: 100, height:  50)
+        buttonStart.transform = CGAffineTransform(rotationAngle: .pi/2)
+        buttonStart.setTitle("Start", for: UIControlState.normal)
+        buttonStart.backgroundColor = UIColor.white
+        buttonStart.addTarget(self, action: #selector(buttonStartPressed), for: .touchUpInside)
+        addSubview(buttonStart)
+        
+        buttonStop.frame = CGRect(x: 25, y: 200, width: 100, height: 50)
+        buttonStop.transform = CGAffineTransform(rotationAngle: .pi/2)
+        buttonStop.setTitle("Stop", for: UIControlState.normal)
+        buttonStop.backgroundColor = UIColor.white
+        buttonStop.addTarget(self, action: #selector(buttonStopPressed), for: .touchUpInside)
+        buttonStop.isEnabled = false
+        addSubview(buttonStop)
+        
         // Text view was retained by the above line, so we can release it now
         
         // We don't add sampleSizeOverlay to our main view yet. We just hang on to it for now, and add it when we
         // need to display it, i.e. when a user starts a pinch/zoom.
         
-        // Set up the view to refresh at 20 hz
-        self.setAnimationInterval(1.0/20.0)
-        self.startAnimation()
         
+    }
+    
+    @objc func buttonStartPressed()
+    {
+        if !isStartSession {
+            self.isStartSession = true;
+            // Set up the view to refresh at 20 hz
+            self.setAnimationInterval(1.0/20.0)
+            self.startAnimation()
+            buttonStart.isEnabled = false;
+            buttonStop.isEnabled = true;
+        }
+    }
+    
+    @objc func buttonStopPressed()
+    {
+        if isStartSession {
+            self.isStartSession = false;
+            self.stopAnimation()
+            buttonStart.isEnabled = true;
+            buttonStop.isEnabled = false;
+            //self.clearTextures()
+        }
     }
     
     override func layoutSubviews() {
@@ -241,7 +282,7 @@ class EAGLView: UIView {
     }
     
     
-    func startAnimation() {
+    @objc func startAnimation() {
         animationTimer = Timer.scheduledTimer(timeInterval: animationInterval, target: self, selector: #selector(self.drawView as () -> ()), userInfo: nil, repeats: true)
         animationStarted = Date.timeIntervalSinceReferenceDate
         audioController.startIOUnit()
@@ -251,6 +292,7 @@ class EAGLView: UIView {
     func stopAnimation() {
         animationTimer?.invalidate()
         animationTimer = nil
+        // !!!!!!  need to make sure audioController has been running
         audioController.stopIOUnit()
     }
     
@@ -290,13 +332,15 @@ class EAGLView: UIView {
         EAGLContext.setCurrent(context)
         
         glBindFramebufferOES(GL_FRAMEBUFFER_OES.ui, viewFramebuffer)
-        self.drawView(self, forTime: Date.timeIntervalSinceReferenceDate - animationStarted)
+
+        //if !initted_spectrum { self.setupViewForSpectrum() }
+        if isStartSession {self.drawView(self, forTime: Date.timeIntervalSinceReferenceDate - animationStarted)}
         
         glBindRenderbufferOES(GL_RENDERBUFFER_OES.ui, viewRenderbuffer)
         context.presentRenderbuffer(GL_RENDERBUFFER_OES.l)
     }
     
-    
+    /*
     private func setupViewForOscilloscope() {
         var img: CGImage
         
@@ -323,7 +367,7 @@ class EAGLView: UIView {
         
         initted_oscilloscope = true
     }
-    
+    */
     
     private func clearTextures() {
         bzero(texBitBuffer, size_t(MemoryLayout<UInt32>.size * 512))
@@ -337,7 +381,6 @@ class EAGLView: UIView {
     }
     
     private func setupViewForSpectrum() {
-        glClearColor(0.0, 0.0, 0.0, 0.0)
         
         spectrumRect = CGRect(x: 10.0, y: 10.0, width: 460.0, height: 300.0)
         
@@ -395,12 +438,14 @@ class EAGLView: UIView {
         texNames.deallocate()
     }
     
+    /*
     private func drawOscilloscope() {
         // Clear the view
         glClear(GL_COLOR_BUFFER_BIT.ui)
         
         glBlendFunc(GL_SRC_ALPHA.ui, GL_ONE.ui)
         
+        //alpha=1.0 completely not transparent
         glColor4f(1.0, 1.0, 1.0, 1.0)
         
         glPushMatrix()
@@ -550,6 +595,7 @@ class EAGLView: UIView {
         glPopMatrix()
         glPopMatrix()
     }
+    */
     
     private func cycleSpectrum() {
         var newFirst: UnsafeMutablePointer<SpectrumLinkedTexture>
@@ -683,18 +729,23 @@ class EAGLView: UIView {
         
         glFlush()
         
+        
+        
     }
     
     
     private func drawView(_ sender: AnyObject, forTime time: TimeInterval) {
         if !audioController.audioChainIsBeingReconstructed {  //hold off on drawing until the audio chain has been reconstructed
+            /*
             if displayMode == .oscilloscopeWaveform || displayMode == .oscilloscopeFFT {
                 if !initted_oscilloscope { self.setupViewForOscilloscope() }
                 self.drawOscilloscope()
-            } else if displayMode == .spectrum {
+            } else
+            */
+            if displayMode == .spectrum {
                 if !initted_spectrum { self.setupViewForSpectrum() }
                 self.drawSpectrum()
-                self.drawFilterCoefficient()
+                //self.drawFilterCoefficient()
             }
         }
     }
@@ -707,17 +758,15 @@ class EAGLView: UIView {
         
         glPushMatrix()
         // xy coord. offset for various devices
-        let offsetY = GLfloat((self.bounds.size.height - 480) / 2)
-        let offsetX = GLfloat((self.bounds.size.width - 320) / 2)
         
-        glTranslatef(offsetX, 480 + offsetY, 0.0)
+        glTranslatef(0.0, 480.0, 0.0)
         glRotatef(-90.0, 0.0, 0.0, 1.0)
         
         // Translate to the left side and vertical center of the screen, and scale so that the screen coordinates
         // go from 0 to 1 along the X, and -1 to 1 along the Y
         
-        glTranslatef(10.0, 160.0, 0.0)
-        glScalef(460.0, 140.0, 1.0)
+        glTranslatef(0.0, 160.0, 0.0)
+        glScalef(480.0, 160.0, 1.0)
         
         // Set up some GL state for our oscilloscope lines
         glEnableClientState(GL_VERTEX_ARRAY.ui)
@@ -738,9 +787,12 @@ class EAGLView: UIView {
         // Fill our vertex array with points
         var i: GLfloat = 0.0
 
+        //coefficientLine: Float, [x1 y1 x2 y2 ... xMax yMax]
         while i < max {
+            // x
             coefficientLine_ptr.pointee = 1 - i / max
             coefficientLine_ptr += 1
+            // y
             coefficientLine_ptr.pointee = Float32(filterCoefficients_ptr.pointee)
             coefficientLine_ptr += 1
             filterCoefficients_ptr += 1
@@ -777,6 +829,7 @@ class EAGLView: UIView {
          */
     }
     
+    /*
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         // If we're if waveform mode and not currently in a pinch event, and we've got two touches, start a pinch event
         if
@@ -821,7 +874,7 @@ class EAGLView: UIView {
             lastPinchDist = thisPinchDist
         }
     }
-    
+    */
     
     private class func createRoundedRectPath(_ RECT: CGRect, _ _cornerRadius: CGFloat) -> CGPath {
         let path = CGMutablePath()
@@ -856,7 +909,7 @@ class EAGLView: UIView {
         return ret!
     }
     
-    
+    /*
     private func cycleOscilloscopeLines() {
         let bufferManager = audioController.bufferManagerInstance
         
@@ -867,7 +920,7 @@ class EAGLView: UIView {
             memmove(drawBuffers[drawBuffer_i + 1], drawBuffers[drawBuffer_i], size_t(bufferManager.currentDrawBufferLength))
         }
     }
-    
+    */
     
     private func createGLTexture(_ texName: inout GLuint, fromCGImage img: CGImage) {
         var texW: size_t, texH: size_t
@@ -914,6 +967,7 @@ class EAGLView: UIView {
         spriteData.deallocate()
     }
     
+    /*
     override func touchesEnded(_ touches:Set<UITouch>, with event: UIEvent?) {
         let bufferManager = audioController.bufferManagerInstance
         if event == pinchEvent {
@@ -957,7 +1011,8 @@ class EAGLView: UIView {
             return
         }
     }
-    
+    */
+ 
     // Stop animating and release resources when they are no longer needed.
     deinit {
         self.stopAnimation()

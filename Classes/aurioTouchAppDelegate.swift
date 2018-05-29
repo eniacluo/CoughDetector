@@ -43,7 +43,7 @@ class aurioTouchAppDelegate: NSObject, UIApplicationDelegate {
     func applicationDidBecomeActive(_ application: UIApplication) {
         //start animation now that we're in the foreground
         view.applicationResignedActive = false
-        view.startAnimation()
+        //view.startAnimation()
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
