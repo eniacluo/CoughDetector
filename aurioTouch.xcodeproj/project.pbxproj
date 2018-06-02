@@ -31,6 +31,26 @@
 		D78F4AFF1D60C05500012A69 /* BufferManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78F4AF31D60BF3300012A69 /* BufferManager.swift */; };
 		D79AEF1C1D60C37E00584688 /* DCRejectionFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79AEF1B1D60C37E00584688 /* DCRejectionFilter.swift */; };
 		F0A7FC142085803B00BFED0E /* mfzw.m4a in Resources */ = {isa = PBXBuildFile; fileRef = F0A7FC132085803A00BFED0E /* mfzw.m4a */; };
+		F0B315B120BDDA1400AD394B /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B315B020BDDA1400AD394B /* WebService.swift */; };
+		F0B315DD20C2F93700AD394B /* esignal.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B315D920C2F93600AD394B /* esignal.c */; };
+		F0B315E920C31F7D00AD394B /* esig_nat.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B315E820C31F7C00AD394B /* esig_nat.c */; };
+		F0B315EC20C31FD200AD394B /* esig_asc.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B315EA20C31FD100AD394B /* esig_asc.c */; };
+		F0B315ED20C31FD200AD394B /* esig_edr.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B315EB20C31FD200AD394B /* esig_edr.c */; };
+		F0B3160D20C3200700AD394B /* HAudio.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B315EE20C3200400AD394B /* HAudio.c */; };
+		F0B3160E20C3200700AD394B /* HWave.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B315EF20C3200400AD394B /* HWave.c */; };
+		F0B3160F20C3200700AD394B /* HAdapt.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B315F620C3200500AD394B /* HAdapt.c */; };
+		F0B3161020C3200700AD394B /* HVQ.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B315F720C3200500AD394B /* HVQ.c */; };
+		F0B3161120C3200700AD394B /* HUtil.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B315FA20C3200500AD394B /* HUtil.c */; };
+		F0B3161220C3200700AD394B /* HSigP.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B315FC20C3200500AD394B /* HSigP.c */; };
+		F0B3161320C3200700AD394B /* HCopy.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B315FD20C3200600AD394B /* HCopy.c */; };
+		F0B3161420C3200700AD394B /* HMem.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B315FF20C3200600AD394B /* HMem.c */; };
+		F0B3161520C3200700AD394B /* HLabel.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B3160120C3200600AD394B /* HLabel.c */; };
+		F0B3161620C3200700AD394B /* HParm.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B3160220C3200600AD394B /* HParm.c */; };
+		F0B3161720C3200700AD394B /* HShell.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B3160520C3200600AD394B /* HShell.c */; };
+		F0B3161820C3200700AD394B /* HModel.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B3160620C3200700AD394B /* HModel.c */; };
+		F0B3161920C3200700AD394B /* HTrain.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B3160820C3200700AD394B /* HTrain.c */; };
+		F0B3161A20C3200700AD394B /* HMath.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B3160920C3200700AD394B /* HMath.c */; };
+		F0B3161B20C3200700AD394B /* HFB.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B3160B20C3200700AD394B /* HFB.c */; };
 		F7CF73110EB1258D0099AA71 /* sonogram.png in Resources */ = {isa = PBXBuildFile; fileRef = F7CF73100EB1258D0099AA71 /* sonogram.png */; };
 		F7CF73160EB126740099AA71 /* fft_off.png in Resources */ = {isa = PBXBuildFile; fileRef = F7CF73120EB126740099AA71 /* fft_off.png */; };
 		F7CF73170EB126740099AA71 /* fft_on.png in Resources */ = {isa = PBXBuildFile; fileRef = F7CF73130EB126740099AA71 /* fft_on.png */; };
@@ -70,6 +90,43 @@
 		D79AEF181D60C2F200584688 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		D79AEF1B1D60C37E00584688 /* DCRejectionFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DCRejectionFilter.swift; sourceTree = "<group>"; };
 		F0A7FC132085803A00BFED0E /* mfzw.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; name = mfzw.m4a; path = ../../../../Documents/cough/mfzw.m4a; sourceTree = "<group>"; };
+		F0B315B020BDDA1400AD394B /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
+		F0B315D920C2F93600AD394B /* esignal.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = esignal.c; sourceTree = "<group>"; };
+		F0B315DA20C2F93600AD394B /* esignal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = esignal.h; sourceTree = "<group>"; };
+		F0B315E820C31F7C00AD394B /* esig_nat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = esig_nat.c; sourceTree = "<group>"; };
+		F0B315EA20C31FD100AD394B /* esig_asc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = esig_asc.c; sourceTree = "<group>"; };
+		F0B315EB20C31FD200AD394B /* esig_edr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = esig_edr.c; sourceTree = "<group>"; };
+		F0B315EE20C3200400AD394B /* HAudio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HAudio.c; sourceTree = "<group>"; };
+		F0B315EF20C3200400AD394B /* HWave.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HWave.c; sourceTree = "<group>"; };
+		F0B315F020C3200400AD394B /* HCopy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCopy.h; sourceTree = "<group>"; };
+		F0B315F120C3200400AD394B /* HAdapt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HAdapt.h; sourceTree = "<group>"; };
+		F0B315F220C3200500AD394B /* HUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUtil.h; sourceTree = "<group>"; };
+		F0B315F320C3200500AD394B /* HModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HModel.h; sourceTree = "<group>"; };
+		F0B315F420C3200500AD394B /* HParm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HParm.h; sourceTree = "<group>"; };
+		F0B315F520C3200500AD394B /* HMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMath.h; sourceTree = "<group>"; };
+		F0B315F620C3200500AD394B /* HAdapt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HAdapt.c; sourceTree = "<group>"; };
+		F0B315F720C3200500AD394B /* HVQ.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HVQ.c; sourceTree = "<group>"; };
+		F0B315F820C3200500AD394B /* HLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HLabel.h; sourceTree = "<group>"; };
+		F0B315F920C3200500AD394B /* HFB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HFB.h; sourceTree = "<group>"; };
+		F0B315FA20C3200500AD394B /* HUtil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HUtil.c; sourceTree = "<group>"; };
+		F0B315FB20C3200500AD394B /* HSigP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSigP.h; sourceTree = "<group>"; };
+		F0B315FC20C3200500AD394B /* HSigP.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HSigP.c; sourceTree = "<group>"; };
+		F0B315FD20C3200600AD394B /* HCopy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HCopy.c; sourceTree = "<group>"; };
+		F0B315FE20C3200600AD394B /* HWave.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HWave.h; sourceTree = "<group>"; };
+		F0B315FF20C3200600AD394B /* HMem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HMem.c; sourceTree = "<group>"; };
+		F0B3160020C3200600AD394B /* HMem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMem.h; sourceTree = "<group>"; };
+		F0B3160120C3200600AD394B /* HLabel.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HLabel.c; sourceTree = "<group>"; };
+		F0B3160220C3200600AD394B /* HParm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HParm.c; sourceTree = "<group>"; };
+		F0B3160320C3200600AD394B /* HTrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTrain.h; sourceTree = "<group>"; };
+		F0B3160420C3200600AD394B /* aurioTouch-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "aurioTouch-Bridging-Header.h"; sourceTree = "<group>"; };
+		F0B3160520C3200600AD394B /* HShell.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HShell.c; sourceTree = "<group>"; };
+		F0B3160620C3200700AD394B /* HModel.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HModel.c; sourceTree = "<group>"; };
+		F0B3160720C3200700AD394B /* HShell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HShell.h; sourceTree = "<group>"; };
+		F0B3160820C3200700AD394B /* HTrain.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HTrain.c; sourceTree = "<group>"; };
+		F0B3160920C3200700AD394B /* HMath.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HMath.c; sourceTree = "<group>"; };
+		F0B3160A20C3200700AD394B /* HVQ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HVQ.h; sourceTree = "<group>"; };
+		F0B3160B20C3200700AD394B /* HFB.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HFB.c; sourceTree = "<group>"; };
+		F0B3160C20C3200700AD394B /* HAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HAudio.h; sourceTree = "<group>"; };
 		F7CF73100EB1258D0099AA71 /* sonogram.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sonogram.png; sourceTree = "<group>"; };
 		F7CF73120EB126740099AA71 /* fft_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fft_off.png; sourceTree = "<group>"; };
 		F7CF73130EB126740099AA71 /* fft_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fft_on.png; sourceTree = "<group>"; };
@@ -107,6 +164,7 @@
 				D78F4AF91D60C01A00012A69 /* AudioController.swift */,
 				D78F4AF31D60BF3300012A69 /* BufferManager.swift */,
 				D78F4AF51D60BF3300012A69 /* DSPHelper.swift */,
+				F0B315B020BDDA1400AD394B /* WebService.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -122,6 +180,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				F0B315B620C2F53A00AD394B /* HTK */,
 				D79AEF181D60C2F200584688 /* LICENSE.txt */,
 				2B869E111D51590F00995BDC /* ReadMe.md */,
 				D79AEF171D60C2F200584688 /* README2.md */,
@@ -178,6 +237,49 @@
 				D78F4AE71D60BE7000012A69 /* OOPExceptions.swift */,
 			);
 			path = OOPUtils;
+			sourceTree = "<group>";
+		};
+		F0B315B620C2F53A00AD394B /* HTK */ = {
+			isa = PBXGroup;
+			children = (
+				F0B3160420C3200600AD394B /* aurioTouch-Bridging-Header.h */,
+				F0B315F620C3200500AD394B /* HAdapt.c */,
+				F0B315F120C3200400AD394B /* HAdapt.h */,
+				F0B315EE20C3200400AD394B /* HAudio.c */,
+				F0B3160C20C3200700AD394B /* HAudio.h */,
+				F0B315FD20C3200600AD394B /* HCopy.c */,
+				F0B315F020C3200400AD394B /* HCopy.h */,
+				F0B3160B20C3200700AD394B /* HFB.c */,
+				F0B315F920C3200500AD394B /* HFB.h */,
+				F0B3160120C3200600AD394B /* HLabel.c */,
+				F0B315F820C3200500AD394B /* HLabel.h */,
+				F0B3160920C3200700AD394B /* HMath.c */,
+				F0B315F520C3200500AD394B /* HMath.h */,
+				F0B315FF20C3200600AD394B /* HMem.c */,
+				F0B3160020C3200600AD394B /* HMem.h */,
+				F0B3160620C3200700AD394B /* HModel.c */,
+				F0B315F320C3200500AD394B /* HModel.h */,
+				F0B3160220C3200600AD394B /* HParm.c */,
+				F0B315F420C3200500AD394B /* HParm.h */,
+				F0B3160520C3200600AD394B /* HShell.c */,
+				F0B3160720C3200700AD394B /* HShell.h */,
+				F0B315FC20C3200500AD394B /* HSigP.c */,
+				F0B315FB20C3200500AD394B /* HSigP.h */,
+				F0B3160820C3200700AD394B /* HTrain.c */,
+				F0B3160320C3200600AD394B /* HTrain.h */,
+				F0B315FA20C3200500AD394B /* HUtil.c */,
+				F0B315F220C3200500AD394B /* HUtil.h */,
+				F0B315F720C3200500AD394B /* HVQ.c */,
+				F0B3160A20C3200700AD394B /* HVQ.h */,
+				F0B315EF20C3200400AD394B /* HWave.c */,
+				F0B315FE20C3200600AD394B /* HWave.h */,
+				F0B315EA20C31FD100AD394B /* esig_asc.c */,
+				F0B315EB20C31FD200AD394B /* esig_edr.c */,
+				F0B315E820C31F7C00AD394B /* esig_nat.c */,
+				F0B315D920C2F93600AD394B /* esignal.c */,
+				F0B315DA20C2F93600AD394B /* esignal.h */,
+			);
+			path = HTK;
 			sourceTree = "<group>";
 		};
 		F74ADD0E0DDA24AA0046BEC2 /* PublicUtility */ = {
@@ -293,18 +395,38 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F0B315B120BDDA1400AD394B /* WebService.swift in Sources */,
+				F0B3161920C3200700AD394B /* HTrain.c in Sources */,
 				D78F4AFE1D60C01A00012A69 /* EAGLView.swift in Sources */,
 				D78F4AF11D60BEAF00012A69 /* CAStreamBasicDescription.swift in Sources */,
+				F0B3161A20C3200700AD394B /* HMath.c in Sources */,
+				F0B3161320C3200700AD394B /* HCopy.c in Sources */,
+				F0B3161B20C3200700AD394B /* HFB.c in Sources */,
+				F0B3160D20C3200700AD394B /* HAudio.c in Sources */,
+				F0B3161120C3200700AD394B /* HUtil.c in Sources */,
 				D78F4AFC1D60C01A00012A69 /* AudioController.swift in Sources */,
 				D78F4AE91D60BE7000012A69 /* NumTypes+Conversion.swift in Sources */,
+				F0B3161220C3200700AD394B /* HSigP.c in Sources */,
 				D78F4AF21D60BEAF00012A69 /* CAXException.swift in Sources */,
+				F0B3161820C3200700AD394B /* HModel.c in Sources */,
+				F0B315DD20C2F93700AD394B /* esignal.c in Sources */,
 				D78F4AFD1D60C01A00012A69 /* aurioTouchAppDelegate.swift in Sources */,
 				D71281B52071FDED003CAAFC /* OOPExceptions.swift in Sources */,
+				F0B315EC20C31FD200AD394B /* esig_asc.c in Sources */,
+				F0B3160F20C3200700AD394B /* HAdapt.c in Sources */,
+				F0B3161420C3200700AD394B /* HMem.c in Sources */,
 				D78F4AF81D60BF3300012A69 /* DSPHelper.swift in Sources */,
+				F0B3161720C3200700AD394B /* HShell.c in Sources */,
+				F0B315ED20C31FD200AD394B /* esig_edr.c in Sources */,
+				F0B3160E20C3200700AD394B /* HWave.c in Sources */,
+				F0B3161520C3200700AD394B /* HLabel.c in Sources */,
+				F0B3161020C3200700AD394B /* HVQ.c in Sources */,
 				D78F4AFF1D60C05500012A69 /* BufferManager.swift in Sources */,
 				D78F4AEF1D60BEAF00012A69 /* CABitOperations.swift in Sources */,
 				D79AEF1C1D60C37E00584688 /* DCRejectionFilter.swift in Sources */,
+				F0B3161620C3200700AD394B /* HParm.c in Sources */,
 				D78F4AF01D60BEAF00012A69 /* CADebugMacros.swift in Sources */,
+				F0B315E920C31F7D00AD394B /* esig_nat.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -327,19 +449,27 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = 8D96QHUAP6;
+				GCC_C_LANGUAGE_STANDARD = ansi;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = aurioTouch_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-D'ARCH=\"arm64\"'";
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sensorweb.uga.coughdetection;
 				PRODUCT_NAME = aurioTouch;
-				SDKROOT = iphoneos.internal;
+				SDKROOT = iphoneos11.3;
+				SWIFT_OBJC_BRIDGING_HEADER = "HTK/aurioTouch-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 4.0;
@@ -350,17 +480,24 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COPY_PHASE_STRIP = YES;
 				DEVELOPMENT_TEAM = 8D96QHUAP6;
+				GCC_C_LANGUAGE_STANDARD = ansi;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = aurioTouch_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_CFLAGS = "-D'ARCH=\"arm64\"'";
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sensorweb.uga.coughdetection;
 				PRODUCT_NAME = aurioTouch;
-				SDKROOT = iphoneos.internal;
+				SDKROOT = iphoneos11.3;
+				SWIFT_OBJC_BRIDGING_HEADER = "HTK/aurioTouch-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 4.0;
@@ -391,7 +528,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_C_LANGUAGE_STANDARD = ansi;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_THUMB_SUPPORT = NO;
@@ -438,7 +575,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_C_LANGUAGE_STANDARD = ansi;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

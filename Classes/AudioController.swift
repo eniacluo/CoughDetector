@@ -92,7 +92,9 @@ class AudioController: NSObject, AURenderCallbackDelegate {
                 }
                 _bufferManager.copyAudioDataToFilterBuffer(ioPtr[0].mData?.assumingMemoryBound(to: Float32.self), inNumFrames: Int(inNumberFrames))
             }
-            
+            if _bufferManager.isSendingRealtimeData {
+                _bufferManager.copyAudioDataToSendingBuffer(ioPtr[0].mData?.assumingMemoryBound(to: Float32.self), inNumFrames: Int(inNumberFrames))
+            }
             
             // mute audio if needed
             if muteAudio {

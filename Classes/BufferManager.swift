@@ -53,6 +53,11 @@ class BufferManager {
     var xcorr_coeff: Float = 0.0
     private(set) var filterCoefficients: UnsafeMutablePointer<Float32>?
     
+    //for sending data to database
+    private var sendingBuffer: UnsafeMutablePointer<Float32>?
+    var isSendingRealtimeData:Bool = false;
+    var sendingCount = 0;
+    
     private var mDSPHelper: DSPHelper
     
     init(maxFramesPerSlice inMaxFramesPerSlice: Int) {//4096
@@ -71,6 +76,7 @@ class BufferManager {
             drawBuffers[Int(i)] = UnsafeMutablePointer.allocate(capacity: Int(inMaxFramesPerSlice))
         }
         filterCoefficients = UnsafeMutablePointer.allocate(capacity: Int(kMaxCoefficients))
+        bzero(filterCoefficients, Int(kMaxCoefficients) * MemoryLayout<Float32>.size)
         mFFTInputBuffer = UnsafeMutablePointer.allocate(capacity: Int(inMaxFramesPerSlice))
         filterBuffer = UnsafeMutablePointer.allocate(capacity: Int(kDefaultFilterSamples))
         
@@ -192,5 +198,35 @@ class BufferManager {
         mFFTInputBufferFrameIndex = 0
         OSAtomicDecrement32Barrier(&mHasNewFFTData)
         OSAtomicIncrement32Barrier(&mNeedsNewFFTData)
+    }
+    
+    func copyAudioDataToSendingBuffer(_ inData: UnsafePointer<Float32>?, inNumFrames: Int) {
+        if inData == nil { return }
+        
+        sendingBuffer = UnsafeMutablePointer.allocate(capacity: inNumFrames)
+        memcpy(sendingBuffer, inData, size_t(inNumFrames * MemoryLayout<Float32>.size))
+        if isSendingRealtimeData == true {
+            sendingCount += 1
+            WebService.sharedInstance.sendData(data: sendingBuffer, length: inNumFrames)
+        }
+        sendingBuffer?.deallocate()
+        
+    }
+    
+    func sendRealtimeData() {
+        isSendingRealtimeData = true
+        sendingCount = 0
+        if sendingCount == 0 {
+            let str: UnsafeMutablePointer<Int8> = UnsafeMutablePointer.allocate(capacity: 2)
+            str[0] = Int8(65)
+            str[1] = Int8(0)
+            let argv: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?> = UnsafeMutablePointer.allocate(capacity: 1)
+            argv[0] = str
+            HCopy(1, argv)
+        }
+    }
+    
+    func stopSendingRealtimeData() {
+        isSendingRealtimeData = false
     }
 }
