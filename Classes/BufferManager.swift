@@ -18,17 +18,23 @@
 import AudioToolbox
 import libkern
 import AVFoundation
+import Accelerate
 
 
 let kNumDrawBuffers = 12
 let kDefaultDrawSamples = 1024
 let kDefaultFilterSamples = 32768
-let kFilterWindowLength = 16384
+let kFilterWindowShiftLength = 16384
 let kMaxCoefficients = 128
+let kNumFrameBuffers = 16
+let kDefaultFrameSamples = 1024
 
 class BufferManager {
     
     var displayMode: AudioController.aurioTouchDisplayMode
+    
+    // Flag of whether time consuming process starts
+    var isStartSession = false
     
     //for draw Buffer
     private(set) var drawBuffers: UnsafeMutablePointer<UnsafeMutablePointer<Float32>?>
@@ -58,13 +64,26 @@ class BufferManager {
     var isSendingRealtimeData:Bool = false;
     var sendingCount = 0;
     
+    //for HMM Buffer
+    private(set) var frameBuffers: UnsafeMutablePointer<UnsafeMutablePointer<Float32>?>
+    private var mFrameBufferIndex: Int
+    private var mFrameSampleIndex: Int
+    var backgroundSigma: Float = 0.01
+    var startBufferIndex = 0
+    var isStartSound = false
+    private(set) var MFCCBuffers: UnsafeMutablePointer<Float32>?
+    var recordSoundCount = 0
+    
     private var mDSPHelper: DSPHelper
     
     init(maxFramesPerSlice inMaxFramesPerSlice: Int) {//4096
         displayMode = .spectrum
         drawBuffers = UnsafeMutablePointer.allocate(capacity: Int(kNumDrawBuffers))
+        frameBuffers = UnsafeMutablePointer.allocate(capacity: Int(kNumFrameBuffers))
         mDrawBufferIndex = 0
         mFilterBufferIndex = 0
+        mFrameBufferIndex = 0
+        mFrameSampleIndex = 0
         currentDrawBufferLength = kDefaultDrawSamples
         mFFTInputBuffer = nil
         mFFTInputBufferFrameIndex = 0
@@ -75,10 +94,14 @@ class BufferManager {
         for i in 0..<kNumDrawBuffers {
             drawBuffers[Int(i)] = UnsafeMutablePointer.allocate(capacity: Int(inMaxFramesPerSlice))
         }
+        for i in 0..<kNumFrameBuffers {
+            frameBuffers[Int(i)] = UnsafeMutablePointer.allocate(capacity: Int(kDefaultFrameSamples))
+        }
         filterCoefficients = UnsafeMutablePointer.allocate(capacity: Int(kMaxCoefficients))
         bzero(filterCoefficients, Int(kMaxCoefficients) * MemoryLayout<Float32>.size)
         mFFTInputBuffer = UnsafeMutablePointer.allocate(capacity: Int(inMaxFramesPerSlice))
         filterBuffer = UnsafeMutablePointer.allocate(capacity: Int(kDefaultFilterSamples))
+        
         
         mDSPHelper = DSPHelper(maxFramesPerSlice: inMaxFramesPerSlice)
         OSAtomicIncrement32Barrier(&mNeedsNewFFTData)
@@ -97,6 +120,13 @@ class BufferManager {
         
         filterBuffer?.deallocate()
         filterCoefficients?.deallocate()
+        
+        for i in 0..<kNumFrameBuffers {
+            frameBuffers[Int(i)]?.deallocate()
+            frameBuffers[Int(i)] = nil
+        }
+        frameBuffers.deallocate()
+
     }
     
     
@@ -126,51 +156,16 @@ class BufferManager {
         for i in 0..<inNumFrames {
             if i + mFilterBufferIndex >= kDefaultFilterSamples {
                 cycleFilterBuffer()//always put new data into tail part
-                mFilterBufferIndex -= kFilterWindowLength//concat buffer data with next one
+                mFilterBufferIndex -= kFilterWindowShiftLength//concat buffer data with next one
             }
             filterBuffer?[i + mFilterBufferIndex] = (inData?[i])!
         }
         mFilterBufferIndex += inNumFrames
     }
     
-    func saveAudioDataToFile() {
-
-        let url = URL(fileURLWithPath: String("Documents/record.wav"))
-        let SAMPLE_RATE =  Float64(44100.0)
-        
-        let outputFormatSettings = [
-            AVFormatIDKey: kAudioFormatLinearPCM,
-            AVLinearPCMBitDepthKey: 32,
-            AVLinearPCMIsFloatKey: true,
-            //  AVLinearPCMIsBigEndianKey: false,
-            AVSampleRateKey: SAMPLE_RATE,
-            AVNumberOfChannelsKey: 1
-            ] as [String : Any]
-        
-        let audioFile = try? AVAudioFile(forWriting: url, settings: outputFormatSettings, commonFormat: AVAudioCommonFormat.pcmFormatFloat32, interleaved: true)
-        
-        let bufferFormat = AVAudioFormat(settings: outputFormatSettings)
-        
-        let outputBuffer = AVAudioPCMBuffer(pcmFormat: bufferFormat!, frameCapacity: AVAudioFrameCount(kDefaultFilterSamples))
-        
-        // i had my samples in doubles, so convert then write
-        
-        for i in 0..<kDefaultFilterSamples {
-            outputBuffer?.floatChannelData!.pointee[i] = Float( filterBuffer![i] )
-        }
-        outputBuffer?.frameLength = AVAudioFrameCount(kDefaultFilterSamples)
-        
-        do{
-            try audioFile?.write(from: outputBuffer!)
-            
-        } catch let error as NSError {
-            print("error:", error.localizedDescription)
-        }
-    }
-    
     func cycleFilterBuffer() {
         // Cycle the lines in our filter buffer to move the window of data instead of moving filter.
-        memmove(&filterBuffer![0], &filterBuffer![kFilterWindowLength], size_t((kDefaultFilterSamples - kFilterWindowLength) * MemoryLayout<Float32>.size))
+        memmove(&filterBuffer![0], &filterBuffer![kFilterWindowShiftLength], size_t((kDefaultFilterSamples - kFilterWindowShiftLength) * MemoryLayout<Float32>.size))
     }
     
     func getFilterOutput(_ filter: UnsafePointer<Float32>?, _ filterLength: Int) {
@@ -203,30 +198,71 @@ class BufferManager {
     func copyAudioDataToSendingBuffer(_ inData: UnsafePointer<Float32>?, inNumFrames: Int) {
         if inData == nil { return }
         
-        sendingBuffer = UnsafeMutablePointer.allocate(capacity: inNumFrames)
-        memcpy(sendingBuffer, inData, size_t(inNumFrames * MemoryLayout<Float32>.size))
         if isSendingRealtimeData == true {
+            sendingBuffer = UnsafeMutablePointer.allocate(capacity: inNumFrames)
+            memcpy(sendingBuffer, inData, size_t(inNumFrames * MemoryLayout<Float32>.size))
             sendingCount += 1
             WebService.sharedInstance.sendData(data: sendingBuffer, length: inNumFrames)
+            sendingBuffer?.deallocate()
         }
-        sendingBuffer?.deallocate()
         
     }
     
     func sendRealtimeData() {
-        isSendingRealtimeData = true
-        sendingCount = 0
+        //isSendingRealtimeData = true
+        //sendingCount = 0
+        /*
         if sendingCount == 0 {
-            let str: UnsafeMutablePointer<Int8> = UnsafeMutablePointer.allocate(capacity: 2)
-            str[0] = Int8(65)
-            str[1] = Int8(0)
-            let argv: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?> = UnsafeMutablePointer.allocate(capacity: 1)
-            argv[0] = str
-            HCopy(1, argv)
+            //writeFile(str: "", filename: "")
+            writeAudioFile(pcmBuffer: filterBuffer, frameCount: kDefaultFilterSamples, filename: "record.wav")
+            sendingCount += 1
+            return
         }
+        if sendingCount == 1 {
+            playAudioFile(filename: "record.wav")
+            sendingCount = 0
+        }
+         */
     }
     
     func stopSendingRealtimeData() {
         isSendingRealtimeData = false
     }
+    
+    func copyAudioDataToFrameBuffer(_ inData: UnsafePointer<Float32>?, inNumFrames: Int) {
+        if inData == nil { return }
+        
+        for i in 0..<inNumFrames {//256
+            if i + mFrameSampleIndex >= kDefaultFrameSamples {//1024
+                mFrameSampleIndex = 0//concat buffer data with next one
+                let outVar: UnsafeMutablePointer<Float32> = UnsafeMutablePointer.allocate(capacity: 1)
+                vDSP_rmsqv(frameBuffers[mFrameBufferIndex]!, 1, outVar, vDSP_Length(kDefaultFrameSamples))
+                if outVar.pointee > 3 * backgroundSigma && isStartSound == false {
+                    isStartSound = true
+                    startBufferIndex = mFrameBufferIndex
+                } else if (outVar.pointee < backgroundSigma || (mFrameBufferIndex + 1) % kNumFrameBuffers == startBufferIndex) && isStartSound == true {
+                    // satisfy one of the following two conditions:
+                    // 1. the variance is less than 1*sigma_background
+                    // 2. the length is greater than 16*1024/44100=370ms
+                    isStartSound = false
+                    let copyBufferCount = ((mFrameBufferIndex - startBufferIndex + kNumFrameBuffers) % kNumFrameBuffers + 1)
+                    MFCCBuffers = UnsafeMutablePointer.allocate(capacity: copyBufferCount * kDefaultFrameSamples)
+                    var copyMFCCSampleIndex = 0
+                    for i in startBufferIndex..<startBufferIndex + copyBufferCount {
+                        memcpy(MFCCBuffers?.advanced(by: copyMFCCSampleIndex * kDefaultFrameSamples), frameBuffers[i % kNumFrameBuffers], size_t(kDefaultFrameSamples * MemoryLayout<Float32>.size))
+                        copyMFCCSampleIndex += 1
+                    }
+                    recordSoundCount += 1
+                    writeAudioFile(pcmBuffer: MFCCBuffers, frameCount: copyBufferCount * kDefaultFrameSamples, filename: "record\(recordSoundCount).wav")
+                    print("record\(recordSoundCount).wav")
+                    MFCCBuffers?.deallocate()
+                }
+                outVar.deallocate()
+                mFrameBufferIndex = (mFrameBufferIndex + 1) % kNumFrameBuffers
+            }
+            frameBuffers[mFrameBufferIndex]?[i + mFrameSampleIndex] = (inData?[i])!
+        }
+        mFrameSampleIndex += inNumFrames
+    }
+    
 }

@@ -90,12 +90,14 @@ class AudioController: NSObject, AURenderCallbackDelegate {
                 if _bufferManager.needsNewFFTData {
                     _bufferManager.CopyAudioDataToFFTInputBuffer(ioPtr[0].mData!.assumingMemoryBound(to: Float32.self), numFrames: Int(inNumberFrames))
                 }
-                _bufferManager.copyAudioDataToFilterBuffer(ioPtr[0].mData?.assumingMemoryBound(to: Float32.self), inNumFrames: Int(inNumberFrames))
+                //_bufferManager.copyAudioDataToFilterBuffer(ioPtr[0].mData?.assumingMemoryBound(to: Float32.self), inNumFrames: Int(inNumberFrames))
             }
             if _bufferManager.isSendingRealtimeData {
                 _bufferManager.copyAudioDataToSendingBuffer(ioPtr[0].mData?.assumingMemoryBound(to: Float32.self), inNumFrames: Int(inNumberFrames))
             }
-            
+            if _bufferManager.isStartSession {
+                _bufferManager.copyAudioDataToFrameBuffer(ioPtr[0].mData?.assumingMemoryBound(to: Float32.self), inNumFrames: Int(inNumberFrames))
+            }
             // mute audio if needed
             if muteAudio {
                 for i in 0..<ioPtr.count {

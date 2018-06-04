@@ -99,9 +99,6 @@ class EAGLView: UIView {
     private var buttonStop: UIButton = UIButton(type: UIButtonType.roundedRect)
     private var buttonRecord: UIButton = UIButton(type: UIButtonType.roundedRect)
     private var buttonPause: UIButton = UIButton(type: UIButtonType.roundedRect)
-
-    private var isStartSession: Bool = false;
-    private var isRealtimeRecording: Bool = false;
     
     // You must implement this
     override class var layerClass: AnyClass {
@@ -233,8 +230,9 @@ class EAGLView: UIView {
     
     @objc func buttonStartPressed()
     {
-        if !isStartSession {
-            self.isStartSession = true;
+        let bufferManager = audioController.bufferManagerInstance
+        if !bufferManager.isStartSession {
+            bufferManager.isStartSession = true;
             buttonStart.isEnabled = false;
             buttonStop.isEnabled = true;
             buttonRecord.isHidden = false;
@@ -244,7 +242,6 @@ class EAGLView: UIView {
                 self.setupViewForSpectrum()
                 self.clearTextures()
                 displayMode = .spectrum
-                let bufferManager = audioController.bufferManagerInstance
                 bufferManager.displayMode = displayMode
             }
         }
@@ -252,8 +249,9 @@ class EAGLView: UIView {
     
     @objc func buttonStopPressed()
     {
-        if isStartSession {
-            self.isStartSession = false;
+        let bufferManager = audioController.bufferManagerInstance
+        if bufferManager.isStartSession {
+            bufferManager.isStartSession = false;
             buttonStart.isEnabled = true;
             buttonStop.isEnabled = false;
             buttonRecord.isHidden = true;
@@ -262,7 +260,6 @@ class EAGLView: UIView {
                 audioController.playButtonPressedSound()
                 sampleSizeOverlay.removeFromSuperview()
                 displayMode = .oscilloscopeWaveform
-                let bufferManager = audioController.bufferManagerInstance
                 bufferManager.displayMode = displayMode
                 return
             }
@@ -272,24 +269,18 @@ class EAGLView: UIView {
     
     @objc func buttonRecordPressed()
     {
-        if !isRealtimeRecording {
-            self.isRealtimeRecording = true
-            buttonRecord.isEnabled = false
-            buttonPause.isEnabled = true
-            let bufferManager = audioController.bufferManagerInstance
-            bufferManager.sendRealtimeData()
-        }
+        buttonRecord.isEnabled = false
+        buttonPause.isEnabled = true
+        let bufferManager = audioController.bufferManagerInstance
+        bufferManager.sendRealtimeData()
     }
     
     @objc func buttonPausePressed()
     {
-        if isRealtimeRecording {
-            self.isRealtimeRecording = false
-            buttonPause.isEnabled = false
-            buttonRecord.isEnabled = true
-            let bufferManager = audioController.bufferManagerInstance
-            bufferManager.stopSendingRealtimeData()
-        }
+        buttonPause.isEnabled = false
+        buttonRecord.isEnabled = true
+        let bufferManager = audioController.bufferManagerInstance
+        bufferManager.stopSendingRealtimeData()
     }
     
     override func layoutSubviews() {
@@ -803,10 +794,10 @@ class EAGLView: UIView {
                 //self.drawOscilloscope()
             } else
             
-            if displayMode == .spectrum  && isStartSession {
+            if displayMode == .spectrum  && audioController.bufferManagerInstance.isStartSession {
                 if !initted_spectrum { self.setupViewForSpectrum() }
                 self.drawSpectrum()
-                self.drawFilterCoefficient()
+                //self.drawFilterCoefficient()
             }
         }
     }

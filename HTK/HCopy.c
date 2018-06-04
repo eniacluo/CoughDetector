@@ -107,7 +107,7 @@ static MemHeap tStack;          /* trace list  stack */
 
 #define MAXTIME 1E13            /* maximum HTime (1E6 secs) for GetChkdFlt */
 
-void ReportUsage(void)
+void HCopyReportUsage(void)
 {
    printf("\nUSAGE: HCopy [options] src [ + src ...] tgt ...\n\n");
    printf(" Option                                       Default\n\n");
@@ -124,7 +124,7 @@ void ReportUsage(void)
 }
 
 /* SetConfParms: set conf parms relevant to this tool */
-void SetConfParms(void)
+void HCopySetConfParms(void)
 {
    int i;
    Boolean b;
@@ -178,11 +178,11 @@ int HCopy(int argc, char *argv[])
       HError(1000,"HCopy: InitParm failed");
 
    if (!InfoPrinted() && NumArgs() == 0)
-      ReportUsage();
+      HCopyReportUsage();
 
    if (NumArgs() == 0) return 0;
 
-   SetConfParms();
+   HCopySetConfParms();
    /* initial trace string is null */
    trList.str = NULL;
 

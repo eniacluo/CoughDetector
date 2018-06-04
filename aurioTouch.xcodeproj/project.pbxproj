@@ -30,6 +30,12 @@
 		D78F4AFE1D60C01A00012A69 /* EAGLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78F4AFB1D60C01A00012A69 /* EAGLView.swift */; };
 		D78F4AFF1D60C05500012A69 /* BufferManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78F4AF31D60BF3300012A69 /* BufferManager.swift */; };
 		D79AEF1C1D60C37E00584688 /* DCRejectionFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79AEF1B1D60C37E00584688 /* DCRejectionFilter.swift */; };
+		F07CEE9320C33FB400E5D064 /* HVite.c in Sources */ = {isa = PBXBuildFile; fileRef = F07CEE9220C33FB400E5D064 /* HVite.c */; };
+		F07CEE9C20C33FF500E5D064 /* HRec.c in Sources */ = {isa = PBXBuildFile; fileRef = F07CEE9420C33FF300E5D064 /* HRec.c */; };
+		F07CEE9D20C33FF500E5D064 /* HDict.c in Sources */ = {isa = PBXBuildFile; fileRef = F07CEE9720C33FF400E5D064 /* HDict.c */; };
+		F07CEE9E20C33FF500E5D064 /* HMap.c in Sources */ = {isa = PBXBuildFile; fileRef = F07CEE9920C33FF400E5D064 /* HMap.c */; };
+		F07CEE9F20C33FF500E5D064 /* HNet.c in Sources */ = {isa = PBXBuildFile; fileRef = F07CEE9B20C33FF500E5D064 /* HNet.c */; };
+		F07CEEA220C3454100E5D064 /* FileStringTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07CEEA120C3454100E5D064 /* FileStringTool.swift */; };
 		F0A7FC142085803B00BFED0E /* mfzw.m4a in Resources */ = {isa = PBXBuildFile; fileRef = F0A7FC132085803A00BFED0E /* mfzw.m4a */; };
 		F0B315B120BDDA1400AD394B /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B315B020BDDA1400AD394B /* WebService.swift */; };
 		F0B315DD20C2F93700AD394B /* esignal.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B315D920C2F93600AD394B /* esignal.c */; };
@@ -89,6 +95,17 @@
 		D79AEF171D60C2F200584688 /* README2.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README2.md; sourceTree = "<group>"; };
 		D79AEF181D60C2F200584688 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		D79AEF1B1D60C37E00584688 /* DCRejectionFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DCRejectionFilter.swift; sourceTree = "<group>"; };
+		F07CEE9220C33FB400E5D064 /* HVite.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = HVite.c; path = ../../htk/HTKTools/HVite.c; sourceTree = "<group>"; };
+		F07CEE9420C33FF300E5D064 /* HRec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HRec.c; sourceTree = "<group>"; };
+		F07CEE9520C33FF300E5D064 /* HNet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNet.h; sourceTree = "<group>"; };
+		F07CEE9620C33FF400E5D064 /* HRec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HRec.h; sourceTree = "<group>"; };
+		F07CEE9720C33FF400E5D064 /* HDict.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HDict.c; sourceTree = "<group>"; };
+		F07CEE9820C33FF400E5D064 /* HDict.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HDict.h; sourceTree = "<group>"; };
+		F07CEE9920C33FF400E5D064 /* HMap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HMap.c; sourceTree = "<group>"; };
+		F07CEE9A20C33FF500E5D064 /* HMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMap.h; sourceTree = "<group>"; };
+		F07CEE9B20C33FF500E5D064 /* HNet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HNet.c; sourceTree = "<group>"; };
+		F07CEEA020C3417700E5D064 /* HVite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HVite.h; sourceTree = "<group>"; };
+		F07CEEA120C3454100E5D064 /* FileStringTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileStringTool.swift; sourceTree = "<group>"; };
 		F0A7FC132085803A00BFED0E /* mfzw.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; name = mfzw.m4a; path = ../../../../Documents/cough/mfzw.m4a; sourceTree = "<group>"; };
 		F0B315B020BDDA1400AD394B /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
 		F0B315D920C2F93600AD394B /* esignal.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = esignal.c; sourceTree = "<group>"; };
@@ -165,6 +182,7 @@
 				D78F4AF31D60BF3300012A69 /* BufferManager.swift */,
 				D78F4AF51D60BF3300012A69 /* DSPHelper.swift */,
 				F0B315B020BDDA1400AD394B /* WebService.swift */,
+				F07CEEA120C3454100E5D064 /* FileStringTool.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -243,6 +261,15 @@
 			isa = PBXGroup;
 			children = (
 				F0B3160420C3200600AD394B /* aurioTouch-Bridging-Header.h */,
+				F07CEE9720C33FF400E5D064 /* HDict.c */,
+				F07CEE9820C33FF400E5D064 /* HDict.h */,
+				F07CEE9920C33FF400E5D064 /* HMap.c */,
+				F07CEE9A20C33FF500E5D064 /* HMap.h */,
+				F07CEE9B20C33FF500E5D064 /* HNet.c */,
+				F07CEE9520C33FF300E5D064 /* HNet.h */,
+				F07CEE9420C33FF300E5D064 /* HRec.c */,
+				F07CEE9620C33FF400E5D064 /* HRec.h */,
+				F07CEE9220C33FB400E5D064 /* HVite.c */,
 				F0B315F620C3200500AD394B /* HAdapt.c */,
 				F0B315F120C3200400AD394B /* HAdapt.h */,
 				F0B315EE20C3200400AD394B /* HAudio.c */,
@@ -278,6 +305,7 @@
 				F0B315E820C31F7C00AD394B /* esig_nat.c */,
 				F0B315D920C2F93600AD394B /* esignal.c */,
 				F0B315DA20C2F93600AD394B /* esignal.h */,
+				F07CEEA020C3417700E5D064 /* HVite.h */,
 			);
 			path = HTK;
 			sourceTree = "<group>";
@@ -398,13 +426,16 @@
 				F0B315B120BDDA1400AD394B /* WebService.swift in Sources */,
 				F0B3161920C3200700AD394B /* HTrain.c in Sources */,
 				D78F4AFE1D60C01A00012A69 /* EAGLView.swift in Sources */,
+				F07CEE9C20C33FF500E5D064 /* HRec.c in Sources */,
 				D78F4AF11D60BEAF00012A69 /* CAStreamBasicDescription.swift in Sources */,
 				F0B3161A20C3200700AD394B /* HMath.c in Sources */,
 				F0B3161320C3200700AD394B /* HCopy.c in Sources */,
 				F0B3161B20C3200700AD394B /* HFB.c in Sources */,
 				F0B3160D20C3200700AD394B /* HAudio.c in Sources */,
+				F07CEEA220C3454100E5D064 /* FileStringTool.swift in Sources */,
 				F0B3161120C3200700AD394B /* HUtil.c in Sources */,
 				D78F4AFC1D60C01A00012A69 /* AudioController.swift in Sources */,
+				F07CEE9F20C33FF500E5D064 /* HNet.c in Sources */,
 				D78F4AE91D60BE7000012A69 /* NumTypes+Conversion.swift in Sources */,
 				F0B3161220C3200700AD394B /* HSigP.c in Sources */,
 				D78F4AF21D60BEAF00012A69 /* CAXException.swift in Sources */,
@@ -413,6 +444,8 @@
 				D78F4AFD1D60C01A00012A69 /* aurioTouchAppDelegate.swift in Sources */,
 				D71281B52071FDED003CAAFC /* OOPExceptions.swift in Sources */,
 				F0B315EC20C31FD200AD394B /* esig_asc.c in Sources */,
+				F07CEE9D20C33FF500E5D064 /* HDict.c in Sources */,
+				F07CEE9320C33FB400E5D064 /* HVite.c in Sources */,
 				F0B3160F20C3200700AD394B /* HAdapt.c in Sources */,
 				F0B3161420C3200700AD394B /* HMem.c in Sources */,
 				D78F4AF81D60BF3300012A69 /* DSPHelper.swift in Sources */,
@@ -421,6 +454,7 @@
 				F0B3160E20C3200700AD394B /* HWave.c in Sources */,
 				F0B3161520C3200700AD394B /* HLabel.c in Sources */,
 				F0B3161020C3200700AD394B /* HVQ.c in Sources */,
+				F07CEE9E20C33FF500E5D064 /* HMap.c in Sources */,
 				D78F4AFF1D60C05500012A69 /* BufferManager.swift in Sources */,
 				D78F4AEF1D60BEAF00012A69 /* CABitOperations.swift in Sources */,
 				D79AEF1C1D60C37E00584688 /* DCRejectionFilter.swift in Sources */,
