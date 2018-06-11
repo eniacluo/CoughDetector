@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "OpenBuffer:HParm.c">
+      </ContextState>
+      <ContextState
+         contextName = "MakeIOConfig:HParm.c">
+      </ContextState>
+      <ContextState
+         contextName = "InitParm:HParm.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "curChan">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "InitShell:HShell.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "nextarg">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "OpenAsChannel:HParm.c">
+      </ContextState>
+      <ContextState
+         contextName = "ProcessFile:HVite.c">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:">
+      location = "self:/Users/luozhiwei/Downloads/aurioTouch2.0-Swift-master/CoughDetector.xcodeproj">
    </FileRef>
 </Workspace>

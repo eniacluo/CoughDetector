@@ -28,6 +28,7 @@ let kFilterWindowShiftLength = 16384
 let kMaxCoefficients = 128
 let kNumFrameBuffers = 16
 let kDefaultFrameSamples = 1024
+let kDelayBufferCount = 16
 
 class BufferManager {
     
@@ -72,7 +73,8 @@ class BufferManager {
     var startBufferIndex = 0
     var isStartSound = false
     private(set) var MFCCBuffers: UnsafeMutablePointer<Float32>?
-    var recordSoundCount = 0
+    var recentResult = "SILENCE"
+    var delayIndex = 0
     
     private var mDSPHelper: DSPHelper
     
@@ -223,10 +225,17 @@ class BufferManager {
             sendingCount = 0
         }
          */
+        
     }
     
     func stopSendingRealtimeData() {
         isSendingRealtimeData = false
+        //listFiles()
+        
+        
+        
+        //deleteAllFiles()
+        //getFileSize(filename: "record.mfc")
     }
     
     func copyAudioDataToFrameBuffer(_ inData: UnsafePointer<Float32>?, inNumFrames: Int) {
@@ -244,6 +253,7 @@ class BufferManager {
                     // satisfy one of the following two conditions:
                     // 1. the variance is less than 1*sigma_background
                     // 2. the length is greater than 16*1024/44100=370ms
+                    
                     isStartSound = false
                     let copyBufferCount = ((mFrameBufferIndex - startBufferIndex + kNumFrameBuffers) % kNumFrameBuffers + 1)
                     MFCCBuffers = UnsafeMutablePointer.allocate(capacity: copyBufferCount * kDefaultFrameSamples)
@@ -252,12 +262,30 @@ class BufferManager {
                         memcpy(MFCCBuffers?.advanced(by: copyMFCCSampleIndex * kDefaultFrameSamples), frameBuffers[i % kNumFrameBuffers], size_t(kDefaultFrameSamples * MemoryLayout<Float32>.size))
                         copyMFCCSampleIndex += 1
                     }
-                    recordSoundCount += 1
-                    writeAudioFile(pcmBuffer: MFCCBuffers, frameCount: copyBufferCount * kDefaultFrameSamples, filename: "record\(recordSoundCount).wav")
-                    print("record\(recordSoundCount).wav")
+                    writeAudioFile(pcmBuffer: MFCCBuffers, frameCount: copyBufferCount * kDefaultFrameSamples, filename: "record.wav")
+                    
+                    createMFCCFile(wavFilename: "record.wav")
+                    getHMMResult(wavFilename: "record.wav")
+                    
+                    let result = (readFile(filename: "result.txt") ?? "no result")
+                    if result.contains("COUGH") {
+                        recentResult = "COUGH"
+                        delayIndex = kDelayBufferCount
+                    } else {
+                        recentResult = "NON-COUGH"
+                        delayIndex = kDelayBufferCount
+                    }
                     MFCCBuffers?.deallocate()
                 }
+                if delayIndex > 0 {
+                    delayIndex -= 1
+                    if delayIndex == 0 {
+                        recentResult = "SILENCE"
+                    }
+                }
+ 
                 outVar.deallocate()
+ 
                 mFrameBufferIndex = (mFrameBufferIndex + 1) % kNumFrameBuffers
             }
             frameBuffers[mFrameBufferIndex]?[i + mFrameSampleIndex] = (inData?[i])!

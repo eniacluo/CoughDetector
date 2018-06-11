@@ -235,8 +235,8 @@ class EAGLView: UIView {
             bufferManager.isStartSession = true;
             buttonStart.isEnabled = false;
             buttonStop.isEnabled = true;
-            buttonRecord.isHidden = false;
-            buttonPause.isHidden = false;
+            //buttonRecord.isHidden = false;
+            //buttonPause.isHidden = false;
             audioController.playButtonPressedSound()
             if displayMode == .oscilloscopeWaveform || displayMode == .oscilloscopeFFT {
                 self.setupViewForSpectrum()
@@ -434,7 +434,7 @@ class EAGLView: UIView {
         spectrumRect = CGRect(x: 10.0, y: 10.0, width: 460.0, height: 300.0)
         
         //For cough count
-        sampleSizeText.text = String("Cough")
+        sampleSizeText.text = String("-")
         self.addSubview(sampleSizeOverlay)
         
         // The bit buffer for the texture needs to be 512 pixels, because OpenGL textures are powers of
@@ -798,8 +798,21 @@ class EAGLView: UIView {
                 if !initted_spectrum { self.setupViewForSpectrum() }
                 self.drawSpectrum()
                 //self.drawFilterCoefficient()
+                self.displayRecentDetectResult()
             }
         }
+    }
+    
+    private func displayRecentDetectResult()
+    {
+        let bufferManager = audioController.bufferManagerInstance
+        if bufferManager.recentResult == "COUGH" {
+            sampleSizeText.textColor = UIColor.red
+        } else {
+            sampleSizeText.textColor = UIColor.white
+        }
+        sampleSizeText.text = bufferManager.recentResult
+        
     }
     
     private func drawFilterCoefficient() {

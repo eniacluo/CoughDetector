@@ -1555,7 +1555,10 @@ void HError(int errcode, char *message, ...)
    fflush(f);
    if (errcode>0) {
       if (abortOnError) abort();
-      else Exit(errcode);
+      else {
+          //Exit(errcode);
+          printf("Fatal Error: %d\n", errcode);
+      }
    }
 }
 
@@ -1905,6 +1908,7 @@ ReturnStatus InitShell(int argc, char *argv[], char *ver, char *sccs)
    Boolean b;
 
    argcount = 1; arglist = (char **) malloc(argc*sizeof(char *));
+    nextarg = 1;
    arglist[0] = argv[0];
    Register(ver,sccs);
    Register(hshell_version,hshell_vc_id);
