@@ -11,6 +11,16 @@ import AVFoundation
 var _audioPlayer: AVAudioPlayer? = nil
 // if set it as local variable, the sound cannot be played because it may be recycled
 
+public func getCurrentTimeString() -> String
+{
+    let currentData = Date()
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateStyle = .short
+    dateFormatter.timeStyle = .medium
+    let dateString = dateFormatter.string(from: currentData)
+    return dateString
+}
+
 public func createMFCCFile(wavFilename: String)
 {
     let urlConfigFile = URL(fileURLWithPath: Bundle.main.path(forResource: "hcopy", ofType: "conf")!)
@@ -33,11 +43,12 @@ public func getHMMResult(wavFilename: String)
     let urlConfigFile = URL(fileURLWithPath: Bundle.main.path(forResource: "hvite", ofType: "conf")!)
     let urlNetFile = URL(fileURLWithPath: Bundle.main.path(forResource: "net", ofType: "slf")!)
     let hmmCough = URL(fileURLWithPath: Bundle.main.path(forResource: "cough", ofType: nil)!)
-    let hmmFiller = URL(fileURLWithPath: Bundle.main.path(forResource: "filler", ofType: nil)!)
+    let hmmSpeech = URL(fileURLWithPath: Bundle.main.path(forResource: "speech", ofType: nil)!)
+    let hmmScream = URL(fileURLWithPath: Bundle.main.path(forResource: "scream", ofType: nil)!)
     let resultFile = getFilePath(filename: "result.txt")
     let dictFile = URL(fileURLWithPath: Bundle.main.path(forResource: "dict", ofType: "txt")!)
     let hmmListFile = URL(fileURLWithPath: Bundle.main.path(forResource: "hmmlist", ofType: nil)!)
-    let argHVite = ["HVite", "-C", urlConfigFile.path, "-w", urlNetFile.path, "-H", hmmCough.path, "-H", hmmFiller.path, "-i", resultFile, dictFile.path, hmmListFile.path, mfcFile]
+    let argHVite = ["HVite", "-C", urlConfigFile.path, "-w", urlNetFile.path, "-H", hmmCough.path, "-H", hmmSpeech.path, "-H", hmmScream.path, "-i", resultFile, dictFile.path, hmmListFile.path, mfcFile]
 
     var cargs = argHVite.map { strdup($0) }
     HVite(Int32(argHVite.count), &cargs)

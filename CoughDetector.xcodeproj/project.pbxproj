@@ -31,8 +31,12 @@
 		D79AEF1C1D60C37E00584688 /* DCRejectionFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79AEF1B1D60C37E00584688 /* DCRejectionFilter.swift */; };
 		F06A21C320C5DF7F0065F988 /* icon@4x.png in Resources */ = {isa = PBXBuildFile; fileRef = F06A21C220C5DF7F0065F988 /* icon@4x.png */; };
 		F06A21C520C5E0D80065F988 /* launchImage.png in Resources */ = {isa = PBXBuildFile; fileRef = F06A21C420C5E0D80065F988 /* launchImage.png */; };
-		F06A21C820CACE870065F988 /* cough in Resources */ = {isa = PBXBuildFile; fileRef = F06A21C620CACE870065F988 /* cough */; };
-		F06A21C920CACE870065F988 /* filler in Resources */ = {isa = PBXBuildFile; fileRef = F06A21C720CACE870065F988 /* filler */; };
+		F06A21D020CF09640065F988 /* dict.txt in Resources */ = {isa = PBXBuildFile; fileRef = F06A21CA20CF09640065F988 /* dict.txt */; };
+		F06A21D120CF09640065F988 /* scream in Resources */ = {isa = PBXBuildFile; fileRef = F06A21CB20CF09640065F988 /* scream */; };
+		F06A21D220CF09640065F988 /* cough in Resources */ = {isa = PBXBuildFile; fileRef = F06A21CC20CF09640065F988 /* cough */; };
+		F06A21D320CF09640065F988 /* speech in Resources */ = {isa = PBXBuildFile; fileRef = F06A21CD20CF09640065F988 /* speech */; };
+		F06A21D420CF09640065F988 /* net.slf in Resources */ = {isa = PBXBuildFile; fileRef = F06A21CE20CF09640065F988 /* net.slf */; };
+		F06A21D520CF09640065F988 /* hmmlist in Resources */ = {isa = PBXBuildFile; fileRef = F06A21CF20CF09640065F988 /* hmmlist */; };
 		F07CEE9320C33FB400E5D064 /* HVite.c in Sources */ = {isa = PBXBuildFile; fileRef = F07CEE9220C33FB400E5D064 /* HVite.c */; };
 		F07CEE9C20C33FF500E5D064 /* HRec.c in Sources */ = {isa = PBXBuildFile; fileRef = F07CEE9420C33FF300E5D064 /* HRec.c */; };
 		F07CEE9D20C33FF500E5D064 /* HDict.c in Sources */ = {isa = PBXBuildFile; fileRef = F07CEE9720C33FF400E5D064 /* HDict.c */; };
@@ -60,9 +64,6 @@
 		F0B3161920C3200700AD394B /* HTrain.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B3160820C3200700AD394B /* HTrain.c */; };
 		F0B3161A20C3200700AD394B /* HMath.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B3160920C3200700AD394B /* HMath.c */; };
 		F0B3161B20C3200700AD394B /* HFB.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B3160B20C3200700AD394B /* HFB.c */; };
-		F0DC453620C4F411003AFE70 /* dict.txt in Resources */ = {isa = PBXBuildFile; fileRef = F0DC452F20C4F410003AFE70 /* dict.txt */; };
-		F0DC453720C4F411003AFE70 /* hmmlist in Resources */ = {isa = PBXBuildFile; fileRef = F0DC453020C4F410003AFE70 /* hmmlist */; };
-		F0DC453820C4F411003AFE70 /* net.slf in Resources */ = {isa = PBXBuildFile; fileRef = F0DC453120C4F410003AFE70 /* net.slf */; };
 		F0DC453920C4F411003AFE70 /* hcopy.conf in Resources */ = {isa = PBXBuildFile; fileRef = F0DC453220C4F411003AFE70 /* hcopy.conf */; };
 		F0DC453A20C4F411003AFE70 /* gram.txt in Resources */ = {isa = PBXBuildFile; fileRef = F0DC453320C4F411003AFE70 /* gram.txt */; };
 		F0DC453E20C59372003AFE70 /* hvite.conf in Resources */ = {isa = PBXBuildFile; fileRef = F0DC453D20C59372003AFE70 /* hvite.conf */; };
@@ -106,8 +107,12 @@
 		F06A21BF20C5DB650065F988 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		F06A21C220C5DF7F0065F988 /* icon@4x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@4x.png"; sourceTree = "<group>"; };
 		F06A21C420C5E0D80065F988 /* launchImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launchImage.png; sourceTree = "<group>"; };
-		F06A21C620CACE870065F988 /* cough */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cough; sourceTree = "<group>"; };
-		F06A21C720CACE870065F988 /* filler */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = filler; sourceTree = "<group>"; };
+		F06A21CA20CF09640065F988 /* dict.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dict.txt; path = ../../../../Documents/cough/htk/with_high_colume/dict.txt; sourceTree = "<group>"; };
+		F06A21CB20CF09640065F988 /* scream */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = scream; sourceTree = "<group>"; };
+		F06A21CC20CF09640065F988 /* cough */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = cough; path = ../../../../Documents/cough/htk/with_high_colume/cough; sourceTree = "<group>"; };
+		F06A21CD20CF09640065F988 /* speech */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = speech; sourceTree = "<group>"; };
+		F06A21CE20CF09640065F988 /* net.slf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = net.slf; path = ../../../../Documents/cough/htk/with_high_colume/net.slf; sourceTree = "<group>"; };
+		F06A21CF20CF09640065F988 /* hmmlist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = hmmlist; path = ../../../../Documents/cough/htk/with_high_colume/hmmlist; sourceTree = "<group>"; };
 		F07CEE9220C33FB400E5D064 /* HVite.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = HVite.c; path = ../../htk/HTKTools/HVite.c; sourceTree = "<group>"; };
 		F07CEE9420C33FF300E5D064 /* HRec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HRec.c; sourceTree = "<group>"; };
 		F07CEE9520C33FF300E5D064 /* HNet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNet.h; sourceTree = "<group>"; };
@@ -157,9 +162,6 @@
 		F0B3160A20C3200700AD394B /* HVQ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HVQ.h; sourceTree = "<group>"; };
 		F0B3160B20C3200700AD394B /* HFB.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HFB.c; sourceTree = "<group>"; };
 		F0B3160C20C3200700AD394B /* HAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HAudio.h; sourceTree = "<group>"; };
-		F0DC452F20C4F410003AFE70 /* dict.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dict.txt; sourceTree = "<group>"; };
-		F0DC453020C4F410003AFE70 /* hmmlist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hmmlist; sourceTree = "<group>"; };
-		F0DC453120C4F410003AFE70 /* net.slf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = net.slf; sourceTree = "<group>"; };
 		F0DC453220C4F411003AFE70 /* hcopy.conf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hcopy.conf; sourceTree = "<group>"; };
 		F0DC453320C4F411003AFE70 /* gram.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = gram.txt; sourceTree = "<group>"; };
 		F0DC453D20C59372003AFE70 /* hvite.conf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hvite.conf; sourceTree = "<group>"; };
@@ -335,14 +337,15 @@
 		F0DC452E20C4F3D6003AFE70 /* htk */ = {
 			isa = PBXGroup;
 			children = (
-				F06A21C620CACE870065F988 /* cough */,
-				F06A21C720CACE870065F988 /* filler */,
+				F06A21CC20CF09640065F988 /* cough */,
+				F06A21CA20CF09640065F988 /* dict.txt */,
+				F06A21CF20CF09640065F988 /* hmmlist */,
+				F06A21CE20CF09640065F988 /* net.slf */,
+				F06A21CB20CF09640065F988 /* scream */,
+				F06A21CD20CF09640065F988 /* speech */,
 				F0DC453D20C59372003AFE70 /* hvite.conf */,
-				F0DC452F20C4F410003AFE70 /* dict.txt */,
 				F0DC453320C4F411003AFE70 /* gram.txt */,
 				F0DC453220C4F411003AFE70 /* hcopy.conf */,
-				F0DC453020C4F410003AFE70 /* hmmlist */,
-				F0DC453120C4F410003AFE70 /* net.slf */,
 			);
 			path = htk;
 			sourceTree = "<group>";
@@ -439,25 +442,26 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F06A21C920CACE870065F988 /* filler in Resources */,
+				F06A21D520CF09640065F988 /* hmmlist in Resources */,
 				A16C48360DE389CB00F4A0B3 /* oscilloscope.png in Resources */,
+				F06A21D420CF09640065F988 /* net.slf in Resources */,
 				2B40B59418873E0600F4A921 /* Default-568h@2x.png in Resources */,
 				F7DF06DE0DF4AD57005687F5 /* button_press.caf in Resources */,
-				F0DC453720C4F411003AFE70 /* hmmlist in Resources */,
 				F7CF73110EB1258D0099AA71 /* sonogram.png in Resources */,
 				F0DC453E20C59372003AFE70 /* hvite.conf in Resources */,
 				F7CF73160EB126740099AA71 /* fft_off.png in Resources */,
-				F0DC453820C4F411003AFE70 /* net.slf in Resources */,
 				2B86B2B218F35C2300347397 /* MainWindow.xib in Resources */,
 				F0DC453920C4F411003AFE70 /* hcopy.conf in Resources */,
 				F7CF73170EB126740099AA71 /* fft_on.png in Resources */,
 				F0A7FC142085803B00BFED0E /* mfzw.m4a in Resources */,
+				F06A21D020CF09640065F988 /* dict.txt in Resources */,
 				F7CF73180EB126740099AA71 /* mute_off.png in Resources */,
 				F0DC453A20C4F411003AFE70 /* gram.txt in Resources */,
 				F06A21C320C5DF7F0065F988 /* icon@4x.png in Resources */,
-				F06A21C820CACE870065F988 /* cough in Resources */,
+				F06A21D120CF09640065F988 /* scream in Resources */,
+				F06A21D320CF09640065F988 /* speech in Resources */,
+				F06A21D220CF09640065F988 /* cough in Resources */,
 				F06A21C520C5E0D80065F988 /* launchImage.png in Resources */,
-				F0DC453620C4F411003AFE70 /* dict.txt in Resources */,
 				F7CF73190EB126740099AA71 /* mute_on.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

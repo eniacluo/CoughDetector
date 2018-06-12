@@ -99,6 +99,7 @@ class EAGLView: UIView {
     private var buttonStop: UIButton = UIButton(type: UIButtonType.roundedRect)
     private var buttonRecord: UIButton = UIButton(type: UIButtonType.roundedRect)
     private var buttonPause: UIButton = UIButton(type: UIButtonType.roundedRect)
+    private var labelEvent: UILabel!
     
     // You must implement this
     override class var layerClass: AnyClass {
@@ -217,6 +218,19 @@ class EAGLView: UIView {
         buttonPause.isEnabled = false
         buttonPause.isHidden = true;
         addSubview(buttonPause)
+        
+        // Create the text view which shows the size of our oscilloscope window as we pinch/zoom
+        labelEvent = UILabel(frame: CGRect(x: 210, y: 480, width: 150, height: 70))
+        labelEvent.textAlignment = NSTextAlignment.left
+        labelEvent.textColor = UIColor.white
+        labelEvent.text = ""
+        labelEvent.font = UIFont.boldSystemFont(ofSize: 8.0)
+        // Rotate the text view since we want the text to draw top to bottom (when the device is oriented vertically)
+        labelEvent.transform = CGAffineTransform(rotationAngle: .pi/2)
+        labelEvent.backgroundColor = UIColor.clear
+        labelEvent.numberOfLines = 0 // Unlimited lines
+        //labelEvent.sizeToFit()
+        addSubview(labelEvent)
         
         // Text view was retained by the above line, so we can release it now
         
@@ -812,7 +826,7 @@ class EAGLView: UIView {
             sampleSizeText.textColor = UIColor.white
         }
         sampleSizeText.text = bufferManager.recentResult
-        
+        labelEvent.text = bufferManager.eventString
     }
     
     private func drawFilterCoefficient() {

@@ -75,6 +75,9 @@ class BufferManager {
     private(set) var MFCCBuffers: UnsafeMutablePointer<Float32>?
     var recentResult = "SILENCE"
     var delayIndex = 0
+    var eventCount = 0;
+    var eventString: String!
+    var eventTime = [String]()
     
     private var mDSPHelper: DSPHelper
     
@@ -245,6 +248,7 @@ class BufferManager {
             if i + mFrameSampleIndex >= kDefaultFrameSamples {//1024
                 mFrameSampleIndex = 0//concat buffer data with next one
                 let outVar: UnsafeMutablePointer<Float32> = UnsafeMutablePointer.allocate(capacity: 1)
+                // calculating the moving window variance to do changing point detection to segment
                 vDSP_rmsqv(frameBuffers[mFrameBufferIndex]!, 1, outVar, vDSP_Length(kDefaultFrameSamples))
                 if outVar.pointee > 3 * backgroundSigma && isStartSound == false {
                     isStartSound = true
@@ -253,7 +257,7 @@ class BufferManager {
                     // satisfy one of the following two conditions:
                     // 1. the variance is less than 1*sigma_background
                     // 2. the length is greater than 16*1024/44100=370ms
-                    
+                    // make a copy to MFCCBuffer to run feature extraction and HMM Viterbi decoder
                     isStartSound = false
                     let copyBufferCount = ((mFrameBufferIndex - startBufferIndex + kNumFrameBuffers) % kNumFrameBuffers + 1)
                     MFCCBuffers = UnsafeMutablePointer.allocate(capacity: copyBufferCount * kDefaultFrameSamples)
@@ -267,13 +271,26 @@ class BufferManager {
                     createMFCCFile(wavFilename: "record.wav")
                     getHMMResult(wavFilename: "record.wav")
                     
+                    // If HMM Viterbi results are successful obtained, put the recognition result. Once refreshed in View, the result will display on screen
                     let result = (readFile(filename: "result.txt") ?? "no result")
-                    if result.contains("COUGH") {
-                        recentResult = "COUGH"
-                        delayIndex = kDelayBufferCount
-                    } else {
-                        recentResult = "NON-COUGH"
-                        delayIndex = kDelayBufferCount
+                    if result != "no result" {
+                        if result.contains("NON-COUGH") {
+                            recentResult = "NON-COUGH"
+                            delayIndex = kDelayBufferCount
+                        } else {
+                            recentResult = "COUGH"
+                            delayIndex = kDelayBufferCount
+                            eventString = "Cough Event:"
+                            let currentTime = getCurrentTimeString()
+                            eventTime.append(currentTime)
+                            for i in 0...eventCount
+                            {
+                                if i > eventCount - 5 {
+                                    eventString = "\(eventString!)\n #\(i+1): \(eventTime[i])"
+                                }
+                            }
+                            eventCount += 1
+                        }
                     }
                     MFCCBuffers?.deallocate()
                 }
