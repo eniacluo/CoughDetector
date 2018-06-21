@@ -483,6 +483,7 @@ static ReturnStatus ReadConfigFile(char *fname)
       gotParam = ReadConfName(&src,name);
    }
    recurse--;
+   CloseSource(&src);
    return(SUCCESS);
 }
 
@@ -928,7 +929,7 @@ FILE *FOpen(char *fname, IOFilter filter, Boolean *isPipe)
    int i;
    Boolean isInput;
    char mode[8],cmd[1028];
-
+    
    if (filter <= NoFilter){ /* then input */
       isInput = TRUE;
       strcpy(mode,"r"); /* May be binary */

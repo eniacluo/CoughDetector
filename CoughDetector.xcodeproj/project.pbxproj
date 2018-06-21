@@ -29,7 +29,6 @@
 		D78F4AFE1D60C01A00012A69 /* EAGLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78F4AFB1D60C01A00012A69 /* EAGLView.swift */; };
 		D78F4AFF1D60C05500012A69 /* BufferManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78F4AF31D60BF3300012A69 /* BufferManager.swift */; };
 		D79AEF1C1D60C37E00584688 /* DCRejectionFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79AEF1B1D60C37E00584688 /* DCRejectionFilter.swift */; };
-		F06A21C320C5DF7F0065F988 /* icon@4x.png in Resources */ = {isa = PBXBuildFile; fileRef = F06A21C220C5DF7F0065F988 /* icon@4x.png */; };
 		F06A21C520C5E0D80065F988 /* launchImage.png in Resources */ = {isa = PBXBuildFile; fileRef = F06A21C420C5E0D80065F988 /* launchImage.png */; };
 		F06A21D020CF09640065F988 /* dict.txt in Resources */ = {isa = PBXBuildFile; fileRef = F06A21CA20CF09640065F988 /* dict.txt */; };
 		F06A21D120CF09640065F988 /* scream in Resources */ = {isa = PBXBuildFile; fileRef = F06A21CB20CF09640065F988 /* scream */; };
@@ -37,6 +36,7 @@
 		F06A21D320CF09640065F988 /* speech in Resources */ = {isa = PBXBuildFile; fileRef = F06A21CD20CF09640065F988 /* speech */; };
 		F06A21D420CF09640065F988 /* net.slf in Resources */ = {isa = PBXBuildFile; fileRef = F06A21CE20CF09640065F988 /* net.slf */; };
 		F06A21D520CF09640065F988 /* hmmlist in Resources */ = {isa = PBXBuildFile; fileRef = F06A21CF20CF09640065F988 /* hmmlist */; };
+		F06F758820D0A27E00617973 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F06F758720D0A27E00617973 /* Images.xcassets */; };
 		F07CEE9320C33FB400E5D064 /* HVite.c in Sources */ = {isa = PBXBuildFile; fileRef = F07CEE9220C33FB400E5D064 /* HVite.c */; };
 		F07CEE9C20C33FF500E5D064 /* HRec.c in Sources */ = {isa = PBXBuildFile; fileRef = F07CEE9420C33FF300E5D064 /* HRec.c */; };
 		F07CEE9D20C33FF500E5D064 /* HDict.c in Sources */ = {isa = PBXBuildFile; fileRef = F07CEE9720C33FF400E5D064 /* HDict.c */; };
@@ -104,8 +104,6 @@
 		D79AEF171D60C2F200584688 /* README2.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README2.md; sourceTree = "<group>"; };
 		D79AEF181D60C2F200584688 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		D79AEF1B1D60C37E00584688 /* DCRejectionFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DCRejectionFilter.swift; sourceTree = "<group>"; };
-		F06A21BF20C5DB650065F988 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
-		F06A21C220C5DF7F0065F988 /* icon@4x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@4x.png"; sourceTree = "<group>"; };
 		F06A21C420C5E0D80065F988 /* launchImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launchImage.png; sourceTree = "<group>"; };
 		F06A21CA20CF09640065F988 /* dict.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dict.txt; path = ../../../../Documents/cough/htk/with_high_colume/dict.txt; sourceTree = "<group>"; };
 		F06A21CB20CF09640065F988 /* scream */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = scream; sourceTree = "<group>"; };
@@ -113,6 +111,7 @@
 		F06A21CD20CF09640065F988 /* speech */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = speech; sourceTree = "<group>"; };
 		F06A21CE20CF09640065F988 /* net.slf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = net.slf; path = ../../../../Documents/cough/htk/with_high_colume/net.slf; sourceTree = "<group>"; };
 		F06A21CF20CF09640065F988 /* hmmlist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = hmmlist; path = ../../../../Documents/cough/htk/with_high_colume/hmmlist; sourceTree = "<group>"; };
+		F06F758720D0A27E00617973 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F07CEE9220C33FB400E5D064 /* HVite.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = HVite.c; path = ../../htk/HTKTools/HVite.c; sourceTree = "<group>"; };
 		F07CEE9420C33FF300E5D064 /* HRec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HRec.c; sourceTree = "<group>"; };
 		F07CEE9520C33FF300E5D064 /* HNet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HNet.h; sourceTree = "<group>"; };
@@ -219,6 +218,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				F06F758720D0A27E00617973 /* Images.xcassets */,
 				F0B315B620C2F53A00AD394B /* HTK */,
 				D79AEF181D60C2F200584688 /* LICENSE.txt */,
 				2B869E111D51590F00995BDC /* ReadMe.md */,
@@ -250,8 +250,6 @@
 				F7D3FD800FD49094003CBAE4 /* images */,
 				2B40B59318873E0600F4A921 /* Default-568h@2x.png */,
 				F06A21C420C5E0D80065F988 /* launchImage.png */,
-				F06A21C220C5DF7F0065F988 /* icon@4x.png */,
-				F06A21BF20C5DB650065F988 /* icon.png */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 			);
 			path = Resources;
@@ -456,8 +454,8 @@
 				F0A7FC142085803B00BFED0E /* mfzw.m4a in Resources */,
 				F06A21D020CF09640065F988 /* dict.txt in Resources */,
 				F7CF73180EB126740099AA71 /* mute_off.png in Resources */,
+				F06F758820D0A27E00617973 /* Images.xcassets in Resources */,
 				F0DC453A20C4F411003AFE70 /* gram.txt in Resources */,
-				F06A21C320C5DF7F0065F988 /* icon@4x.png in Resources */,
 				F06A21D120CF09640065F988 /* scream in Resources */,
 				F06A21D320CF09640065F988 /* speech in Resources */,
 				F06A21D220CF09640065F988 /* cough in Resources */,
@@ -534,6 +532,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
@@ -565,6 +565,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
