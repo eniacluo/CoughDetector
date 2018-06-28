@@ -68,8 +68,8 @@ class EAGLView: UIView {
     private var animationInterval: TimeInterval = 0
     private var animationStarted: TimeInterval = 0
     
-    private var sampleSizeOverlay: UIImageView!
-    private var sampleSizeText: UILabel!
+    private var DetectionResultOverlay: UIImageView!
+    private var labelDetectionResult: UILabel!
     
     private var initted_oscilloscope: Bool = false
     private var initted_spectrum: Bool = false
@@ -171,47 +171,42 @@ class EAGLView: UIView {
         img_ui = UIImage(cgImage: img_cg!)
         
         // Create the image view to hold the background rounded rect which we just drew
-        sampleSizeOverlay = UIImageView(image: img_ui)
-        sampleSizeOverlay.frame = CGRect(x: 190, y: 124, width: 110, height: 234)
+        DetectionResultOverlay = UIImageView(image: img_ui)
+        DetectionResultOverlay.frame = CGRect(x: 25, y: 150, width: 300, height: 50)
         
         // Create the text view which shows the size of our oscilloscope window as we pinch/zoom
-        sampleSizeText = UILabel(frame: CGRect(x: -62, y: 0, width: 234, height: 234))
-        sampleSizeText.textAlignment = NSTextAlignment.center
-        sampleSizeText.textColor = UIColor.white
-        sampleSizeText.text = NSLocalizedString("0000 ms", comment: "")
-        sampleSizeText.font = UIFont.boldSystemFont(ofSize: 36.0)
+        labelDetectionResult = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 100))
+        labelDetectionResult.textAlignment = NSTextAlignment.center
+        labelDetectionResult.textColor = UIColor.white
+        labelDetectionResult.text = ""
+        labelDetectionResult.font = UIFont.boldSystemFont(ofSize: 36.0)
         // Rotate the text view since we want the text to draw top to bottom (when the device is oriented vertically)
-        sampleSizeText.transform = CGAffineTransform(rotationAngle: .pi/2)
-        sampleSizeText.backgroundColor = UIColor.clear
+        labelDetectionResult.backgroundColor = UIColor.clear
         
         // Add the text view as a subview of the overlay BG
-        sampleSizeOverlay.addSubview(sampleSizeText)
+        DetectionResultOverlay.addSubview(labelDetectionResult)
         
-        buttonStart.frame = CGRect(x: -25, y: 75, width: 100, height:  40)
-        buttonStart.transform = CGAffineTransform(rotationAngle: .pi/2)
+        buttonStart.frame = CGRect(x: 25, y: 25, width: 150, height:  40)
         buttonStart.setTitle("Start", for: UIControlState.normal)
         buttonStart.backgroundColor = UIColor.white
         buttonStart.addTarget(self, action: #selector(buttonStartPressed), for: .touchUpInside)
         addSubview(buttonStart)
         
-        buttonStop.frame = CGRect(x: -25, y: 200, width: 100, height: 40)
-        buttonStop.transform = CGAffineTransform(rotationAngle: .pi/2)
+        buttonStop.frame = CGRect(x: 200, y: 25, width: 150, height: 40)
         buttonStop.setTitle("Stop", for: UIControlState.normal)
         buttonStop.backgroundColor = UIColor.white
         buttonStop.addTarget(self, action: #selector(buttonStopPressed), for: .touchUpInside)
         buttonStop.isEnabled = false
         addSubview(buttonStop)
         
-        buttonRecord.frame = CGRect(x: -25, y: 325, width: 100, height:  40)
-        buttonRecord.transform = CGAffineTransform(rotationAngle: .pi/2)
+        buttonRecord.frame = CGRect(x: 25, y: 90, width: 150, height:  40)
         buttonRecord.setTitle("Record", for: UIControlState.normal)
         buttonRecord.backgroundColor = UIColor.white
         buttonRecord.addTarget(self, action: #selector(buttonRecordPressed), for: .touchUpInside)
         buttonRecord.isHidden = true;
         addSubview(buttonRecord)
         
-        buttonPause.frame = CGRect(x: -25, y: 450, width: 100, height: 40)
-        buttonPause.transform = CGAffineTransform(rotationAngle: .pi/2)
+        buttonPause.frame = CGRect(x: 200, y: 90, width: 150, height: 40)
         buttonPause.setTitle("Pause", for: UIControlState.normal)
         buttonPause.backgroundColor = UIColor.white
         buttonPause.addTarget(self, action: #selector(buttonPausePressed), for: .touchUpInside)
@@ -220,13 +215,13 @@ class EAGLView: UIView {
         addSubview(buttonPause)
         
         // Create the text view which shows the size of our oscilloscope window as we pinch/zoom
-        labelEvent = UILabel(frame: CGRect(x: 210, y: 480, width: 150, height: 70))
+        labelEvent = UILabel(frame: CGRect(x: 25, y: 200, width: 300, height: 150))
         labelEvent.textAlignment = NSTextAlignment.left
         labelEvent.textColor = UIColor.white
         labelEvent.text = ""
-        labelEvent.font = UIFont.boldSystemFont(ofSize: 8.0)
+        labelEvent.font = UIFont.boldSystemFont(ofSize: 12.0)
         // Rotate the text view since we want the text to draw top to bottom (when the device is oriented vertically)
-        labelEvent.transform = CGAffineTransform(rotationAngle: .pi/2)
+        //labelEvent.transform = CGAffineTransform(rotationAngle: .pi/2)
         labelEvent.backgroundColor = UIColor.clear
         labelEvent.numberOfLines = 0 // Unlimited lines
         //labelEvent.sizeToFit()
@@ -249,8 +244,8 @@ class EAGLView: UIView {
             bufferManager.isStartSession = true;
             buttonStart.isEnabled = false;
             buttonStop.isEnabled = true;
-            //buttonRecord.isHidden = false;
-            //buttonPause.isHidden = false;
+            buttonRecord.isHidden = false;
+            buttonPause.isHidden = false;
             audioController.playButtonPressedSound()
             if displayMode == .oscilloscopeWaveform || displayMode == .oscilloscopeFFT {
                 self.setupViewForSpectrum()
@@ -272,7 +267,7 @@ class EAGLView: UIView {
             buttonPause.isHidden = true;
             if displayMode == .spectrum {
                 audioController.playButtonPressedSound()
-                sampleSizeOverlay.removeFromSuperview()
+                DetectionResultOverlay.removeFromSuperview()
                 displayMode = .oscilloscopeWaveform
                 bufferManager.displayMode = displayMode
                 return
@@ -283,6 +278,13 @@ class EAGLView: UIView {
     
     @objc func buttonRecordPressed()
     {
+        /*
+        let dataManageView = Bundle.main.loadNibNamed("DataManageView", owner: nil, options: nil)?.first as? UIView
+        let dataManageViewController = UIViewController()
+        dataManageViewController.view = dataManageView!
+        
+        self.navigationController?.pushViewController(dataManageViewController , animated: true)
+        */
         buttonRecord.isEnabled = false
         buttonPause.isEnabled = true
         let bufferManager = audioController.bufferManagerInstance
@@ -448,8 +450,8 @@ class EAGLView: UIView {
         spectrumRect = CGRect(x: 10.0, y: 10.0, width: 460.0, height: 300.0)
         
         //For cough count
-        sampleSizeText.text = String("-")
-        self.addSubview(sampleSizeOverlay)
+        labelDetectionResult.text = String("-")
+        self.addSubview(DetectionResultOverlay)
         
         // The bit buffer for the texture needs to be 512 pixels, because OpenGL textures are powers of
         // two in either dimensions. Our texture is drawing a strip of 300 vertical pixels on the screen,
@@ -821,11 +823,11 @@ class EAGLView: UIView {
     {
         let bufferManager = audioController.bufferManagerInstance
         if bufferManager.recentResult == "COUGH" {
-            sampleSizeText.textColor = UIColor.red
+            labelDetectionResult.textColor = UIColor.red
         } else {
-            sampleSizeText.textColor = UIColor.white
+            labelDetectionResult.textColor = UIColor.white
         }
-        sampleSizeText.text = bufferManager.recentResult
+        labelDetectionResult.text = bufferManager.recentResult
         labelEvent.text = bufferManager.eventString
     }
     
@@ -895,9 +897,9 @@ class EAGLView: UIView {
         glFlush()
         
         if bufferManager.xcorr_coeff > 0.2 {
-            sampleSizeText.text = String("Cough")
+            labelDetectionResult.text = String("Cough")
         } else {
-            sampleSizeText.text = "-"
+            labelDetectionResult.text = "-"
         }
         /*
         print("0: \(coefficientLine![0])")
@@ -921,8 +923,8 @@ class EAGLView: UIView {
             
             let hwSampleRate = audioController.sessionSampleRate
             let bufferManager = audioController.bufferManagerInstance
-            sampleSizeText.text = String(format: "%td ms", bufferManager.currentDrawBufferLength / Int(hwSampleRate / 1000.0))
-            self.addSubview(sampleSizeOverlay)
+            labelDetectionResult.text = String(format: "%td ms", bufferManager.currentDrawBufferLength / Int(hwSampleRate / 1000.0))
+            self.addSubview(DetectionResultOverlay)
         }
     }
     
@@ -948,7 +950,7 @@ class EAGLView: UIView {
             
             // and display the size of our oscilloscope window in our overlay view
             let hwSampleRate = audioController.sessionSampleRate
-            sampleSizeText.text = String(format: "%td ms", drawBufferLen / Int(hwSampleRate / 1000.0))
+            labelDetectionResult.text = String(format: "%td ms", drawBufferLen / Int(hwSampleRate / 1000.0))
             
             lastPinchDist = thisPinchDist
         }
@@ -1051,7 +1053,7 @@ class EAGLView: UIView {
         let bufferManager = audioController.bufferManagerInstance
         if event == pinchEvent {
             // If our pinch/zoom has ended, nil out the pinchEvent and remove the overlay view
-            sampleSizeOverlay.removeFromSuperview()
+            DetectionResultOverlay.removeFromSuperview()
             pinchEvent = nil
             return
         }

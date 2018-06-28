@@ -67,6 +67,7 @@
 		F0DC453920C4F411003AFE70 /* hcopy.conf in Resources */ = {isa = PBXBuildFile; fileRef = F0DC453220C4F411003AFE70 /* hcopy.conf */; };
 		F0DC453A20C4F411003AFE70 /* gram.txt in Resources */ = {isa = PBXBuildFile; fileRef = F0DC453320C4F411003AFE70 /* gram.txt */; };
 		F0DC453E20C59372003AFE70 /* hvite.conf in Resources */ = {isa = PBXBuildFile; fileRef = F0DC453D20C59372003AFE70 /* hvite.conf */; };
+		F0E29A5E20E5290C00947445 /* DataManageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0E29A5D20E5290C00947445 /* DataManageView.xib */; };
 		F7CF73110EB1258D0099AA71 /* sonogram.png in Resources */ = {isa = PBXBuildFile; fileRef = F7CF73100EB1258D0099AA71 /* sonogram.png */; };
 		F7CF73160EB126740099AA71 /* fft_off.png in Resources */ = {isa = PBXBuildFile; fileRef = F7CF73120EB126740099AA71 /* fft_off.png */; };
 		F7CF73170EB126740099AA71 /* fft_on.png in Resources */ = {isa = PBXBuildFile; fileRef = F7CF73130EB126740099AA71 /* fft_on.png */; };
@@ -164,6 +165,7 @@
 		F0DC453220C4F411003AFE70 /* hcopy.conf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hcopy.conf; sourceTree = "<group>"; };
 		F0DC453320C4F411003AFE70 /* gram.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = gram.txt; sourceTree = "<group>"; };
 		F0DC453D20C59372003AFE70 /* hvite.conf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hvite.conf; sourceTree = "<group>"; };
+		F0E29A5D20E5290C00947445 /* DataManageView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DataManageView.xib; sourceTree = "<group>"; };
 		F7CF73100EB1258D0099AA71 /* sonogram.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sonogram.png; sourceTree = "<group>"; };
 		F7CF73120EB126740099AA71 /* fft_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fft_off.png; sourceTree = "<group>"; };
 		F7CF73130EB126740099AA71 /* fft_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fft_on.png; sourceTree = "<group>"; };
@@ -203,6 +205,7 @@
 				D78F4AF51D60BF3300012A69 /* DSPHelper.swift */,
 				F0B315B020BDDA1400AD394B /* WebService.swift */,
 				F07CEEA120C3454100E5D064 /* FileStringTool.swift */,
+				F0E29A5D20E5290C00947445 /* DataManageView.xib */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -443,6 +446,7 @@
 				F06A21D520CF09640065F988 /* hmmlist in Resources */,
 				A16C48360DE389CB00F4A0B3 /* oscilloscope.png in Resources */,
 				F06A21D420CF09640065F988 /* net.slf in Resources */,
+				F0E29A5E20E5290C00947445 /* DataManageView.xib in Resources */,
 				2B40B59418873E0600F4A921 /* Default-568h@2x.png in Resources */,
 				F7DF06DE0DF4AD57005687F5 /* button_press.caf in Resources */,
 				F7CF73110EB1258D0099AA71 /* sonogram.png in Resources */,
