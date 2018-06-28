@@ -43,7 +43,6 @@
 		F07CEE9E20C33FF500E5D064 /* HMap.c in Sources */ = {isa = PBXBuildFile; fileRef = F07CEE9920C33FF400E5D064 /* HMap.c */; };
 		F07CEE9F20C33FF500E5D064 /* HNet.c in Sources */ = {isa = PBXBuildFile; fileRef = F07CEE9B20C33FF500E5D064 /* HNet.c */; };
 		F07CEEA220C3454100E5D064 /* FileStringTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07CEEA120C3454100E5D064 /* FileStringTool.swift */; };
-		F0A7FC142085803B00BFED0E /* mfzw.m4a in Resources */ = {isa = PBXBuildFile; fileRef = F0A7FC132085803A00BFED0E /* mfzw.m4a */; };
 		F0B315B120BDDA1400AD394B /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B315B020BDDA1400AD394B /* WebService.swift */; };
 		F0B315DD20C2F93700AD394B /* esignal.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B315D920C2F93600AD394B /* esignal.c */; };
 		F0B315E920C31F7D00AD394B /* esig_nat.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B315E820C31F7C00AD394B /* esig_nat.c */; };
@@ -124,7 +123,6 @@
 		F07CEE9B20C33FF500E5D064 /* HNet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HNet.c; sourceTree = "<group>"; };
 		F07CEEA020C3417700E5D064 /* HVite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HVite.h; sourceTree = "<group>"; };
 		F07CEEA120C3454100E5D064 /* FileStringTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileStringTool.swift; sourceTree = "<group>"; };
-		F0A7FC132085803A00BFED0E /* mfzw.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; name = mfzw.m4a; path = ../../../../Documents/cough/mfzw.m4a; sourceTree = "<group>"; };
 		F0B315B020BDDA1400AD394B /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
 		F0B315D920C2F93600AD394B /* esignal.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = esignal.c; sourceTree = "<group>"; };
 		F0B315DA20C2F93600AD394B /* esignal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = esignal.h; sourceTree = "<group>"; };
@@ -365,7 +363,6 @@
 		F7D3FD760FD49018003CBAE4 /* audio */ = {
 			isa = PBXGroup;
 			children = (
-				F0A7FC132085803A00BFED0E /* mfzw.m4a */,
 				F7DF06DC0DF4AD57005687F5 /* button_press.caf */,
 			);
 			path = audio;
@@ -455,7 +452,6 @@
 				2B86B2B218F35C2300347397 /* MainWindow.xib in Resources */,
 				F0DC453920C4F411003AFE70 /* hcopy.conf in Resources */,
 				F7CF73170EB126740099AA71 /* fft_on.png in Resources */,
-				F0A7FC142085803B00BFED0E /* mfzw.m4a in Resources */,
 				F06A21D020CF09640065F988 /* dict.txt in Resources */,
 				F7CF73180EB126740099AA71 /* mute_off.png in Resources */,
 				F06F758820D0A27E00617973 /* Images.xcassets in Resources */,

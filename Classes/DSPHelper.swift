@@ -78,26 +78,5 @@ class DSPHelper {
         var one: Float32 = 1
         vDSP_vdbcon(outFFTData, 1, &one, outFFTData, 1, mFFTLength, 0)
     }
-    
-    func xcorr(_ inAudioData: UnsafePointer<Float32>?, inAudioLength: Int, filter: UnsafePointer<Float32>?, filterLength: Int, outCoefficient: UnsafeMutablePointer<Float32>?) {
-        guard
-            let inAudioData = inAudioData,
-            let filter = filter,
-            let outCoefficient = outCoefficient
-        else { return }
-
-        let resultSize = inAudioLength + filterLength - 1
-        let outXcorrData: UnsafeMutablePointer<Float32> = UnsafeMutablePointer.allocate(capacity: Int(resultSize))
-        let xPad: [Float] = [Float](repeating: 0.0, count: Int(filterLength-1))
-        let xPadded = xPad + Array(UnsafeBufferPointer(start: inAudioData, count: Int(inAudioLength))) + xPad
-        vDSP_conv(xPadded, 1, filter, 1, outXcorrData, 1, vDSP_Length(resultSize), vDSP_Length(filterLength))
-        vDSP_maxv(outXcorrData, 1, outCoefficient, vDSP_Length(resultSize))
-        var moduleA: Float32 = 0.0
-        var moduleB: Float32 = 0.0
-        vDSP_svesq(xPadded, 1, &moduleA, vDSP_Length(resultSize + filterLength - 1))
-        vDSP_svesq(filter, 1, &moduleB, vDSP_Length(filterLength))
-        outCoefficient.pointee /= (moduleA.squareRoot() * moduleB.squareRoot())
-        outXcorrData.deallocate()
-    }
 
 }

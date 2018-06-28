@@ -70,28 +70,14 @@ class EAGLView: UIView {
     
     private var DetectionResultOverlay: UIImageView!
     private var labelDetectionResult: UILabel!
-    
-    private var initted_oscilloscope: Bool = false
+
     private var initted_spectrum: Bool = false
     private var texBitBuffer: UnsafeMutablePointer<UInt32> =  UnsafeMutablePointer.allocate(capacity: 512)
     private var spectrumRect: CGRect = CGRect()
-    
-    private var bgTexture: GLuint = 0
-    private var muteOffTexture: GLuint = 0
-    private var muteOnTexture: GLuint = 0
-    private var fftOffTexture: GLuint = 0
-    private var fftOnTexture: GLuint = 0
-    private var sonoTexture: GLuint = 0
-    
-    private var displayMode: AudioController.aurioTouchDisplayMode = .spectrum
-    
+
     private var firstTex: UnsafeMutablePointer<SpectrumLinkedTexture>? = nil
-    
-    private var pinchEvent: UIEvent?
-    private var lastPinchDist: CGFloat = 0.0
+
     private var l_fftData: UnsafeMutablePointer<Float32>!
-    private var oscilLine: UnsafeMutablePointer<GLfloat>!
-    private var coefficientLine: UnsafeMutablePointer<GLfloat>!
     
     private var audioController: AudioController = AudioController()
     
@@ -129,24 +115,13 @@ class EAGLView: UIView {
             fatalError("cannot initialize EAGLView")
         }
         
-        // Enable multi touch so we can handle pinch and zoom in the oscilloscope
-        self.isMultipleTouchEnabled = true
-        
         l_fftData = UnsafeMutablePointer.allocate(capacity: audioController.bufferManagerInstance.FFTOutputBufferLength)
         bzero(l_fftData, size_t(audioController.bufferManagerInstance.FFTOutputBufferLength * MemoryLayout<Float32>.size))
-        
-        oscilLine = UnsafeMutablePointer.allocate(capacity: kDefaultDrawSamples * 2) // x and y
-        bzero(oscilLine, size_t(kDefaultDrawSamples * 2 * MemoryLayout<GLfloat>.size))
-        
-        coefficientLine = UnsafeMutablePointer.allocate(capacity: kMaxCoefficients * 2)
-        bzero(coefficientLine, size_t(kMaxCoefficients * 2 * MemoryLayout<GLfloat>.size))
         
         animationInterval = 1.0 / 60.0
         
         self.setupView()
         self.drawView()
-        
-        displayMode = .oscilloscopeWaveform
         
         // Set up our overlay view that pops up when we are pinching/zooming the oscilloscope
         var img_ui: UIImage? = nil
@@ -247,12 +222,8 @@ class EAGLView: UIView {
             buttonRecord.isHidden = false;
             buttonPause.isHidden = false;
             audioController.playButtonPressedSound()
-            if displayMode == .oscilloscopeWaveform || displayMode == .oscilloscopeFFT {
-                self.setupViewForSpectrum()
-                self.clearTextures()
-                displayMode = .spectrum
-                bufferManager.displayMode = displayMode
-            }
+            self.setupViewForSpectrum()
+            self.clearTextures()
         }
     }
     
@@ -265,14 +236,8 @@ class EAGLView: UIView {
             buttonStop.isEnabled = false;
             buttonRecord.isHidden = true;
             buttonPause.isHidden = true;
-            if displayMode == .spectrum {
-                audioController.playButtonPressedSound()
-                DetectionResultOverlay.removeFromSuperview()
-                displayMode = .oscilloscopeWaveform
-                bufferManager.displayMode = displayMode
-                return
-            }
-            
+            audioController.playButtonPressedSound()
+            DetectionResultOverlay.removeFromSuperview()
         }
     }
     
@@ -405,35 +370,6 @@ class EAGLView: UIView {
         context.presentRenderbuffer(GL_RENDERBUFFER_OES.l)
     }
     
-    
-    private func setupViewForOscilloscope() {
-        var img: CGImage
-        
-        // Load our GL textures
-        
-        img = UIImage(named: "oscilloscope.png")!.cgImage!
-        
-        self.createGLTexture(&bgTexture, fromCGImage: img)
-        
-        img = UIImage(named: "fft_off.png")!.cgImage!
-        self.createGLTexture(&fftOffTexture, fromCGImage: img)
-        
-        img = UIImage(named: "fft_on.png")!.cgImage!
-        self.createGLTexture(&fftOnTexture, fromCGImage: img)
-        
-        img = UIImage(named: "mute_off.png")!.cgImage!
-        self.createGLTexture(&muteOffTexture, fromCGImage: img)
-        
-        img = UIImage(named: "mute_on.png")!.cgImage!
-        self.createGLTexture(&muteOnTexture, fromCGImage: img)
-        
-        img = UIImage(named: "sonogram.png")!.cgImage!
-        self.createGLTexture(&sonoTexture, fromCGImage: img)
-        
-        initted_oscilloscope = true
-    }
- 
-    
     private func clearTextures() {
         bzero(texBitBuffer, size_t(MemoryLayout<UInt32>.size * 512))
         
@@ -501,167 +437,6 @@ class EAGLView: UIView {
         initted_spectrum = true
         
         texNames.deallocate()
-    }
-    
-    
-    private func drawOscilloscope() {
-        // Clear the view
-        glClear(GL_COLOR_BUFFER_BIT.ui)
-        
-        glBlendFunc(GL_SRC_ALPHA.ui, GL_ONE.ui)
-        
-        //alpha=1.0 completely not transparent
-        glColor4f(1.0, 1.0, 1.0, 1.0)
-        
-        glPushMatrix()
-        
-        // xy coord. offset for various devices
-        let offsetY = GLfloat((self.bounds.size.height - 480) / 2)
-        let offsetX = GLfloat((self.bounds.size.width - 320) / 2)
-        
-        glTranslatef(offsetX, 480 + offsetY, 0.0)
-        glRotatef(-90.0, 0.0, 0.0, 1.0)
-        
-        glEnable(GL_TEXTURE_2D.ui)
-        glEnableClientState(GL_VERTEX_ARRAY.ui)
-        glEnableClientState(GL_TEXTURE_COORD_ARRAY.ui)
-        
-        // Draw our background oscilloscope screen
-        let vertices1: [GLfloat] = [
-            0.0, 0.0,
-            512.0, 0.0,
-            0.0, 512.0,
-            512.0, 512.0,
-        ]
-        let texCoords1: [GLshort] = [
-            0, 0,
-            1, 0,
-            0, 1,
-            1, 1,
-        ]
-        
-        
-        glBindTexture(GL_TEXTURE_2D.ui, bgTexture)
-        
-        glVertexPointer(2, GL_FLOAT.ui, 0, vertices1)
-        glTexCoordPointer(2, GL_SHORT.ui, 0, texCoords1)
-        
-        glDrawArrays(GL_TRIANGLE_STRIP.ui, 0, 4)
-        
-        /*
-        // Draw our buttons
-        let vertices2: [GLfloat] = [
-            0.0, 0.0,
-            112.0, 0.0,
-            0.0, 64.0,
-            112.0, 64.0,
-        ]
-        let texCoords2: [GLshort] = [
-            0, 0,
-            1, 0,
-            0, 1,
-            1, 1,
-        ]
-        
-        glPushMatrix()
-        
-        glVertexPointer(2, GL_FLOAT.ui, 0, vertices2)
-        glTexCoordPointer(2, GL_SHORT.ui, 0, texCoords2)
-        
-        // button coords
-        glTranslatef(15 + offsetX, 0, 0)
-        glBindTexture(GL_TEXTURE_2D.ui, sonoTexture)
-        glDrawArrays(GL_TRIANGLE_STRIP.ui, 0, 4)
-        glTranslatef(90 + offsetX, 0, 0)
-        glBindTexture(GL_TEXTURE_2D.ui, audioController.muteAudio ? muteOnTexture : muteOffTexture)
-        glDrawArrays(GL_TRIANGLE_STRIP.ui, 0, 4)
-        glTranslatef(105 + offsetX, 0, 0)
-        glBindTexture(GL_TEXTURE_2D.ui, (displayMode == .oscilloscopeFFT) ? fftOnTexture : fftOffTexture)
-        glDrawArrays(GL_TRIANGLE_STRIP.ui, 0, 4)
- 
-        glPopMatrix()
-         */
-        
-        let bufferManager = audioController.bufferManagerInstance
-        let drawBuffers = bufferManager.drawBuffers
-        if displayMode == .oscilloscopeFFT {
-            if bufferManager.hasNewFFTData {
-                bufferManager.GetFFTOutput(l_fftData)
-                
-                let maxY = bufferManager.currentDrawBufferLength
-                let fftLength = bufferManager.FFTOutputBufferLength
-                for y in 0..<maxY {
-                    let yFract = CGFloat(y) / CGFloat(maxY - 1)
-                    let fftIdx = yFract * (CGFloat(fftLength) - 1)
-                    
-                    var fftIdx_i: Double = 0.0
-                    let fftIdx_f = modf(Double(fftIdx), &fftIdx_i)
-                    
-                    let lowerIndex = Int(fftIdx_i)
-                    var upperIndex = lowerIndex + 1
-                    upperIndex = (upperIndex == fftLength) ? fftLength - 1 : upperIndex
-                    
-                    let fft_l_fl = CGFloat(l_fftData[lowerIndex] + 80) / 64.0
-                    let fft_r_fl = CGFloat(l_fftData[upperIndex] + 80) / 64.0
-                    let interpVal = fft_l_fl * (1.0 - CGFloat(fftIdx_f)) + fft_r_fl * CGFloat(fftIdx_f)
-                    
-                    drawBuffers[0]?[y] = Float32(CLAMP(0.0, interpVal, 1.0))
-                }
-                self.cycleOscilloscopeLines()
-            }
-        }
-        
-        var oscilLine_ptr: UnsafeMutablePointer<GLfloat>
-        let max = GLfloat(kDefaultDrawSamples)
-        var drawBuffer_ptr: UnsafeMutablePointer<Float32>
-        
-        glPushMatrix()
-        
-        // Translate to the left side and vertical center of the screen, and scale so that the screen coordinates
-        // go from 0 to 1 along the X, and -1 to 1 along the Y
-        glTranslatef(17.0, 182.0, 0.0)
-        glScalef(448.0, 116.0, 1.0)
-        
-        // Set up some GL state for our oscilloscope lines
-        glDisable(GL_TEXTURE_2D.ui)
-        glDisableClientState(GL_TEXTURE_COORD_ARRAY.ui)
-        glDisableClientState(GL_COLOR_ARRAY.ui)
-        glDisable(GL_LINE_SMOOTH.ui)
-        glLineWidth(2.0)
-        
-        // Draw a line for each stored line in our buffer (the lines are stored and fade over time)
-        for drawBuffer_i in 0..<kNumDrawBuffers {
-            if drawBuffers[drawBuffer_i] == nil { continue }
-            
-            oscilLine_ptr = oscilLine
-            drawBuffer_ptr = drawBuffers[drawBuffer_i]!
-            
-            // Fill our vertex array with points
-            var i: GLfloat = 0.0
-            while i < max {
-                oscilLine_ptr.pointee = i / max
-                oscilLine_ptr += 1
-                oscilLine_ptr.pointee = Float32(drawBuffer_ptr.pointee)
-                oscilLine_ptr += 1
-                drawBuffer_ptr += 1
-                i += 1.0
-            }
-            
-            // If we're drawing the newest line, draw it in solid green. Otherwise, draw it in a faded green.
-            if drawBuffer_i == 0 {
-                glColor4f(0.0, 1.0, 0.0, 1.0)
-            } else {
-                glColor4f(0.0, 1.0, 0.0, (0.24 * (1.0 - (GLfloat(drawBuffer_i) / GLfloat(kNumDrawBuffers)))))
-            }
-            
-            // Set up vertex pointer,
-            glVertexPointer(2, GL_FLOAT.ui, 0, oscilLine)
-            
-            // and draw the line.
-            glDrawArrays(GL_LINE_STRIP.ui, 0, Int32(bufferManager.currentDrawBufferLength))
-        }
-        glPopMatrix()
-        glPopMatrix()
     }
     
     
@@ -796,24 +571,14 @@ class EAGLView: UIView {
         glPopMatrix()
         
         glFlush()
-        
-        
-        
     }
     
     
     private func drawView(_ sender: AnyObject, forTime time: TimeInterval) {
         if !audioController.audioChainIsBeingReconstructed {  //hold off on drawing until the audio chain has been reconstructed
-            
-            if displayMode == .oscilloscopeWaveform || displayMode == .oscilloscopeFFT {
-                if !initted_oscilloscope { self.setupViewForOscilloscope() }
-                //self.drawOscilloscope()
-            } else
-            
-            if displayMode == .spectrum  && audioController.bufferManagerInstance.isStartSession {
+            if audioController.bufferManagerInstance.isStartSession {
                 if !initted_spectrum { self.setupViewForSpectrum() }
                 self.drawSpectrum()
-                //self.drawFilterCoefficient()
                 self.displayRecentDetectResult()
             }
         }
@@ -830,132 +595,6 @@ class EAGLView: UIView {
         labelDetectionResult.text = bufferManager.recentResult
         labelEvent.text = bufferManager.eventString
     }
-    
-    private func drawFilterCoefficient() {
-        
-        let bufferManager = audioController.bufferManagerInstance
-        let filterCoefficients = bufferManager.filterCoefficients
-        bufferManager.getFilterOutput(audioController.matchingFilter, audioController.matchingFilterLength)
-        
-        glPushMatrix()
-        // xy coord. offset for various devices
-        
-        glTranslatef(0.0, 480.0, 0.0)
-        glRotatef(-90.0, 0.0, 0.0, 1.0)
-        
-        // Translate to the left side and vertical center of the screen, and scale so that the screen coordinates
-        // go from 0 to 1 along the X, and -1 to 1 along the Y
-        
-        glTranslatef(0.0, 160.0, 0.0)
-        glScalef(480.0, 160.0, 1.0)
-        
-        // Set up some GL state for our oscilloscope lines
-        glEnableClientState(GL_VERTEX_ARRAY.ui)
-        glDisable(GL_TEXTURE_2D.ui)
-        glDisableClientState(GL_TEXTURE_COORD_ARRAY.ui)
-        glDisableClientState(GL_COLOR_ARRAY.ui)
-        glDisable(GL_LINE_SMOOTH.ui)
-        glLineWidth(2.0)
-
-        // Draw a line for cross-correlation coefficients
-        var coefficientLine_ptr: UnsafeMutablePointer<GLfloat>
-        let max = GLfloat(kMaxCoefficients)
-        var filterCoefficients_ptr: UnsafeMutablePointer<Float32>
-        
-        coefficientLine_ptr = coefficientLine
-        filterCoefficients_ptr = filterCoefficients!
-        
-        // Fill our vertex array with points
-        var i: GLfloat = 0.0
-
-        //coefficientLine: Float, [x1 y1 x2 y2 ... xMax yMax]
-        while i < max {
-            // x
-            coefficientLine_ptr.pointee = 1 - i / max
-            coefficientLine_ptr += 1
-            // y
-            coefficientLine_ptr.pointee = Float32(filterCoefficients_ptr.pointee)
-            coefficientLine_ptr += 1
-            filterCoefficients_ptr += 1
-            i += 1.0
-        }
-        
-        glColor4f(1.0, 1.0, 0.0, 1.0)
-        
-        //let test: [Float32] = [0, 0, 0, -1, 1, -1, 1, 1, 0, 1, 0, 0]
-        
-        // Set up vertex pointer,
-        glVertexPointer(2, GL_FLOAT.ui, 0, coefficientLine)
-        
-        coefficientLine_ptr = coefficientLine
-        
-        // and draw the line.
-        glDrawArrays(GL_LINE_STRIP.ui, 0, Int32(kMaxCoefficients))
-        
-        glPopMatrix()
-
-        glFlush()
-        
-        if bufferManager.xcorr_coeff > 0.2 {
-            labelDetectionResult.text = String("Cough")
-        } else {
-            labelDetectionResult.text = "-"
-        }
-        /*
-        print("0: \(coefficientLine![0])")
-        print("1: \(coefficientLine![1])")
-        print("2: \(coefficientLine![2])")
-        print("3: \(coefficientLine![3])")
-        print("4: \(coefficientLine![4])")
-         */
-    }
-    
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        // If we're if waveform mode and not currently in a pinch event, and we've got two touches, start a pinch event
-        if
-            let eventTouches = event!.allTouches,
-            pinchEvent == nil && eventTouches.count == 2 && displayMode == .oscilloscopeWaveform
-        {
-            pinchEvent = event
-            let t = Array(eventTouches)
-            lastPinchDist = fabs(t[0].location(in: self).x - t[1].location(in: self).x)
-            
-            let hwSampleRate = audioController.sessionSampleRate
-            let bufferManager = audioController.bufferManagerInstance
-            labelDetectionResult.text = String(format: "%td ms", bufferManager.currentDrawBufferLength / Int(hwSampleRate / 1000.0))
-            self.addSubview(DetectionResultOverlay)
-        }
-    }
-    
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        // If we are in a pinch event...
-        if
-            let eventTouches = event!.allTouches,
-            event == pinchEvent && eventTouches.count == 2
-        {
-            var thisPinchDist: CGFloat
-            var pinchDiff: CGFloat
-            let t = Array(eventTouches)
-            thisPinchDist = fabs(t[0].location(in: self).x - t[1].location(in: self).x)
-            
-            // Find out how far we traveled since the last event
-            pinchDiff = thisPinchDist - lastPinchDist
-            // Adjust our draw buffer length accordingly,
-            let bufferManager = audioController.bufferManagerInstance
-            var drawBufferLen = bufferManager.currentDrawBufferLength
-            drawBufferLen -= 12 * Int(pinchDiff)
-            drawBufferLen = CLAMP(kMinDrawSamples, drawBufferLen, kMaxDrawSamples)
-            bufferManager.currentDrawBufferLength = drawBufferLen
-            
-            // and display the size of our oscilloscope window in our overlay view
-            let hwSampleRate = audioController.sessionSampleRate
-            labelDetectionResult.text = String(format: "%td ms", drawBufferLen / Int(hwSampleRate / 1000.0))
-            
-            lastPinchDist = thisPinchDist
-        }
-    }
- 
     
     private class func createRoundedRectPath(_ RECT: CGRect, _ _cornerRadius: CGFloat) -> CGPath {
         let path = CGMutablePath()
@@ -989,19 +628,6 @@ class EAGLView: UIView {
         let ret = path.copy()
         return ret!
     }
-    
-    
-    private func cycleOscilloscopeLines() {
-        let bufferManager = audioController.bufferManagerInstance
-        
-        // Cycle the lines in our draw buffer so that they age and fade. The oldest line is discarded.
-        let drawBuffers = bufferManager.drawBuffers
-        for drawBuffer_i in stride(from: (kNumDrawBuffers - 2), through: 0, by: -1) {
-//        for var drawBuffer_i = kNumDrawBuffers - 2; drawBuffer_i >= 0; drawBuffer_i -= 1 {
-            memmove(drawBuffers[drawBuffer_i + 1], drawBuffers[drawBuffer_i], size_t(bufferManager.currentDrawBufferLength))
-        }
-    }
-    
     
     private func createGLTexture(_ texName: inout GLuint, fromCGImage img: CGImage) {
         var texW: size_t, texH: size_t
@@ -1047,56 +673,6 @@ class EAGLView: UIView {
         
         spriteData.deallocate()
     }
-    
-    
-    override func touchesEnded(_ touches:Set<UITouch>, with event: UIEvent?) {
-        let bufferManager = audioController.bufferManagerInstance
-        if event == pinchEvent {
-            // If our pinch/zoom has ended, nil out the pinchEvent and remove the overlay view
-            DetectionResultOverlay.removeFromSuperview()
-            pinchEvent = nil
-            return
-        }
-        
-        /*
-        // any tap in sonogram view will exit back to the waveform
-        if displayMode == .spectrum {
-            audioController.playButtonPressedSound()
-            sampleSizeOverlay.removeFromSuperview()
-            displayMode = .oscilloscopeWaveform
-            bufferManager.displayMode = displayMode
-            return
-        }
-         */
-        
-        // xy coord. offset for various devices
-        let offsetY = (self.bounds.size.height - 480) / 2
-        let offsetX = (self.bounds.size.width - 320) / 2
-        
-        let touch = touches.first!
-        if CGRect(x: offsetX, y: 15.0, width: 52.0, height: 99.0).contains(touch.location(in: self)) { // The Sonogram button was touched
-            /*
-            audioController.playButtonPressedSound()
-            if displayMode == .oscilloscopeWaveform || displayMode == .oscilloscopeFFT {
-                if !initted_spectrum { self.setupViewForSpectrum() }
-                self.clearTextures()
-                displayMode = .spectrum
-                bufferManager.displayMode = displayMode
-            }
-             */
-        } else if CGRect(x: offsetX, y: offsetY + 105.0, width: 52.0, height: 99.0).contains(touch.location(in: self)) { // The Mute button was touched
-            audioController.playButtonPressedSound()
-            audioController.muteAudio = !audioController.muteAudio
-            return
-        } else if CGRect(x: offsetX, y: offsetY + 210, width: 52.0, height: 99.0).contains(touch.location(in: self)) { // The FFT button was touched
-            audioController.playButtonPressedSound()
-            displayMode = (displayMode == .oscilloscopeWaveform) ? .oscilloscopeFFT :
-                .oscilloscopeWaveform
-            bufferManager.displayMode = displayMode
-            return
-        }
-    }
- 
  
     // Stop animating and release resources when they are no longer needed.
     deinit {
@@ -1105,9 +681,7 @@ class EAGLView: UIView {
         if EAGLContext.current() === context {
             EAGLContext.setCurrent(nil)
         }
-        
-        oscilLine?.deallocate()
-        //###
+
         l_fftData?.deallocate()
         texBitBuffer.deallocate()
         var texPtr = firstTex

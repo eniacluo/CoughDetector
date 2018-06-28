@@ -196,14 +196,3 @@ public func deleteAllFiles()
         
     }
 }
-
-public func testHTK()
-{
-     let str: UnsafeMutablePointer<Int8> = UnsafeMutablePointer.allocate(capacity: 2)
-     str[0] = Int8(65)
-     str[1] = Int8(0)
-     let argv: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?> = UnsafeMutablePointer.allocate(capacity: 1)
-     argv[0] = str
-     HCopy(1, argv)
-     HVite(1, argv)
-}
