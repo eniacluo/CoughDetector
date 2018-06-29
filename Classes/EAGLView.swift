@@ -118,94 +118,11 @@ class EAGLView: UIView {
         l_fftData = UnsafeMutablePointer.allocate(capacity: audioController.bufferManagerInstance.FFTOutputBufferLength)
         bzero(l_fftData, size_t(audioController.bufferManagerInstance.FFTOutputBufferLength * MemoryLayout<Float32>.size))
         
-        animationInterval = 1.0 / 60.0
-        
-        self.setupView()
+        self.setupGLView()
         self.drawView()
         
-        // Set up our overlay view that pops up when we are pinching/zooming the oscilloscope
-        var img_ui: UIImage? = nil
-        // Draw the rounded rect for the bg path using this convenience function
-        let bgPath = EAGLView.createRoundedRectPath(CGRect(x: 0, y: 0, width: 110, height: 234), 15.0)
-        
-        let cs = CGColorSpaceCreateDeviceRGB()
-        // Create the bitmap context into which we will draw
-        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedFirst.rawValue)
-        let cxt = CGContext(data: nil, width: 110, height: 234, bitsPerComponent: 8, bytesPerRow: 4*110, space: cs, bitmapInfo: bitmapInfo.rawValue)
-        cxt?.setFillColorSpace(cs)
-        let fillClr: [CGFloat] = [0.0, 0.0, 0.0, 0.7]
-        cxt?.setFillColor(fillClr)
-        // Add the rounded rect to the context...
-        cxt?.addPath(bgPath)
-        // ... and fill it.
-        cxt?.fillPath()
-        
-        // Make a CGImage out of the context
-        let img_cg = cxt?.makeImage()
-        // Make a UIImage out of the CGImage
-        img_ui = UIImage(cgImage: img_cg!)
-        
-        // Create the image view to hold the background rounded rect which we just drew
-        DetectionResultOverlay = UIImageView(image: img_ui)
-        DetectionResultOverlay.frame = CGRect(x: 25, y: 150, width: 300, height: 50)
-        
-        // Create the text view which shows the size of our oscilloscope window as we pinch/zoom
-        labelDetectionResult = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 100))
-        labelDetectionResult.textAlignment = NSTextAlignment.center
-        labelDetectionResult.textColor = UIColor.white
-        labelDetectionResult.text = ""
-        labelDetectionResult.font = UIFont.boldSystemFont(ofSize: 36.0)
-        // Rotate the text view since we want the text to draw top to bottom (when the device is oriented vertically)
-        labelDetectionResult.backgroundColor = UIColor.clear
-        
-        // Add the text view as a subview of the overlay BG
-        DetectionResultOverlay.addSubview(labelDetectionResult)
-        
-        buttonStart.frame = CGRect(x: 25, y: 25, width: 150, height:  40)
-        buttonStart.setTitle("Start", for: UIControlState.normal)
-        buttonStart.backgroundColor = UIColor.white
-        buttonStart.addTarget(self, action: #selector(buttonStartPressed), for: .touchUpInside)
-        addSubview(buttonStart)
-        
-        buttonStop.frame = CGRect(x: 200, y: 25, width: 150, height: 40)
-        buttonStop.setTitle("Stop", for: UIControlState.normal)
-        buttonStop.backgroundColor = UIColor.white
-        buttonStop.addTarget(self, action: #selector(buttonStopPressed), for: .touchUpInside)
-        buttonStop.isEnabled = false
-        addSubview(buttonStop)
-        
-        buttonRecord.frame = CGRect(x: 25, y: 90, width: 150, height:  40)
-        buttonRecord.setTitle("Record", for: UIControlState.normal)
-        buttonRecord.backgroundColor = UIColor.white
-        buttonRecord.addTarget(self, action: #selector(buttonRecordPressed), for: .touchUpInside)
-        buttonRecord.isHidden = true;
-        addSubview(buttonRecord)
-        
-        buttonPause.frame = CGRect(x: 200, y: 90, width: 150, height: 40)
-        buttonPause.setTitle("Pause", for: UIControlState.normal)
-        buttonPause.backgroundColor = UIColor.white
-        buttonPause.addTarget(self, action: #selector(buttonPausePressed), for: .touchUpInside)
-        buttonPause.isEnabled = false
-        buttonPause.isHidden = true;
-        addSubview(buttonPause)
-        
-        // Create the text view which shows the size of our oscilloscope window as we pinch/zoom
-        labelEvent = UILabel(frame: CGRect(x: 25, y: 200, width: 300, height: 150))
-        labelEvent.textAlignment = NSTextAlignment.left
-        labelEvent.textColor = UIColor.white
-        labelEvent.text = ""
-        labelEvent.font = UIFont.boldSystemFont(ofSize: 12.0)
-        // Rotate the text view since we want the text to draw top to bottom (when the device is oriented vertically)
-        //labelEvent.transform = CGAffineTransform(rotationAngle: .pi/2)
-        labelEvent.backgroundColor = UIColor.clear
-        labelEvent.numberOfLines = 0 // Unlimited lines
-        //labelEvent.sizeToFit()
-        addSubview(labelEvent)
-        
-        // Text view was retained by the above line, so we can release it now
-        
-        // We don't add sampleSizeOverlay to our main view yet. We just hang on to it for now, and add it when we
-        // need to display it, i.e. when a user starts a pinch/zoom.
+        self.setupUIViews()
+
         // Set up the view to refresh at 20 hz
         self.setAnimationInterval(1.0/20.0)
         self.startAnimation()
@@ -243,13 +160,6 @@ class EAGLView: UIView {
     
     @objc func buttonRecordPressed()
     {
-        /*
-        let dataManageView = Bundle.main.loadNibNamed("DataManageView", owner: nil, options: nil)?.first as? UIView
-        let dataManageViewController = UIViewController()
-        dataManageViewController.view = dataManageView!
-        
-        self.navigationController?.pushViewController(dataManageViewController , animated: true)
-        */
         buttonRecord.isEnabled = false
         buttonPause.isEnabled = true
         let bufferManager = audioController.bufferManagerInstance
@@ -337,8 +247,89 @@ class EAGLView: UIView {
         }
     }
     
+    private func setupUIViews()
+    {
+        // Set up our overlay view that pops up when we are pinching/zooming the oscilloscope
+        var img_ui: UIImage? = nil
+        // Draw the rounded rect for the bg path using this convenience function
+        let bgPath = EAGLView.createRoundedRectPath(CGRect(x: 0, y: 0, width: 110, height: 234), 15.0)
+        
+        let cs = CGColorSpaceCreateDeviceRGB()
+        // Create the bitmap context into which we will draw
+        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedFirst.rawValue)
+        let cxt = CGContext(data: nil, width: 110, height: 234, bitsPerComponent: 8, bytesPerRow: 4*110, space: cs, bitmapInfo: bitmapInfo.rawValue)
+        cxt?.setFillColorSpace(cs)
+        let fillClr: [CGFloat] = [0.0, 0.0, 0.0, 0.7]
+        cxt?.setFillColor(fillClr)
+        // Add the rounded rect to the context...
+        cxt?.addPath(bgPath)
+        // ... and fill it.
+        cxt?.fillPath()
+        
+        // Make a CGImage out of the context
+        let img_cg = cxt?.makeImage()
+        // Make a UIImage out of the CGImage
+        img_ui = UIImage(cgImage: img_cg!)
+        
+        // Create the image view to hold the background rounded rect which we just drew
+        DetectionResultOverlay = UIImageView(image: img_ui)
+        DetectionResultOverlay.frame = CGRect(x: 25, y: 150, width: 300, height: 50)
+        
+        // Create the text view which shows the size of our oscilloscope window as we pinch/zoom
+        labelDetectionResult = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 100))
+        labelDetectionResult.textAlignment = NSTextAlignment.center
+        labelDetectionResult.textColor = UIColor.white
+        labelDetectionResult.text = ""
+        labelDetectionResult.font = UIFont.boldSystemFont(ofSize: 36.0)
+        // Rotate the text view since we want the text to draw top to bottom (when the device is oriented vertically)
+        labelDetectionResult.backgroundColor = UIColor.clear
+        
+        // Add the text view as a subview of the overlay BG
+        DetectionResultOverlay.addSubview(labelDetectionResult)
+        
+        buttonStart.frame = CGRect(x: 25, y: 25, width: 150, height:  40)
+        buttonStart.setTitle("Start", for: UIControlState.normal)
+        buttonStart.backgroundColor = UIColor.white
+        buttonStart.addTarget(self, action: #selector(buttonStartPressed), for: .touchUpInside)
+        addSubview(buttonStart)
+        
+        buttonStop.frame = CGRect(x: 200, y: 25, width: 150, height: 40)
+        buttonStop.setTitle("Stop", for: UIControlState.normal)
+        buttonStop.backgroundColor = UIColor.white
+        buttonStop.addTarget(self, action: #selector(buttonStopPressed), for: .touchUpInside)
+        buttonStop.isEnabled = false
+        addSubview(buttonStop)
+        
+        buttonRecord.frame = CGRect(x: 25, y: 90, width: 150, height:  40)
+        buttonRecord.setTitle("Record", for: UIControlState.normal)
+        buttonRecord.backgroundColor = UIColor.white
+        buttonRecord.addTarget(self, action: #selector(buttonRecordPressed), for: .touchUpInside)
+        buttonRecord.isHidden = true;
+        addSubview(buttonRecord)
+        
+        buttonPause.frame = CGRect(x: 200, y: 90, width: 150, height: 40)
+        buttonPause.setTitle("Pause", for: UIControlState.normal)
+        buttonPause.backgroundColor = UIColor.white
+        buttonPause.addTarget(self, action: #selector(buttonPausePressed), for: .touchUpInside)
+        buttonPause.isEnabled = false
+        buttonPause.isHidden = true;
+        addSubview(buttonPause)
+        
+        // Create the text view which shows the size of our oscilloscope window as we pinch/zoom
+        labelEvent = UILabel(frame: CGRect(x: 25, y: 200, width: 300, height: 150))
+        labelEvent.textAlignment = NSTextAlignment.left
+        labelEvent.textColor = UIColor.white
+        labelEvent.text = ""
+        labelEvent.font = UIFont.boldSystemFont(ofSize: 12.0)
+        // Rotate the text view since we want the text to draw top to bottom (when the device is oriented vertically)
+        //labelEvent.transform = CGAffineTransform(rotationAngle: .pi/2)
+        labelEvent.backgroundColor = UIColor.clear
+        labelEvent.numberOfLines = 0 // Unlimited lines
+        //labelEvent.sizeToFit()
+        addSubview(labelEvent)
+    }
     
-    private func setupView() {
+    private func setupGLView() {
         // Sets up matrices and transforms for OpenGL ES
         glViewport(0, 0, backingWidth, backingHeight)
         glMatrixMode(GL_PROJECTION.ui)

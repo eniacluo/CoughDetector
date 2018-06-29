@@ -41,7 +41,6 @@ class BufferManager {
     //for sending data to database
     private var sendingBuffer: UnsafeMutablePointer<Float32>?
     var isSendingRealtimeData:Bool = false;
-    var sendingCount = 0;
     
     //for HMM Buffer
     private(set) var frameBuffers: UnsafeMutablePointer<UnsafeMutablePointer<Float32>?>
@@ -111,7 +110,6 @@ class BufferManager {
         if isSendingRealtimeData == true {
             sendingBuffer = UnsafeMutablePointer.allocate(capacity: inNumFrames)
             memcpy(sendingBuffer, inData, size_t(inNumFrames * MemoryLayout<Float32>.size))
-            sendingCount += 1
             WebService.sharedInstance.sendData(data: sendingBuffer, length: inNumFrames)
             sendingBuffer?.deallocate()
         }
@@ -119,31 +117,11 @@ class BufferManager {
     }
     
     func sendRealtimeData() {
-        //isSendingRealtimeData = true
-        //sendingCount = 0
-        /*
-        if sendingCount == 0 {
-            //writeFile(str: "", filename: "")
-            writeAudioFile(pcmBuffer: filterBuffer, frameCount: kDefaultFilterSamples, filename: "record.wav")
-            sendingCount += 1
-            return
-        }
-        if sendingCount == 1 {
-            playAudioFile(filename: "record.wav")
-            sendingCount = 0
-        }
-         */
-        
+        isSendingRealtimeData = true
     }
     
     func stopSendingRealtimeData() {
         isSendingRealtimeData = false
-        //listFiles()
-        
-        
-        
-        //deleteAllFiles()
-        //getFileSize(filename: "record.mfc")
     }
     
     func copyAudioDataToFrameBuffer(_ inData: UnsafePointer<Float32>?, inNumFrames: Int) {
