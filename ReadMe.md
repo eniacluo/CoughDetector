@@ -2,7 +2,7 @@
 
 ===========================================================================
 
-DESCRIPTION:
+## DESCRIPTION:
 
 Cough Detector is a real-time cough detection app through microphone. The algorithm is based upon paper Detection of cough signals in continuous audio recordings using hidden Markov models (https://ieeexplore.ieee.org/iel5/10/34273/01634502.pdf) published in 2006 which used MFCC and HMM to give cough event detection results. The data collection part is directly using the open source audio processing project aurioTouch (https://developer.apple.com/library/archive/samplecode/aurioTouch/Introduction/Intro.html) developed by Apple Inc. and translated from C++ to swift by OOPer in cooperation with shlab.jp, on 2015/2/1. Feature extraction and classification algorithms are both implemented by HTK (Hidden markov model ToolKit) developed by Cambridge University. (http://htk.eng.cam.ac.uk/) The corresponding modules for obatining MFCC vectors and classification results are HCopy and HVite, respectively. The original C code is modified in order to be compiled together with the swift code. Memory leakage and unlimited file opening problems are also solved. Unrelated code is removed especially for displaying a real-time sound save and FFT results. Also, this app provides a button to record your cough data and automatically sent to a remote server for further training. All DSP computations are optimized by calling the GPU-accelerating functions in module vDSP of Accelerate developed by Apple. (https://developer.apple.com/documentation/accelerate/vdsp) 
 
@@ -10,7 +10,7 @@ In general, this app is an indicator showing a sign on the screen when someone n
 
 ===========================================================================
 
-PACKAGING LIST IN CLASSES:
+## PACKAGING LIST IN CLASSES:
 
 EAGLView.swift
 AudioController.swift
@@ -29,6 +29,12 @@ The class for sending sound wave data to local or remote server for visualizing 
 FileStringTool.swift
 
 A tool class for converting absolute path, file name and glue code for using HTK library.xs
+
+===========================================================================
+
+## Compiling Instructions
+
+Download project and open CoughDetector.xcodeproj by Xcode. Follow instructions to update if your building version or xcode version is lower than ios 11 and xcode 9.4.
 
 ================================================================================
 
@@ -53,7 +59,7 @@ You should not contact to Apple or SHLab(jp) about any faults caused by my trans
 
 ===========================================================================
 
-BUILD REQUIREMENTS:
+##BUILD REQUIREMENTS:
 
 Xcode 9.3
 
@@ -68,7 +74,7 @@ See license terms in each file.
 
 ===========================================================================
 
-DESCRIPTION:
+## DESCRIPTION:
 
 aurioTouch demonstrates use of the remote i/o audio unit for handling audio input and output. The application can display the input audio in one of the forms, a regular time domain waveform, a frequency domain waveform (computed by performing a fast fourier transform on the incoming signal), and a sonogram view (a view displaying the frequency content of a signal over time, with the color signaling relative power, the y axis being frequency and the x as time). Tap the sonogram button to switch to a sonogram view, tap anywhere on the screen to return to the oscilloscope. Tap the FFT button to perform and display the input data after an FFT transform. Pinch in the oscilloscope view to expand and contract the scale for the x axis.
 
@@ -86,25 +92,21 @@ This application shows how to:
 
 ===========================================================================
 
-RELATED INFORMATION:
-
-===========================================================================
-
-BUILD REQUIREMENTS:
+## BUILD REQUIREMENTS:
 
 Xcode 7.3.1 or later, iOS SDK 9.0 or later
 
 
 ===========================================================================
 
-RUNTIME REQUIREMENTS:
+## RUNTIME REQUIREMENTS:
 
 iPhone: iOS 9.0
 
 
 ===========================================================================
 
-PACKAGING LIST:
+## PACKAGING LIST:
 
 EAGLView.h
 EAGLView.m
