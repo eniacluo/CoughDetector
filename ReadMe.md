@@ -1,4 +1,65 @@
-aurioTouch
+# Cough Detector 
+
+===========================================================================
+DESCRIPTION:
+
+Cough Detector is a real-time cough detection app through microphone. The algorithm is based upon paper Detection of cough signals in continuous audio recordings using hidden Markov models (https://ieeexplore.ieee.org/iel5/10/34273/01634502.pdf) published in 2006 which used MFCC and HMM to give cough event detection results. The data collection part is directly using the open source audio processing project aurioTouch (https://developer.apple.com/library/archive/samplecode/aurioTouch/Introduction/Intro.html) developed by Apple Inc. and translated from C++ to swift by OOPer in cooperation with shlab.jp, on 2015/2/1. Feature extraction and classification algorithms are both implemented by HTK (Hidden markov model ToolKit) developed by Cambridge University. (http://htk.eng.cam.ac.uk/) The corresponding modules for obatining MFCC vectors and classification results are HCopy and HVite, respectively. The original C code is modified in order to be compiled together with the swift code. Memory leakage and unlimited file opening problems are also solved. Unrelated code is removed especially for displaying a real-time sound save and FFT results. Also, this app provides a button to record your cough data and automatically sent to a remote server for further training. All DSP computations are optimized by calling the GPU-accelerating functions in module vDSP of Accelerate developed by Apple. (https://developer.apple.com/documentation/accelerate/vdsp) 
+
+In general, this app is an indicator showing a sign on the screen when someone nearby coughs. It also shows the happening times of last five coughs.
+
+===========================================================================
+PACKAGING LIST IN CLASSES:
+
+EAGLView.swift
+AudioController.swift
+aurioTouchAppDelegate.swift
+BufferManager.swift
+DCRejectionFilter.swift
+
+Above files are performing same functions as those in original version do. Please see below for details.
+
+DSPHelper.swift -> renamed from FFTHelper.swift
+
+WebService.swift
+
+The class for sending sound wave data to local or remote server for visualizing or storage.
+
+FileStringTool.swift
+
+A tool class for converting absolute path, file name and glue code for using HTK library.xs
+
+================================================================================
+Developed by Simon Luo in Sensorweb Lab, Center of Cyber Physical Systems in University of Georgia. All rights reserved.
+
+
+
+**ABOVE IS THE OLD VERSION README FILE OF ORIGINAL PROJECT aurioTouch**
+
+
+# aurioTouch-swift
+
+Translated by OOPer in cooperation with shlab.jp, on 2015/2/1.
+
+Based on
+<https://developer.apple.com/library/content/samplecode/aurioTouch/Introduction/Intro.html#//apple_ref/doc/uid/DTS40007770>
+2016-08-12.
+
+As this is a line-by-line translation from the original sample code, "redistribute the Apple Software in its entirety and without modifications" would apply. See license terms in each file.
+Some faults caused by my translation may exist. Not all features tested.
+You should not contact to Apple or SHLab(jp) about any faults caused by my translation.
+
+===========================================================================
+BUILD REQUIREMENTS:
+
+Xcode 9.3
+
+===========================================================================
+Files under PublicUtility are not fully translated. Their license terms are kept there just to indicate the original files.
+Some utility files are used to make line-by-line translation easier. They have another license terms.
+See license terms in each file.
+
+
+# aurioTouch
 
 ===========================================================================
 DESCRIPTION:
