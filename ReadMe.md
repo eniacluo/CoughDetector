@@ -34,7 +34,17 @@ A tool class for converting absolute path, file name and glue code for using HTK
 
 ## Compiling Instructions
 
-Download project and open CoughDetector.xcodeproj by Xcode. Follow instructions to update if your building version or xcode version is lower than ios 11 and xcode 9.4.
+Download project and switch to develop branch. 
+
+	git clone https://github.com/eniacluo/CoughDetector.git
+	cd CoughDetector
+	git checkout develop
+
+Open CoughDetector.xcodeproj by Xcode.
+
+Connect your iPhone and Run the app on your iPhone.
+
+Follow instructions to update if your building version or xcode version is lower than ios 11 and xcode 9.4.
 
 ================================================================================
 
