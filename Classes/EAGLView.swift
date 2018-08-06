@@ -85,6 +85,7 @@ class EAGLView: UIView {
     private var buttonStop: UIButton = UIButton(type: UIButtonType.roundedRect)
     private var buttonRecord: UIButton = UIButton(type: UIButtonType.roundedRect)
     private var buttonPause: UIButton = UIButton(type: UIButtonType.roundedRect)
+    private var textField: UITextField = UITextField()
     private var labelEvent: UILabel!
     
     // You must implement this
@@ -133,11 +134,12 @@ class EAGLView: UIView {
     {
         let bufferManager = audioController.bufferManagerInstance
         if !bufferManager.isStartSession {
-            bufferManager.isStartSession = true;
-            buttonStart.isEnabled = false;
-            buttonStop.isEnabled = true;
-            buttonRecord.isHidden = false;
-            buttonPause.isHidden = false;
+            bufferManager.isStartSession = true
+            buttonStart.isEnabled = false
+            buttonStop.isEnabled = true
+            buttonRecord.isHidden = false
+            buttonPause.isHidden = false
+            textField.isHidden = false
             audioController.playButtonPressedSound()
             self.setupViewForSpectrum()
             self.clearTextures()
@@ -148,11 +150,12 @@ class EAGLView: UIView {
     {
         let bufferManager = audioController.bufferManagerInstance
         if bufferManager.isStartSession {
-            bufferManager.isStartSession = false;
-            buttonStart.isEnabled = true;
-            buttonStop.isEnabled = false;
-            buttonRecord.isHidden = true;
-            buttonPause.isHidden = true;
+            bufferManager.isStartSession = false
+            buttonStart.isEnabled = true
+            buttonStop.isEnabled = false
+            buttonRecord.isHidden = true
+            buttonPause.isHidden = true
+            textField.isHidden = true
             audioController.playButtonPressedSound()
             DetectionResultOverlay.removeFromSuperview()
         }
@@ -164,6 +167,8 @@ class EAGLView: UIView {
         buttonPause.isEnabled = true
         let bufferManager = audioController.bufferManagerInstance
         bufferManager.sendRealtimeData()
+        WebService.sharedInstance.isStartRecording = true
+        WebService.sharedInstance.initMySQLConnection()
     }
     
     @objc func buttonPausePressed()
@@ -172,6 +177,13 @@ class EAGLView: UIView {
         buttonRecord.isEnabled = true
         let bufferManager = audioController.bufferManagerInstance
         bufferManager.stopSendingRealtimeData()
+        WebService.sharedInstance.isStartRecording = false
+        WebService.sharedInstance.closeMySQLConnection()
+    }
+    
+    @objc func userDidChanged()
+    {
+        WebService.sharedInstance.setUsername(name: textField.text!)
     }
     
     override func layoutSubviews() {
@@ -304,7 +316,7 @@ class EAGLView: UIView {
         buttonRecord.setTitle("Record", for: UIControlState.normal)
         buttonRecord.backgroundColor = UIColor.white
         buttonRecord.addTarget(self, action: #selector(buttonRecordPressed), for: .touchUpInside)
-        buttonRecord.isHidden = true;
+        buttonRecord.isHidden = true
         addSubview(buttonRecord)
         
         buttonPause.frame = CGRect(x: 200, y: 90, width: 150, height: 40)
@@ -312,8 +324,16 @@ class EAGLView: UIView {
         buttonPause.backgroundColor = UIColor.white
         buttonPause.addTarget(self, action: #selector(buttonPausePressed), for: .touchUpInside)
         buttonPause.isEnabled = false
-        buttonPause.isHidden = true;
+        buttonPause.isHidden = true
         addSubview(buttonPause)
+        
+        textField.frame = CGRect(x: 25, y: 150, width: 150, height: 40)
+        textField.text = "User";
+        textField.textColor = UIColor.white
+        textField.borderStyle = .bezel
+        textField.isHidden = true
+        textField.addTarget(self, action: #selector(userDidChanged), for: .editingChanged)
+        addSubview(textField)
         
         // Create the text view which shows the size of our oscilloscope window as we pinch/zoom
         labelEvent = UILabel(frame: CGRect(x: 25, y: 200, width: 300, height: 150))

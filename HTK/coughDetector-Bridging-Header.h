@@ -4,3 +4,5 @@
 
 #include "HCopy.h"
 #include "HVite.h"
+
+#import <CommonCrypto/CommonCrypto.h>

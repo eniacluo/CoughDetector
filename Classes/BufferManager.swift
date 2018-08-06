@@ -110,14 +110,15 @@ class BufferManager {
         if isSendingRealtimeData == true {
             sendingBuffer = UnsafeMutablePointer.allocate(capacity: inNumFrames)
             memcpy(sendingBuffer, inData, size_t(inNumFrames * MemoryLayout<Float32>.size))
-            WebService.sharedInstance.sendData(data: sendingBuffer, length: inNumFrames)
+            WebService.sharedInstance.sendRealtimeData(data: sendingBuffer, length: inNumFrames)
             sendingBuffer?.deallocate()
         }
         
     }
     
     func sendRealtimeData() {
-        isSendingRealtimeData = true
+        //isSendingRealtimeData = true
+        WebService.sharedInstance.uploadCoughEvent()
     }
     
     func stopSendingRealtimeData() {
@@ -173,6 +174,9 @@ class BufferManager {
                                 }
                             }
                             eventCount += 1
+                            if WebService.sharedInstance.isStartRecording {
+                                WebService.sharedInstance.uploadCoughEvent()
+                            }
                         }
                     }
                     MFCCBuffers?.deallocate()

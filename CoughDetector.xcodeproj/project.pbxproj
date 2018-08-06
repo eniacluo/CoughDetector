@@ -63,11 +63,36 @@
 		F0DC453920C4F411003AFE70 /* hcopy.conf in Resources */ = {isa = PBXBuildFile; fileRef = F0DC453220C4F411003AFE70 /* hcopy.conf */; };
 		F0DC453A20C4F411003AFE70 /* gram.txt in Resources */ = {isa = PBXBuildFile; fileRef = F0DC453320C4F411003AFE70 /* gram.txt */; };
 		F0DC453E20C59372003AFE70 /* hvite.conf in Resources */ = {isa = PBXBuildFile; fileRef = F0DC453D20C59372003AFE70 /* hvite.conf */; };
+		F0F962872118738A002877C9 /* OHMySQL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0F962862118738A002877C9 /* OHMySQL.framework */; };
+		F0F962A0211892BB002877C9 /* FileUploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F96297211892BA002877C9 /* FileUploadOperation.swift */; };
+		F0F962A1211892BB002877C9 /* FileDownloadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F96298211892BA002877C9 /* FileDownloadOperation.swift */; };
+		F0F962A2211892BB002877C9 /* ReadStreamOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F96299211892BA002877C9 /* ReadStreamOperation.swift */; };
+		F0F962A3211892BB002877C9 /* DirectoryCreationOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F9629A211892BA002877C9 /* DirectoryCreationOperation.swift */; };
+		F0F962A4211892BB002877C9 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F9629B211892BA002877C9 /* Operation.swift */; };
+		F0F962A5211892BB002877C9 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F9629C211892BA002877C9 /* Session.swift */; };
+		F0F962A6211892BB002877C9 /* StreamOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F9629D211892BA002877C9 /* StreamOperation.swift */; };
+		F0F962A7211892BB002877C9 /* ResourceListOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F9629E211892BA002877C9 /* ResourceListOperation.swift */; };
+		F0F962A8211892BB002877C9 /* WriteStreamOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F9629F211892BB002877C9 /* WriteStreamOperation.swift */; };
 		F7DF06DE0DF4AD57005687F5 /* button_press.caf in Resources */ = {isa = PBXBuildFile; fileRef = F7DF06DC0DF4AD57005687F5 /* button_press.caf */; };
 		F7E58EDA0DCFD988006C4A2F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7E58ED90DCFD988006C4A2F /* AudioToolbox.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		F02B604D2117F18D002C297E /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		002D7AE7A9E1014F41290BCE /* Pods-CoughDetector.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoughDetector.release.xcconfig"; path = "Pods/Target Support Files/Pods-CoughDetector/Pods-CoughDetector.release.xcconfig"; sourceTree = "<group>"; };
+		0F6DA2E1033E6688853E6383 /* Pods-CoughDetector.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoughDetector.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CoughDetector/Pods-CoughDetector.debug.xcconfig"; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		1D6058910D05DD3D006BFB54 /* CoughDetector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoughDetector.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -76,6 +101,7 @@
 		2B869E111D51590F00995BDC /* ReadMe.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = ReadMe.md; sourceTree = "<group>"; };
 		2B86B2B118F35C2300347397 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainWindow.xib; sourceTree = SOURCE_ROOT; };
 		8250CD56145B602D00806437 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		89562625D37F61C7367499FB /* Pods_CoughDetector.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoughDetector.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Info.plist; sourceTree = "<group>"; };
 		A16C47110DE37F9E00F4A0B3 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		A16C473E0DE3801700F4A0B3 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -150,6 +176,16 @@
 		F0DC453220C4F411003AFE70 /* hcopy.conf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hcopy.conf; sourceTree = "<group>"; };
 		F0DC453320C4F411003AFE70 /* gram.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = gram.txt; sourceTree = "<group>"; };
 		F0DC453D20C59372003AFE70 /* hvite.conf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hvite.conf; sourceTree = "<group>"; };
+		F0F962862118738A002877C9 /* OHMySQL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = OHMySQL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F0F96297211892BA002877C9 /* FileUploadOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FileUploadOperation.swift; path = "../../rebekka-master/rebekka-source/Rebekka/FileUploadOperation.swift"; sourceTree = "<group>"; };
+		F0F96298211892BA002877C9 /* FileDownloadOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FileDownloadOperation.swift; path = "../../rebekka-master/rebekka-source/Rebekka/FileDownloadOperation.swift"; sourceTree = "<group>"; };
+		F0F96299211892BA002877C9 /* ReadStreamOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReadStreamOperation.swift; path = "../../rebekka-master/rebekka-source/Rebekka/ReadStreamOperation.swift"; sourceTree = "<group>"; };
+		F0F9629A211892BA002877C9 /* DirectoryCreationOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DirectoryCreationOperation.swift; path = "../../rebekka-master/rebekka-source/Rebekka/DirectoryCreationOperation.swift"; sourceTree = "<group>"; };
+		F0F9629B211892BA002877C9 /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Operation.swift; path = "../../rebekka-master/rebekka-source/Rebekka/Operation.swift"; sourceTree = "<group>"; };
+		F0F9629C211892BA002877C9 /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Session.swift; path = "../../rebekka-master/rebekka-source/Rebekka/Session.swift"; sourceTree = "<group>"; };
+		F0F9629D211892BA002877C9 /* StreamOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StreamOperation.swift; path = "../../rebekka-master/rebekka-source/Rebekka/StreamOperation.swift"; sourceTree = "<group>"; };
+		F0F9629E211892BA002877C9 /* ResourceListOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResourceListOperation.swift; path = "../../rebekka-master/rebekka-source/Rebekka/ResourceListOperation.swift"; sourceTree = "<group>"; };
+		F0F9629F211892BB002877C9 /* WriteStreamOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WriteStreamOperation.swift; path = "../../rebekka-master/rebekka-source/Rebekka/WriteStreamOperation.swift"; sourceTree = "<group>"; };
 		F7DF06DC0DF4AD57005687F5 /* button_press.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = button_press.caf; sourceTree = "<group>"; };
 		F7E58ED90DCFD988006C4A2F /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -159,6 +195,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F0F962872118738A002877C9 /* OHMySQL.framework in Frameworks */,
 				2B71304718EB80A800DA9374 /* AVFoundation.framework in Frameworks */,
 				8250CD57145B602D00806437 /* Accelerate.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
@@ -208,6 +245,7 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				E42A7C09FAC6CD8E7E184F7F /* Pods */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -215,6 +253,7 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				F0F96296211892A1002877C9 /* FTP */,
 				F74ADD0E0DDA24AA0046BEC2 /* PublicUtility */,
 				D78F4AE41D60BE7000012A69 /* OOPUtils */,
 			);
@@ -235,6 +274,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F0F962862118738A002877C9 /* OHMySQL.framework */,
 				2B71304618EB80A800DA9374 /* AVFoundation.framework */,
 				8250CD56145B602D00806437 /* Accelerate.framework */,
 				A16C473E0DE3801700F4A0B3 /* QuartzCore.framework */,
@@ -243,6 +283,7 @@
 				1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
+				89562625D37F61C7367499FB /* Pods_CoughDetector.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -254,6 +295,15 @@
 				D78F4AE71D60BE7000012A69 /* OOPExceptions.swift */,
 			);
 			path = OOPUtils;
+			sourceTree = "<group>";
+		};
+		E42A7C09FAC6CD8E7E184F7F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				0F6DA2E1033E6688853E6383 /* Pods-CoughDetector.debug.xcconfig */,
+				002D7AE7A9E1014F41290BCE /* Pods-CoughDetector.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 		F0B315B620C2F53A00AD394B /* HTK */ = {
@@ -325,6 +375,22 @@
 			path = htk;
 			sourceTree = "<group>";
 		};
+		F0F96296211892A1002877C9 /* FTP */ = {
+			isa = PBXGroup;
+			children = (
+				F0F9629A211892BA002877C9 /* DirectoryCreationOperation.swift */,
+				F0F96298211892BA002877C9 /* FileDownloadOperation.swift */,
+				F0F96297211892BA002877C9 /* FileUploadOperation.swift */,
+				F0F9629B211892BA002877C9 /* Operation.swift */,
+				F0F96299211892BA002877C9 /* ReadStreamOperation.swift */,
+				F0F9629E211892BA002877C9 /* ResourceListOperation.swift */,
+				F0F9629C211892BA002877C9 /* Session.swift */,
+				F0F9629D211892BA002877C9 /* StreamOperation.swift */,
+				F0F9629F211892BB002877C9 /* WriteStreamOperation.swift */,
+			);
+			path = FTP;
+			sourceTree = "<group>";
+		};
 		F74ADD0E0DDA24AA0046BEC2 /* PublicUtility */ = {
 			isa = PBXGroup;
 			children = (
@@ -351,9 +417,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "CoughDetector" */;
 			buildPhases = (
+				B8AA17FD00120331C9A7C1F0 /* [CP] Check Pods Manifest.lock */,
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
 				1D60588F0D05DD3D006BFB54 /* Frameworks */,
+				F02B604D2117F18D002C297E /* Embed Frameworks */,
+				45EBC7C3AC1C5CCD46049E04 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -370,7 +439,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 0940;
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
 						DevelopmentTeam = 8D96QHUAP6;
@@ -388,8 +457,10 @@
 				French,
 				German,
 				en,
+				Base,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -420,6 +491,45 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		45EBC7C3AC1C5CCD46049E04 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-CoughDetector/Pods-CoughDetector-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/OHMySQL/OHMySQL.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHMySQL.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CoughDetector/Pods-CoughDetector-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B8AA17FD00120331C9A7C1F0 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CoughDetector-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		1D60588E0D05DD3D006BFB54 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -432,6 +542,7 @@
 				D78F4AF11D60BEAF00012A69 /* CAStreamBasicDescription.swift in Sources */,
 				F0B3161A20C3200700AD394B /* HMath.c in Sources */,
 				F0B3161320C3200700AD394B /* HCopy.c in Sources */,
+				F0F962A8211892BB002877C9 /* WriteStreamOperation.swift in Sources */,
 				F0B3161B20C3200700AD394B /* HFB.c in Sources */,
 				F0B3160D20C3200700AD394B /* HAudio.c in Sources */,
 				F07CEEA220C3454100E5D064 /* FileStringTool.swift in Sources */,
@@ -440,6 +551,7 @@
 				F07CEE9F20C33FF500E5D064 /* HNet.c in Sources */,
 				D78F4AE91D60BE7000012A69 /* NumTypes+Conversion.swift in Sources */,
 				F0B3161220C3200700AD394B /* HSigP.c in Sources */,
+				F0F962A1211892BB002877C9 /* FileDownloadOperation.swift in Sources */,
 				D78F4AF21D60BEAF00012A69 /* CAXException.swift in Sources */,
 				F0B3161820C3200700AD394B /* HModel.c in Sources */,
 				F0B315DD20C2F93700AD394B /* esignal.c in Sources */,
@@ -453,13 +565,20 @@
 				D78F4AF81D60BF3300012A69 /* DSPHelper.swift in Sources */,
 				F0B3161720C3200700AD394B /* HShell.c in Sources */,
 				F0B315ED20C31FD200AD394B /* esig_edr.c in Sources */,
+				F0F962A7211892BB002877C9 /* ResourceListOperation.swift in Sources */,
 				F0B3160E20C3200700AD394B /* HWave.c in Sources */,
 				F0B3161520C3200700AD394B /* HLabel.c in Sources */,
+				F0F962A6211892BB002877C9 /* StreamOperation.swift in Sources */,
 				F0B3161020C3200700AD394B /* HVQ.c in Sources */,
 				F07CEE9E20C33FF500E5D064 /* HMap.c in Sources */,
 				D78F4AFF1D60C05500012A69 /* BufferManager.swift in Sources */,
 				D78F4AEF1D60BEAF00012A69 /* CABitOperations.swift in Sources */,
+				F0F962A2211892BB002877C9 /* ReadStreamOperation.swift in Sources */,
+				F0F962A4211892BB002877C9 /* Operation.swift in Sources */,
 				D79AEF1C1D60C37E00584688 /* DCRejectionFilter.swift in Sources */,
+				F0F962A0211892BB002877C9 /* FileUploadOperation.swift in Sources */,
+				F0F962A3211892BB002877C9 /* DirectoryCreationOperation.swift in Sources */,
+				F0F962A5211892BB002877C9 /* Session.swift in Sources */,
 				F0B3161620C3200700AD394B /* HParm.c in Sources */,
 				D78F4AF01D60BEAF00012A69 /* CADebugMacros.swift in Sources */,
 				F0B315E920C31F7D00AD394B /* esig_nat.c in Sources */,
@@ -483,9 +602,10 @@
 /* Begin XCBuildConfiguration section */
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0F6DA2E1033E6688853E6383 /* Pods-CoughDetector.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
@@ -501,12 +621,17 @@
 				GCC_PREFIX_HEADER = CoughDetector_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/OHMySQL/OHMySQL/lib/ios",
+					"$(PROJECT_DIR)/OHMySQL/OHMySQL/lib/mac",
+				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-D'ARCH=\"arm64\"'";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sensorweb.uga.coughdetection;
 				PRODUCT_NAME = CoughDetector;
-				SDKROOT = iphoneos11.3;
+				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "HTK/coughDetector-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
@@ -516,9 +641,10 @@
 		};
 		1D6058950D05DD3E006BFB54 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 002D7AE7A9E1014F41290BCE /* Pods-CoughDetector.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
@@ -532,11 +658,16 @@
 				GCC_PREFIX_HEADER = CoughDetector_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/OHMySQL/OHMySQL/lib/ios",
+					"$(PROJECT_DIR)/OHMySQL/OHMySQL/lib/mac",
+				);
 				OTHER_CFLAGS = "-D'ARCH=\"arm64\"'";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sensorweb.uga.coughdetection;
 				PRODUCT_NAME = CoughDetector;
-				SDKROOT = iphoneos11.3;
+				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "HTK/coughDetector-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
