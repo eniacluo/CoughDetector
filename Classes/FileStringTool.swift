@@ -70,10 +70,15 @@ public func getHMMResult(wavFilename: String)
 
 public func getFilePath(filename: String) -> String
 {
+    return getFileURL(filename: filename).path
+}
+
+public func getFileURL(filename: String) -> URL
+{
     let fileManager = FileManager.default
     let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
     let url = documentsURL.appendingPathComponent(filename)
-    return url.path
+    return url
 }
 
 public func playAudioFile(filename: String)

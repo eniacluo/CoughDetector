@@ -129,16 +129,25 @@ public class WebService{
     
     public func uploadRawSound()
     {
-        // upload file to FTP Server
-//        var configuration = SessionConfiguration()
-//        configuration.host = "35.196.184.211:21"
-//        configuration.username = "ftpuser"
-//        configuration.password = "sensorweb"
-//        configuration.encoding = String.Encoding.utf8
-//        let _session = Session(configuration: configuration)
-//        _session.list("/") {
-//            (resources, error) -> Void in
-//            print("List directory with result:\n\(resources), error: \(error)\n\n")
-//        }
+        //upload file to FTP Server
+        var configuration = SessionConfiguration()
+        configuration.host = "35.196.184.211:21"
+        configuration.username = "ftpuser"
+        configuration.password = "sensorweb"
+        configuration.encoding = String.Encoding.utf8
+        configuration.passive = false
+        let _session = Session(configuration: configuration)
+        /*
+        _session.list("/var/ftp") {
+            (resources, error) -> Void in
+            print("List directory with result:\n\(resources), error: \(error)\n\n")
+        }
+         */
+        let URL = getFileURL(filename: "record.wav")
+        let path = "/var/ftp/cough/record.wav"
+        _session.upload(URL, path: path) {
+            (result, error) -> Void in
+            print("Upload file with result:\n\(result), error: \(error)\n\n")
+        }
     }
 }

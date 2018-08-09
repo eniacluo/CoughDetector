@@ -176,6 +176,7 @@ class BufferManager {
                             eventCount += 1
                             if WebService.sharedInstance.isStartRecording {
                                 WebService.sharedInstance.uploadCoughEvent()
+                                WebService.sharedInstance.uploadRawSound()
                             }
                         }
                     }
