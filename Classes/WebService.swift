@@ -14,13 +14,15 @@ public class WebService{
     var user: String
     var queryContext: OHMySQLQueryContext?
     var globalCoordinator: OHMySQLStoreCoordinator?
+    var nextUploadSoundName: String
     // Flag of whether time consuming process starts
     public var isStartRecording = false
     
     init() {
         let configuration = URLSessionConfiguration.default
         session = URLSession(configuration: configuration)
-        user = "User"
+        user = UserDefaults.standard.string(forKey: "Username") ?? "User"
+        nextUploadSoundName = "record.wav"
     }
     
     public class var sharedInstance: WebService {
@@ -81,48 +83,30 @@ public class WebService{
         }
     }
     
-    public func initMySQLConnection()
-    {
-        let globalQueue = DispatchQueue.global()
-            
-        //use the global queue , run in asynchronous
-        globalQueue.async {
-            let user = OHMySQLUser(userName: "root", password: "sensorweb", serverName: "35.196.184.211", dbName: "cough_detection", port: 3306, socket: "/Applications/MAMP/tmp/mysql/mysql.sock")
-            let coordinator = OHMySQLStoreCoordinator(user: user!)
-            coordinator.encoding = .UTF8MB4
-            coordinator.connect()
-            self.globalCoordinator = coordinator
-            let context = OHMySQLQueryContext()
-            context.storeCoordinator = coordinator
-            self.queryContext = context
-        }
-    }
-    
-    public func closeMySQLConnection()
-    {
-        let globalQueue = DispatchQueue.global()
-        
-        //use the global queue , run in asynchronous
-        globalQueue.async {
-            self.globalCoordinator?.disconnect()
-        }
-    }
-    
     public func uploadCoughEvent()
     {
+        
         let device_id = UIDevice.current.identifierForVendor?.uuidString
         let username = self.user
         let time = getCurrentTimeString()
         let label = "COUGH"
         let sound_name = MD5(string: username + device_id! + time).base64EncodedString() + ".wav"
+        nextUploadSoundName = sound_name
         let SQLRequest = "INSERT INTO record (name, device_id, time, label, sound_name) VALUES ('\(username)', '\(device_id!)', curTime(), '\(label)', '\(sound_name)');"
         
         let globalQueue = DispatchQueue.global()
         
         //use the global queue , run in asynchronous
         globalQueue.async {
+            let user = OHMySQLUser(userName: "root", password: "sensorweb", serverName: "35.196.184.211", dbName: "cough_detection", port: 3306, socket: "/Applications/MAMP/tmp/mysql/mysql.sock")
+            let coordinator = OHMySQLStoreCoordinator(user: user!)
+            coordinator.encoding = .UTF8MB4
+            coordinator.connect()
+            let context = OHMySQLQueryContext()
+            context.storeCoordinator = coordinator
             let coughEventInsertionQuery = OHMySQLQueryRequest(queryString: SQLRequest)
-            try? self.queryContext?.execute(coughEventInsertionQuery)
+            try? context.execute(coughEventInsertionQuery)
+            coordinator.disconnect()
         }
         
     }
@@ -137,17 +121,11 @@ public class WebService{
         configuration.encoding = String.Encoding.utf8
         configuration.passive = false
         let _session = Session(configuration: configuration)
-        /*
-        _session.list("/var/ftp") {
-            (resources, error) -> Void in
-            print("List directory with result:\n\(resources), error: \(error)\n\n")
-        }
-         */
         let URL = getFileURL(filename: "record.wav")
-        let path = "/var/ftp/cough/record.wav"
+        let path = "/var/ftp/cough/" + nextUploadSoundName
         _session.upload(URL, path: path) {
             (result, error) -> Void in
-            print("Upload file with result:\n\(result), error: \(error)\n\n")
+                print("Upload file with result:\n\(result), error: \(error)\n\n")
         }
     }
 }

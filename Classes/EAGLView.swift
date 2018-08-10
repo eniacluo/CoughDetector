@@ -87,6 +87,7 @@ class EAGLView: UIView {
     private var buttonPause: UIButton = UIButton(type: UIButtonType.roundedRect)
     private var textField: UITextField = UITextField()
     private var labelEvent: UILabel!
+    private var labelName: UILabel!
     
     // You must implement this
     override class var layerClass: AnyClass {
@@ -139,6 +140,7 @@ class EAGLView: UIView {
             buttonStop.isEnabled = true
             buttonRecord.isHidden = false
             buttonPause.isHidden = false
+            labelName.isHidden = false
             textField.isHidden = false
             audioController.playButtonPressedSound()
             self.setupViewForSpectrum()
@@ -155,6 +157,7 @@ class EAGLView: UIView {
             buttonStop.isEnabled = false
             buttonRecord.isHidden = true
             buttonPause.isHidden = true
+            labelName.isHidden = true
             textField.isHidden = true
             audioController.playButtonPressedSound()
             DetectionResultOverlay.removeFromSuperview()
@@ -168,7 +171,7 @@ class EAGLView: UIView {
         let bufferManager = audioController.bufferManagerInstance
         bufferManager.sendRealtimeData()
         WebService.sharedInstance.isStartRecording = true
-        WebService.sharedInstance.initMySQLConnection()
+        textField.endEditing(true)
     }
     
     @objc func buttonPausePressed()
@@ -178,12 +181,26 @@ class EAGLView: UIView {
         let bufferManager = audioController.bufferManagerInstance
         bufferManager.stopSendingRealtimeData()
         WebService.sharedInstance.isStartRecording = false
-        WebService.sharedInstance.closeMySQLConnection()
     }
     
-    @objc func userDidChanged()
+    @objc func buttonClearPressed()
     {
-        WebService.sharedInstance.setUsername(name: textField.text!)
+        let bufferManager = audioController.bufferManagerInstance
+        bufferManager.eventString = ""
+        bufferManager.eventCount = 0
+        labelEvent.text = ""
+    }
+    
+    @objc func userDidNameChanged()
+    {
+        if textField.text! == "" {
+            buttonRecord.isEnabled = false
+        } else {
+            buttonRecord.isEnabled = true
+            WebService.sharedInstance.setUsername(name: textField.text!)
+            let defaults = UserDefaults.standard
+            defaults.set(textField.text!, forKey: "Username")
+        }
     }
     
     override func layoutSubviews() {
@@ -285,10 +302,10 @@ class EAGLView: UIView {
         
         // Create the image view to hold the background rounded rect which we just drew
         DetectionResultOverlay = UIImageView(image: img_ui)
-        DetectionResultOverlay.frame = CGRect(x: 25, y: 150, width: 300, height: 50)
+        DetectionResultOverlay.frame = CGRect(x: 25, y: 210, width: 325, height: 50)
         
         // Create the text view which shows the size of our oscilloscope window as we pinch/zoom
-        labelDetectionResult = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 100))
+        labelDetectionResult = UILabel(frame: CGRect(x: 0, y: 0, width: 325, height: 100))
         labelDetectionResult.textAlignment = NSTextAlignment.center
         labelDetectionResult.textColor = UIColor.white
         labelDetectionResult.text = ""
@@ -299,54 +316,118 @@ class EAGLView: UIView {
         // Add the text view as a subview of the overlay BG
         DetectionResultOverlay.addSubview(labelDetectionResult)
         
-        buttonStart.frame = CGRect(x: 25, y: 25, width: 150, height:  40)
+        buttonStart.frame = CGRect(x: 25, y: 440, width: 150, height:  40)
         buttonStart.setTitle("Start", for: UIControlState.normal)
-        buttonStart.backgroundColor = UIColor.white
+        buttonStart.backgroundColor = UIColor.clear
         buttonStart.addTarget(self, action: #selector(buttonStartPressed), for: .touchUpInside)
+        buttonStart.setTitleColor(UIColor.white, for: .normal)
+        buttonStart.setTitleColor(UIColor.gray, for: .disabled)
+        buttonStart.layer.borderColor = UIColor.white.cgColor
+        buttonStart.layer.cornerRadius = 5.0
+        buttonStart.layer.borderWidth = 1.0
         addSubview(buttonStart)
         
-        buttonStop.frame = CGRect(x: 200, y: 25, width: 150, height: 40)
+        buttonStop.frame = CGRect(x: 200, y: 440, width: 150, height: 40)
         buttonStop.setTitle("Stop", for: UIControlState.normal)
-        buttonStop.backgroundColor = UIColor.white
+        buttonStop.backgroundColor = UIColor.clear
         buttonStop.addTarget(self, action: #selector(buttonStopPressed), for: .touchUpInside)
         buttonStop.isEnabled = false
+        buttonStop.setTitleColor(UIColor.white, for: .normal)
+        buttonStop.setTitleColor(UIColor.gray, for: .disabled)
+        buttonStop.layer.borderColor = UIColor.white.cgColor
+        buttonStop.layer.cornerRadius = 5.0
+        buttonStop.layer.borderWidth = 1.0
         addSubview(buttonStop)
         
-        buttonRecord.frame = CGRect(x: 25, y: 90, width: 150, height:  40)
+        buttonRecord.frame = CGRect(x: 25, y: 155, width: 150, height:  40)
         buttonRecord.setTitle("Record", for: UIControlState.normal)
-        buttonRecord.backgroundColor = UIColor.white
+        buttonRecord.backgroundColor = UIColor.clear
         buttonRecord.addTarget(self, action: #selector(buttonRecordPressed), for: .touchUpInside)
         buttonRecord.isHidden = true
+        buttonRecord.setTitleColor(UIColor.white, for: .normal)
+        buttonRecord.setTitleColor(UIColor.gray, for: .disabled)
+        buttonRecord.layer.borderColor = UIColor.white.cgColor
+        buttonRecord.layer.cornerRadius = 5.0
+        buttonRecord.layer.borderWidth = 1.0
         addSubview(buttonRecord)
         
-        buttonPause.frame = CGRect(x: 200, y: 90, width: 150, height: 40)
+        buttonPause.frame = CGRect(x: 200, y: 155, width: 150, height: 40)
         buttonPause.setTitle("Pause", for: UIControlState.normal)
-        buttonPause.backgroundColor = UIColor.white
+        buttonPause.backgroundColor = UIColor.clear
         buttonPause.addTarget(self, action: #selector(buttonPausePressed), for: .touchUpInside)
         buttonPause.isEnabled = false
         buttonPause.isHidden = true
+        buttonPause.setTitleColor(UIColor.white, for: .normal)
+        buttonPause.setTitleColor(UIColor.gray, for: .disabled)
+        buttonPause.layer.borderColor = UIColor.white.cgColor
+        buttonPause.layer.cornerRadius = 5.0
+        buttonPause.layer.borderWidth = 1.0
         addSubview(buttonPause)
         
-        textField.frame = CGRect(x: 25, y: 150, width: 150, height: 40)
-        textField.text = "User";
-        textField.textColor = UIColor.white
-        textField.borderStyle = .bezel
+        let buttonClear = UIButton(frame: CGRect(x: 25, y: 500, width: 325, height: 40))
+        buttonClear.setTitle("Clear", for: UIControlState.normal)
+        buttonClear.backgroundColor = UIColor.clear
+        buttonClear.addTarget(self, action: #selector(buttonClearPressed), for: .touchUpInside)
+        buttonClear.setTitleColor(UIColor.white, for: .normal)
+        buttonClear.layer.borderColor = UIColor.white.cgColor
+        buttonClear.layer.cornerRadius = 5.0
+        buttonClear.layer.borderWidth = 1.0
+        addSubview(buttonClear)
+        
+        labelName = UILabel(frame: CGRect(x: 25, y: 100, width: 325, height: 30))
+        labelName.textAlignment = NSTextAlignment.left
+        labelName.textColor = UIColor.white
+        labelName.text = "Name:"
+        labelName.font = UIFont.boldSystemFont(ofSize: 20.0)
+        labelName.backgroundColor = UIColor.clear
+        labelName.isHidden = true
+        addSubview(labelName)
+        
+        textField.frame = CGRect(x: 125, y: 100, width: 225, height: 30)
+        textField.textColor = UIColor.black
+        textField.borderStyle = .roundedRect
         textField.isHidden = true
-        textField.addTarget(self, action: #selector(userDidChanged), for: .editingChanged)
+        textField.addTarget(self, action: #selector(userDidNameChanged), for: .editingChanged)
+        textField.text = UserDefaults.standard.string(forKey: "Username") ?? "User"
         addSubview(textField)
         
         // Create the text view which shows the size of our oscilloscope window as we pinch/zoom
-        labelEvent = UILabel(frame: CGRect(x: 25, y: 200, width: 300, height: 150))
+        labelEvent = UILabel(frame: CGRect(x: 25, y: 275, width: 300, height: 150))
         labelEvent.textAlignment = NSTextAlignment.left
         labelEvent.textColor = UIColor.white
         labelEvent.text = ""
-        labelEvent.font = UIFont.boldSystemFont(ofSize: 12.0)
+        labelEvent.font = UIFont.boldSystemFont(ofSize: 14.0)
         // Rotate the text view since we want the text to draw top to bottom (when the device is oriented vertically)
         //labelEvent.transform = CGAffineTransform(rotationAngle: .pi/2)
         labelEvent.backgroundColor = UIColor.clear
         labelEvent.numberOfLines = 0 // Unlimited lines
         //labelEvent.sizeToFit()
         addSubview(labelEvent)
+        
+        let labelCoughDetector = UILabel(frame: CGRect(x: 25, y: 25, width: 325, height: 50))
+        labelCoughDetector.textAlignment = NSTextAlignment.center
+        labelCoughDetector.textColor = UIColor.red
+        labelCoughDetector.text = "Cough Detector"
+        labelCoughDetector.font = UIFont.boldSystemFont(ofSize: 20.0)
+        labelCoughDetector.layer.borderWidth = 1.0
+        labelCoughDetector.layer.borderColor = UIColor.red.cgColor
+        labelCoughDetector.backgroundColor = UIColor.clear
+        labelCoughDetector.numberOfLines = 1 // Unlimited lines
+        addSubview(labelCoughDetector)
+        
+        let imageUGA = UIImageView(frame: CGRect(x: 25, y: 600, width: 325, height: 40))
+        imageUGA.image = UIImage(named: "uga-logo.png")
+        addSubview(imageUGA)
+        
+        let labelLabName = UILabel(frame: CGRect(x: 25, y: 550, width: 325, height: 40))
+        labelLabName.textAlignment = NSTextAlignment.center
+        labelLabName.textColor = UIColor.gray
+        labelLabName.text = "Sensorweb Research Laboratory"
+        labelLabName.font = UIFont.boldSystemFont(ofSize: 18.0)
+        labelLabName.backgroundColor = UIColor.clear
+        labelLabName.numberOfLines = 1 // Unlimited lines
+        addSubview(labelLabName)
+        
     }
     
     private func setupGLView() {

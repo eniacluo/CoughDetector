@@ -118,11 +118,10 @@ class BufferManager {
     
     func sendRealtimeData() {
         //isSendingRealtimeData = true
-        WebService.sharedInstance.uploadCoughEvent()
     }
     
     func stopSendingRealtimeData() {
-        isSendingRealtimeData = false
+        //isSendingRealtimeData = false
     }
     
     func copyAudioDataToFrameBuffer(_ inData: UnsafePointer<Float32>?, inNumFrames: Int) {

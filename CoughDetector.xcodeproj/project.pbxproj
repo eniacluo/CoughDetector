@@ -73,6 +73,7 @@
 		F0F962A6211892BB002877C9 /* StreamOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F9629D211892BA002877C9 /* StreamOperation.swift */; };
 		F0F962A7211892BB002877C9 /* ResourceListOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F9629E211892BA002877C9 /* ResourceListOperation.swift */; };
 		F0F962A8211892BB002877C9 /* WriteStreamOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F9629F211892BB002877C9 /* WriteStreamOperation.swift */; };
+		F0F962AC211D3486002877C9 /* uga-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F0F962AB211D3486002877C9 /* uga-logo.png */; };
 		F7DF06DE0DF4AD57005687F5 /* button_press.caf in Resources */ = {isa = PBXBuildFile; fileRef = F7DF06DC0DF4AD57005687F5 /* button_press.caf */; };
 		F7E58EDA0DCFD988006C4A2F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7E58ED90DCFD988006C4A2F /* AudioToolbox.framework */; };
 /* End PBXBuildFile section */
@@ -186,6 +187,7 @@
 		F0F9629D211892BA002877C9 /* StreamOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StreamOperation.swift; path = "../../rebekka-master/rebekka-source/Rebekka/StreamOperation.swift"; sourceTree = "<group>"; };
 		F0F9629E211892BA002877C9 /* ResourceListOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResourceListOperation.swift; path = "../../rebekka-master/rebekka-source/Rebekka/ResourceListOperation.swift"; sourceTree = "<group>"; };
 		F0F9629F211892BB002877C9 /* WriteStreamOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WriteStreamOperation.swift; path = "../../rebekka-master/rebekka-source/Rebekka/WriteStreamOperation.swift"; sourceTree = "<group>"; };
+		F0F962AB211D3486002877C9 /* uga-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "uga-logo.png"; sourceTree = "<group>"; };
 		F7DF06DC0DF4AD57005687F5 /* button_press.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = button_press.caf; sourceTree = "<group>"; };
 		F7E58ED90DCFD988006C4A2F /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -263,6 +265,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F0F962AB211D3486002877C9 /* uga-logo.png */,
 				F0DC452E20C4F3D6003AFE70 /* htk */,
 				2B86B2B018F35C2300347397 /* MainWindow.xib */,
 				F7D3FD760FD49018003CBAE4 /* audio */,
@@ -484,6 +487,7 @@
 				F06F758820D0A27E00617973 /* Images.xcassets in Resources */,
 				F0DC453A20C4F411003AFE70 /* gram.txt in Resources */,
 				F06A21D120CF09640065F988 /* scream in Resources */,
+				F0F962AC211D3486002877C9 /* uga-logo.png in Resources */,
 				F06A21D320CF09640065F988 /* speech in Resources */,
 				F06A21D220CF09640065F988 /* cough in Resources */,
 			);
