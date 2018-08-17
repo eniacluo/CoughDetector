@@ -408,12 +408,16 @@ class EAGLView: UIView {
         labelCoughDetector.textAlignment = NSTextAlignment.center
         labelCoughDetector.textColor = UIColor.red
         labelCoughDetector.text = "Cough Detector"
-        labelCoughDetector.font = UIFont.boldSystemFont(ofSize: 20.0)
-        labelCoughDetector.layer.borderWidth = 1.0
-        labelCoughDetector.layer.borderColor = UIColor.red.cgColor
+        labelCoughDetector.font = UIFont.boldSystemFont(ofSize: 30.0)
+        //labelCoughDetector.layer.borderWidth = 1.0
+        //labelCoughDetector.layer.borderColor = UIColor.red.cgColor
         labelCoughDetector.backgroundColor = UIColor.clear
         labelCoughDetector.numberOfLines = 1 // Unlimited lines
         addSubview(labelCoughDetector)
+        
+        let labelLine = UILabel(frame: CGRect(x: 25, y: 85, width: 325, height: 1))
+        labelLine.backgroundColor = UIColor.white
+        addSubview(labelLine)
         
         let imageUGA = UIImageView(frame: CGRect(x: 25, y: 600, width: 325, height: 40))
         imageUGA.image = UIImage(named: "uga-logo.png")
