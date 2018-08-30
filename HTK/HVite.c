@@ -100,6 +100,7 @@ static char * roPrefix=NULL;      /* Prefix for direct audio output name */
 static char * roSuffix=NULL;      /* Suffix for direct audio output name */
 static int roCounter = 0;         /* Counter for audio output name */
 static Boolean replay = FALSE;    /* enable audio replay */
+static Boolean useMLF=FALSE;      /* set if we are saving to an mlf */
 
 /* Language model */
 static double lmScale = 1.0;      /* bigram and log(1/NSucc) scale factor */
@@ -269,6 +270,7 @@ int HVite(int argc, char *argv[])
          /* if(SaveToMasterfile(GetStrArg())<SUCCESS)
             HError(3214,"HCopy: Cannot write to MLF"); */
          SaveToMasterfile(GetStrArg());
+         useMLF = TRUE;
          break;
       case 'k':
 	 xfInfo.useInXForm = TRUE;
@@ -476,7 +478,11 @@ int HVite(int argc, char *argv[])
       PrintAllHeapStats();
    }
 
-
+   if(useMLF)
+   {
+       useMLF = FALSE;
+       CloseMLFSaveFile();
+   }
    DeleteVRecInfo(vri);
    ResetHeap(&netHeap);
    DeleteHeap(&netHeap);

@@ -1442,7 +1442,7 @@ ReturnStatus SaveToMasterfile(char *fname)
    nid = GetLabId(buf,TRUE);
    outMLFSet[numOutMLF].file = outMLF;
    outMLFSet[numOutMLF].name = nid;
-   numOutMLF++;
+   //numOutMLF++;
    return(SUCCESS);
 }
 
