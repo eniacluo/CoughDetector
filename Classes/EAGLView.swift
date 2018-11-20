@@ -83,11 +83,15 @@ class EAGLView: UIView {
     
     private var buttonStart: UIButton = UIButton(type: UIButtonType.roundedRect)
     private var buttonStop: UIButton = UIButton(type: UIButtonType.roundedRect)
+    private var switchRecord: UISwitch!
     private var buttonRecord: UIButton = UIButton(type: UIButtonType.roundedRect)
     private var buttonPause: UIButton = UIButton(type: UIButtonType.roundedRect)
     private var textField: UITextField = UITextField()
     private var labelEvent: UILabel!
     private var labelName: UILabel!
+    private var labelRecord: UILabel!
+    private var labelSensitivity: UILabel!
+    private var sliderSensitivity: UISlider!
     
     // You must implement this
     override class var layerClass: AnyClass {
@@ -120,6 +124,10 @@ class EAGLView: UIView {
         l_fftData = UnsafeMutablePointer.allocate(capacity: audioController.bufferManagerInstance.FFTOutputBufferLength)
         bzero(l_fftData, size_t(audioController.bufferManagerInstance.FFTOutputBufferLength * MemoryLayout<Float32>.size))
         
+        if !LocationService.sharedInstance.isConfigured {
+            LocationService.sharedInstance.configureLocationManager()
+        }
+        
         self.setupGLView()
         self.drawView()
         
@@ -128,7 +136,6 @@ class EAGLView: UIView {
         // Set up the view to refresh at 20 hz
         self.setAnimationInterval(1.0/20.0)
         self.startAnimation()
-        
     }
     
     @objc func buttonStartPressed()
@@ -138,8 +145,10 @@ class EAGLView: UIView {
             bufferManager.isStartSession = true
             buttonStart.isEnabled = false
             buttonStop.isEnabled = true
-            buttonRecord.isHidden = false
-            buttonPause.isHidden = false
+            switchRecord.isHidden = false
+            labelRecord.isHidden = false
+            labelSensitivity.isHidden = false
+            sliderSensitivity.isHidden = false
             labelName.isHidden = false
             textField.isHidden = false
             audioController.playButtonPressedSound()
@@ -155,8 +164,10 @@ class EAGLView: UIView {
             bufferManager.isStartSession = false
             buttonStart.isEnabled = true
             buttonStop.isEnabled = false
-            buttonRecord.isHidden = true
-            buttonPause.isHidden = true
+            switchRecord.isHidden = true
+            labelRecord.isHidden = true
+            labelSensitivity.isHidden = true
+            sliderSensitivity.isHidden = true
             labelName.isHidden = true
             textField.isHidden = true
             audioController.playButtonPressedSound()
@@ -164,30 +175,32 @@ class EAGLView: UIView {
         }
     }
     
-    @objc func buttonRecordPressed()
+    @objc func switchRecordToggled()
     {
-        buttonRecord.isEnabled = false
-        buttonPause.isEnabled = true
-        let bufferManager = audioController.bufferManagerInstance
-        bufferManager.sendRealtimeData()
-        WebService.sharedInstance.isStartRecording = true
-        textField.endEditing(true)
+        if switchRecord.isOn == true {
+            buttonRecord.isEnabled = false
+            buttonPause.isEnabled = true
+            WebService.sharedInstance.isStartRecording = true
+            textField.endEditing(true)
+        } else {
+            buttonPause.isEnabled = false
+            buttonRecord.isEnabled = true
+            WebService.sharedInstance.isStartRecording = false
+        }
     }
     
-    @objc func buttonPausePressed()
+    @objc func sliderSensitivityChanged()
     {
-        buttonPause.isEnabled = false
-        buttonRecord.isEnabled = true
         let bufferManager = audioController.bufferManagerInstance
-        bufferManager.stopSendingRealtimeData()
-        WebService.sharedInstance.isStartRecording = false
+        bufferManager.mDSPHelper.backgroundSigma = 0.025 - sliderSensitivity.value
+        print(bufferManager.mDSPHelper.backgroundSigma)
     }
     
     @objc func buttonClearPressed()
     {
-        let bufferManager = audioController.bufferManagerInstance
-        bufferManager.eventString = ""
-        bufferManager.eventCount = 0
+        let resultManager = ResultManager.sharedInstance
+        resultManager.eventString = ""
+        resultManager.eventCount = 0
         labelEvent.text = ""
     }
     
@@ -302,7 +315,7 @@ class EAGLView: UIView {
         
         // Create the image view to hold the background rounded rect which we just drew
         DetectionResultOverlay = UIImageView(image: img_ui)
-        DetectionResultOverlay.frame = CGRect(x: 25, y: 210, width: 325, height: 50)
+        DetectionResultOverlay.frame = CGRect(x: 25, y: 210, width: 325, height: 100)
         
         // Create the text view which shows the size of our oscilloscope window as we pinch/zoom
         labelDetectionResult = UILabel(frame: CGRect(x: 0, y: 0, width: 325, height: 100))
@@ -339,30 +352,41 @@ class EAGLView: UIView {
         buttonStop.layer.borderWidth = 1.0
         addSubview(buttonStop)
         
-        buttonRecord.frame = CGRect(x: 25, y: 155, width: 150, height:  40)
-        buttonRecord.setTitle("Record", for: UIControlState.normal)
-        buttonRecord.backgroundColor = UIColor.clear
-        buttonRecord.addTarget(self, action: #selector(buttonRecordPressed), for: .touchUpInside)
-        buttonRecord.isHidden = true
-        buttonRecord.setTitleColor(UIColor.white, for: .normal)
-        buttonRecord.setTitleColor(UIColor.gray, for: .disabled)
-        buttonRecord.layer.borderColor = UIColor.white.cgColor
-        buttonRecord.layer.cornerRadius = 5.0
-        buttonRecord.layer.borderWidth = 1.0
-        addSubview(buttonRecord)
+        labelRecord = UILabel(frame: CGRect(x: 210, y: 100, width: 150, height: 30))
+        labelRecord.textAlignment = NSTextAlignment.left
+        labelRecord.textColor = UIColor.white
+        labelRecord.text = "Record:"
+        labelRecord.font = UIFont.boldSystemFont(ofSize: 20.0)
+        labelRecord.backgroundColor = UIColor.clear
+        labelRecord.isHidden = true
+        addSubview(labelRecord)
         
-        buttonPause.frame = CGRect(x: 200, y: 155, width: 150, height: 40)
-        buttonPause.setTitle("Pause", for: UIControlState.normal)
-        buttonPause.backgroundColor = UIColor.clear
-        buttonPause.addTarget(self, action: #selector(buttonPausePressed), for: .touchUpInside)
-        buttonPause.isEnabled = false
-        buttonPause.isHidden = true
-        buttonPause.setTitleColor(UIColor.white, for: .normal)
-        buttonPause.setTitleColor(UIColor.gray, for: .disabled)
-        buttonPause.layer.borderColor = UIColor.white.cgColor
-        buttonPause.layer.cornerRadius = 5.0
-        buttonPause.layer.borderWidth = 1.0
-        addSubview(buttonPause)
+        switchRecord = UISwitch(frame: CGRect(x: 290, y: 100, width: 80, height: 30))
+        switchRecord.isHidden = true
+        switchRecord.setOn(false, animated: true)
+        switchRecord.tintColor = UIColor.white
+        switchRecord.onTintColor = UIColor(red: 169/255.0, green: 0/255.0, blue: 36/255.0, alpha: 1.0)
+        switchRecord.addTarget(self, action: #selector(switchRecordToggled), for: .valueChanged)
+        addSubview(switchRecord)
+        
+        labelSensitivity = UILabel(frame: CGRect(x: 25, y: 140, width: 150, height: 40))
+        labelSensitivity.textAlignment = NSTextAlignment.left
+        labelSensitivity.textColor = UIColor.white
+        labelSensitivity.text = "Sensitivity:"
+        labelSensitivity.font = UIFont.boldSystemFont(ofSize: 20.0)
+        labelSensitivity.backgroundColor = UIColor.clear
+        labelSensitivity.isHidden = true
+        addSubview(labelSensitivity)
+        
+        sliderSensitivity = UISlider(frame: CGRect(x: 165, y: 140, width: 170, height: 40))
+        sliderSensitivity.minimumValue = 0.005
+        sliderSensitivity.maximumValue = 0.02
+        sliderSensitivity.tintColor = UIColor(red: 169/255.0, green: 0/255.0, blue: 36/255.0, alpha: 1.0)
+        sliderSensitivity.addTarget(self, action: #selector(sliderSensitivityChanged), for: .valueChanged)
+        sliderSensitivity.isContinuous = false
+        sliderSensitivity.value = 0.025 - 0.01
+        sliderSensitivity.isHidden = true
+        addSubview(sliderSensitivity)
         
         let buttonClear = UIButton(frame: CGRect(x: 25, y: 500, width: 325, height: 40))
         buttonClear.setTitle("Clear", for: UIControlState.normal)
@@ -383,7 +407,7 @@ class EAGLView: UIView {
         labelName.isHidden = true
         addSubview(labelName)
         
-        textField.frame = CGRect(x: 125, y: 100, width: 225, height: 30)
+        textField.frame = CGRect(x: 105, y: 100, width: 90, height: 30)
         textField.textColor = UIColor.black
         textField.borderStyle = .roundedRect
         textField.isHidden = true
@@ -392,7 +416,7 @@ class EAGLView: UIView {
         addSubview(textField)
         
         // Create the text view which shows the size of our oscilloscope window as we pinch/zoom
-        labelEvent = UILabel(frame: CGRect(x: 25, y: 275, width: 300, height: 150))
+        labelEvent = UILabel(frame: CGRect(x: 25, y: 290, width: 300, height: 150))
         labelEvent.textAlignment = NSTextAlignment.left
         labelEvent.textColor = UIColor.white
         labelEvent.text = ""
@@ -406,14 +430,40 @@ class EAGLView: UIView {
         
         let labelCoughDetector = UILabel(frame: CGRect(x: 25, y: 25, width: 325, height: 50))
         labelCoughDetector.textAlignment = NSTextAlignment.center
-        labelCoughDetector.textColor = UIColor.red
+        labelCoughDetector.textColor = UIColor(red: 169/255.0, green: 0/255.0, blue: 36/255.0, alpha: 1.0)
         labelCoughDetector.text = "Cough Detector"
-        labelCoughDetector.font = UIFont.boldSystemFont(ofSize: 30.0)
+        labelCoughDetector.font = UIFont(name: "Arial", size: 30.0)?.bold()
         //labelCoughDetector.layer.borderWidth = 1.0
         //labelCoughDetector.layer.borderColor = UIColor.red.cgColor
         labelCoughDetector.backgroundColor = UIColor.clear
         labelCoughDetector.numberOfLines = 1 // Unlimited lines
         addSubview(labelCoughDetector)
+        
+        /*
+        let labelLineLeft = UILabel(frame: CGRect(x: 25, y: 25, width: 10, height: 50))
+        labelLineLeft.backgroundColor = UIColor.white
+        addSubview(labelLineLeft)
+        
+        let labelLineRight = UILabel(frame: CGRect(x: 340, y: 25, width: 10, height: 50))
+        labelLineRight.backgroundColor = UIColor.white
+        addSubview(labelLineRight)
+        
+        let labelLineSmallLeftDown = UILabel(frame: CGRect(x: 35, y: 65, width: 10, height: 10))
+        labelLineSmallLeftDown.backgroundColor = UIColor.white
+        addSubview(labelLineSmallLeftDown)
+        
+        let labelLineSmallRightUp = UILabel(frame: CGRect(x: 330, y: 25, width: 10, height: 10))
+        labelLineSmallRightUp.backgroundColor = UIColor.white
+        addSubview(labelLineSmallRightUp)
+        
+        let labelLineSmallLeftUp = UILabel(frame: CGRect(x: 35, y: 25, width: 10, height: 10))
+        labelLineSmallLeftUp.backgroundColor = UIColor.white
+        addSubview(labelLineSmallLeftUp)
+        
+        let labelLineSmallRightDown = UILabel(frame: CGRect(x: 330, y: 65, width: 10, height: 10))
+        labelLineSmallRightDown.backgroundColor = UIColor.white
+        addSubview(labelLineSmallRightDown)
+         */
         
         let labelLine = UILabel(frame: CGRect(x: 25, y: 85, width: 325, height: 1))
         labelLine.backgroundColor = UIColor.white
@@ -682,14 +732,14 @@ class EAGLView: UIView {
     
     private func displayRecentDetectResult()
     {
-        let bufferManager = audioController.bufferManagerInstance
-        if bufferManager.recentResult == "COUGH" {
+        let resultManager = ResultManager.sharedInstance
+        if resultManager.latestResultForDisplay == "COUGH" {
             labelDetectionResult.textColor = UIColor.red
         } else {
             labelDetectionResult.textColor = UIColor.white
         }
-        labelDetectionResult.text = bufferManager.recentResult
-        labelEvent.text = bufferManager.eventString
+        labelDetectionResult.text = resultManager.latestResultForDisplay
+        labelEvent.text = resultManager.eventString
     }
     
     private class func createRoundedRectPath(_ RECT: CGRect, _ _cornerRadius: CGFloat) -> CGPath {
@@ -790,4 +840,23 @@ class EAGLView: UIView {
     }
     
     
+}
+
+extension UIFont {
+    func withTraits(traits:UIFontDescriptorSymbolicTraits...) -> UIFont {
+        let descriptor = self.fontDescriptor.withSymbolicTraits(UIFontDescriptorSymbolicTraits(traits))
+        return UIFont(descriptor: descriptor!, size: 0)
+    }
+    
+    func bold() -> UIFont {
+        return withTraits(traits: .traitBold)
+    }
+    
+    func italic() -> UIFont {
+        return withTraits(traits: .traitItalic)
+    }
+    
+    func boldItalic() -> UIFont {
+        return withTraits(traits: .traitBold, .traitItalic)
+    }
 }

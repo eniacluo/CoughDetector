@@ -20,7 +20,7 @@ import libkern
 import AVFoundation
 import Accelerate
 
-let kNumFrameBuffers = 16
+let kNumFrameBuffers = 20
 let kDefaultFrameSamples = 1024
 let kDelayBufferCount = 16
 
@@ -46,17 +46,11 @@ class BufferManager {
     private(set) var frameBuffers: UnsafeMutablePointer<UnsafeMutablePointer<Float32>?>
     private var mFrameBufferIndex: Int
     private var mFrameSampleIndex: Int
-    var backgroundSigma: Float = 0.01
     var startBufferIndex = 0
     var isStartSound = false
     private(set) var MFCCBuffers: UnsafeMutablePointer<Float32>?
-    var recentResult = "SILENCE"
-    var delayIndex = 0
-    var eventCount = 0;
-    var eventString: String!
-    var eventTime = [String]()
     
-    private var mDSPHelper: DSPHelper
+    public var mDSPHelper: DSPHelper
     
     init(maxFramesPerSlice inMaxFramesPerSlice: Int) {//4096
         frameBuffers = UnsafeMutablePointer.allocate(capacity: Int(kNumFrameBuffers))
@@ -116,80 +110,44 @@ class BufferManager {
         
     }
     
-    func sendRealtimeData() {
-        //isSendingRealtimeData = true
-    }
-    
-    func stopSendingRealtimeData() {
-        //isSendingRealtimeData = false
-    }
-    
     func copyAudioDataToFrameBuffer(_ inData: UnsafePointer<Float32>?, inNumFrames: Int) {
         if inData == nil { return }
         
         for i in 0..<inNumFrames {//256
             if i + mFrameSampleIndex >= kDefaultFrameSamples {//1024
                 mFrameSampleIndex = 0//concat buffer data with next one
-                let outVar: UnsafeMutablePointer<Float32> = UnsafeMutablePointer.allocate(capacity: 1)
-                // calculating the moving window variance to do changing point detection to segment
-                vDSP_rmsqv(frameBuffers[mFrameBufferIndex]!, 1, outVar, vDSP_Length(kDefaultFrameSamples))
-                if outVar.pointee > 3 * backgroundSigma && isStartSound == false {
+                let latestFrameBuffer = frameBuffers[mFrameBufferIndex]
+                if mDSPHelper.isChangingPointStarted(latestFrameBuffer) && isStartSound == false {
                     isStartSound = true
                     startBufferIndex = mFrameBufferIndex
-                } else if (outVar.pointee < backgroundSigma || (mFrameBufferIndex + 1) % kNumFrameBuffers == startBufferIndex) && isStartSound == true {
+                } else if (mDSPHelper.isChangingPointEnded(latestFrameBuffer) || (mFrameBufferIndex + 1) % kNumFrameBuffers == startBufferIndex) && isStartSound == true {
                     // satisfy one of the following two conditions:
                     // 1. the variance is less than 1*sigma_background
-                    // 2. the length is greater than 16*1024/44100=370ms
+                    // 2. the length is between 10*1024/44100=232ms to 15*1024/44100=348ms
                     // make a copy to MFCCBuffer to run feature extraction and HMM Viterbi decoder
                     isStartSound = false
                     let copyBufferCount = ((mFrameBufferIndex - startBufferIndex + kNumFrameBuffers) % kNumFrameBuffers + 1)
-                    MFCCBuffers = UnsafeMutablePointer.allocate(capacity: copyBufferCount * kDefaultFrameSamples)
-                    var copyMFCCSampleIndex = 0
-                    for i in startBufferIndex..<startBufferIndex + copyBufferCount {
-                        memcpy(MFCCBuffers?.advanced(by: copyMFCCSampleIndex * kDefaultFrameSamples), frameBuffers[i % kNumFrameBuffers], size_t(kDefaultFrameSamples * MemoryLayout<Float32>.size))
-                        copyMFCCSampleIndex += 1
-                    }
-                    writeAudioFile(pcmBuffer: MFCCBuffers, frameCount: copyBufferCount * kDefaultFrameSamples, filename: "record.wav")
-                    
-                    createMFCCFile(wavFilename: "record.wav")
-                    getHMMResult(wavFilename: "record.wav")
-                    
-                    // If HMM Viterbi results are successful obtained, put the recognition result. Once refreshed in View, the result will display on screen
-                    let result = (readFile(filename: "result.txt") ?? "no result")
-                    if result != "no result" {
-                        if result.contains("NON-COUGH") {
-                            recentResult = "NON-COUGH"
-                            delayIndex = kDelayBufferCount
-                        } else {
-                            recentResult = "COUGH"
-                            delayIndex = kDelayBufferCount
-                            eventString = "Cough Event:"
-                            let currentTime = getCurrentTimeString()
-                            eventTime.append(currentTime)
-                            for i in 0...eventCount
-                            {
-                                if i > eventCount - 5 {
-                                    eventString = "\(eventString!)\n #\(i+1): \(eventTime[i])"
-                                }
-                            }
-                            eventCount += 1
-                            if WebService.sharedInstance.isStartRecording {
-                                WebService.sharedInstance.uploadCoughEvent()
-                                WebService.sharedInstance.uploadRawSound()
-                            }
+                    print("Count: \(copyBufferCount)")
+                    if copyBufferCount >= 10 && copyBufferCount <= 16 {
+                        //the length should be between 10*1024/44100=232ms to 15*1024/44100=348ms
+                        MFCCBuffers = UnsafeMutablePointer.allocate(capacity: copyBufferCount * kDefaultFrameSamples)
+                        var copyMFCCSampleIndex = 0
+                        for i in startBufferIndex..<startBufferIndex + copyBufferCount {
+                            memcpy(MFCCBuffers?.advanced(by: copyMFCCSampleIndex * kDefaultFrameSamples), frameBuffers[i % kNumFrameBuffers], size_t(kDefaultFrameSamples * MemoryLayout<Float32>.size))
+                            copyMFCCSampleIndex += 1
                         }
+                        writeAudioFile(pcmBuffer: MFCCBuffers, frameCount: copyBufferCount * kDefaultFrameSamples, filename: "record.wav")
+                        MFCCBuffers?.deallocate()
+                        mDSPHelper.generateCoughDetectionResult()
+                    } else {
+                        //Directly determine the result
+                        let resultManager = ResultManager.sharedInstance
+                        resultManager.latestResultForDisplay = "NON-COUGH"
+                        resultManager.prepareResultForDisplay()
                     }
-                    MFCCBuffers?.deallocate()
                 }
-                if delayIndex > 0 {
-                    delayIndex -= 1
-                    if delayIndex == 0 {
-                        recentResult = "SILENCE"
-                    }
-                }
- 
-                outVar.deallocate()
- 
+                //Use the period of obtaining data to freeze detection result
+                ResultManager.sharedInstance.freezeResult()
                 mFrameBufferIndex = (mFrameBufferIndex + 1) % kNumFrameBuffers
             }
             frameBuffers[mFrameBufferIndex]?[i + mFrameSampleIndex] = (inData?[i])!

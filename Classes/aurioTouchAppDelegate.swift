@@ -29,15 +29,29 @@ class aurioTouchAppDelegate: NSObject, UIApplicationDelegate {
         let screenBounds = UIScreen.main.bounds
         window = UIWindow(frame: screenBounds)
         
-        let myVC = UIViewController(nibName: nil, bundle: nil)
-        myVC.view = view
+        let mainViewController = UIViewController(nibName: nil, bundle: nil)
+        mainViewController.view = view
+        mainViewController.title = "Cough Detector"
         
-        self.window?.rootViewController = myVC
+        let naviController = UINavigationController(rootViewController: mainViewController)
+        naviController.navigationBar.barStyle = .blackTranslucent
+        naviController.setNavigationBarHidden(true, animated: false);
+        
+        self.window?.rootViewController = naviController
+        
+        let isNotFirstRun = UserDefaults.standard.bool(forKey: "isNotFirstRun"); // firstRun return false cuz does not exist
+        
+        if !isNotFirstRun {
+            let customSettingStoryboard = UIStoryboard(name: "CustomSettingStoryboard", bundle: nil)
+            let validatePageViewController = customSettingStoryboard.instantiateViewController(withIdentifier: "ValidatePageViewController")
+            naviController.pushViewController(validatePageViewController, animated: true)
+        }
         
         // Turn off the idle timer, since this app doesn't rely on constant touch input
         application.isIdleTimerDisabled = true
         
         window?.makeKeyAndVisible()
+        
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {

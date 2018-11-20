@@ -21,13 +21,17 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.22</string>
+	<string>0.24</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Cough Detector needs to collect your location when in background.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Cough Detector needs to collect your location.</string>
 	<key>NSMainNibFile</key>
 	<string>MainWindow</string>
 	<key>NSMicrophoneUsageDescription</key>

@@ -26,10 +26,9 @@ class DSPHelper {
     private var mFFTNormFactor: Float32
     private var mFFTLength: vDSP_Length
     private var mLog2N: vDSP_Length
-    
+    public var backgroundSigma: Float = 0.01
     
     private final var kAdjust0DB: Float32 = 1.5849e-13
-    
     
     init(maxFramesPerSlice inMaxFramesPerSlice: Int) {
         mSpectrumAnalysis = nil
@@ -79,4 +78,41 @@ class DSPHelper {
         vDSP_vdbcon(outFFTData, 1, &one, outFFTData, 1, mFFTLength, 0)
     }
 
+    func isChangingPointStarted(_ frameBuffer: UnsafePointer<Float32>?) -> Bool {
+        let outVar: UnsafeMutablePointer<Float32> = UnsafeMutablePointer.allocate(capacity: 1)
+        // calculating the moving window variance to do changing point detection to segment
+        vDSP_rmsqv(frameBuffer!, 1, outVar, vDSP_Length(kDefaultFrameSamples))
+        let currentSoundSigma = outVar.pointee
+        outVar.deallocate()
+
+        return currentSoundSigma > 3 * backgroundSigma ? true : false
+    }
+    
+    func isChangingPointEnded(_ frameBuffer: UnsafePointer<Float32>?) -> Bool {
+        let outVar: UnsafeMutablePointer<Float32> = UnsafeMutablePointer.allocate(capacity: 1)
+        // calculating the moving window variance to do changing point detection to segment
+        vDSP_rmsqv(frameBuffer!, 1, outVar, vDSP_Length(kDefaultFrameSamples))
+        let currentSoundSigma = outVar.pointee
+        outVar.deallocate()
+        
+        return currentSoundSigma < 1 * backgroundSigma ? true : false
+    }
+    
+    func generateCoughDetectionResult() {
+        createMFCCFile(wavFilename: "record.wav")
+        getHMMResult(wavFilename: "record.wav")
+        
+        // If HMM Viterbi results are successful obtained, put the recognition result. Once refreshed in View, the result will display on screen
+        let result = (readFile(filename: "result.txt") ?? "no result")
+        let resultManager = ResultManager.sharedInstance
+        if result != "no result" {
+            if result.contains("NON-COUGH") {
+                resultManager.latestResultForDisplay = "NON-COUGH"
+            } else {
+                resultManager.latestResultForDisplay = "COUGH"
+            }
+            resultManager.prepareResultForDisplay()
+            resultManager.uploadResultToServer()
+        }
+    }
 }

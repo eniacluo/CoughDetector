@@ -7,6 +7,7 @@
 
 import Foundation
 import AVFoundation
+import CoreLocation
 
 var _audioPlayer: AVAudioPlayer? = nil
 // if set it as local variable, the sound cannot be played because it may be recycled
@@ -28,8 +29,19 @@ public func getCurrentTimeString() -> String
 {
     let currentData = Date()
     let dateFormatter = DateFormatter()
-    dateFormatter.dateStyle = .short
-    dateFormatter.timeStyle = .medium
+    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+    //dateFormatter.dateStyle = .short
+    //dateFormatter.timeStyle = .medium
+    let dateString = dateFormatter.string(from: currentData)
+    return dateString
+}
+
+public func getCurrentTimeCompactString() -> String
+{
+    let currentData = Date()
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyyMMddHHmmss"
+    dateFormatter.locale = Locale.current
     let dateString = dateFormatter.string(from: currentData)
     return dateString
 }
@@ -162,6 +174,18 @@ public func readFile(filename: URL) -> String?
 {
     do {
         let text = try String(contentsOf: filename, encoding: .utf8)
+        return text
+    }
+    catch {
+        print("open file failed")
+        return nil
+    }
+}
+
+public func readFileData(filename: String) -> Data?
+{
+    do {
+        let text = try Data(contentsOf: getFileURL(filename: filename))
         return text
     }
     catch {

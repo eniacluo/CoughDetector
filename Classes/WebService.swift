@@ -85,30 +85,171 @@ public class WebService{
     
     public func uploadCoughEvent()
     {
-        
-        let device_id = UIDevice.current.identifierForVendor?.uuidString
+        let device_id = UIDevice.current.identifierForVendor?.uuidString ?? ""
         let username = self.user
         let time = getCurrentTimeString()
-        let label = "COUGH"
-        let sound_name = MD5(string: username + device_id! + time).base64EncodedString() + ".wav"
-        nextUploadSoundName = sound_name
-        let SQLRequest = "INSERT INTO record (name, device_id, time, label, sound_name) VALUES ('\(username)', '\(device_id!)', curTime(), '\(label)', '\(sound_name)');"
+        let compactTime = getCurrentTimeCompactString()
+        let latitude = LocationService.sharedInstance.getLatitude()
+        let longitude = LocationService.sharedInstance.getLongitude()
+        let sound_name = username + compactTime + ".wav"
         
         let globalQueue = DispatchQueue.global()
         
         //use the global queue , run in asynchronous
         globalQueue.async {
-            let user = OHMySQLUser(userName: "root", password: "sensorweb", serverName: "35.196.184.211", dbName: "cough_detection", port: 3306, socket: "/Applications/MAMP/tmp/mysql/mysql.sock")
-            let coordinator = OHMySQLStoreCoordinator(user: user!)
-            coordinator.encoding = .UTF8MB4
-            coordinator.connect()
-            let context = OHMySQLQueryContext()
-            context.storeCoordinator = coordinator
-            let coughEventInsertionQuery = OHMySQLQueryRequest(queryString: SQLRequest)
-            try? context.execute(coughEventInsertionQuery)
-            coordinator.disconnect()
+            var Baseurl = "https://redcap.ovpr.uga.edu/api/"
+            Baseurl = Baseurl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+            let requestUrl = URL(string: Baseurl)
+            var request = URLRequest(url: requestUrl!)
+            request.httpMethod = "POST"
+            request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+            request.addValue("application/json", forHTTPHeaderField: "Accept")
+            
+            if let record_id = UserDefaults.standard.string(forKey: "record_id") {
+                var nextEventId =  UserDefaults.standard.integer(forKey: "nextEventId")
+                nextEventId += 1 // Even the first time: 0->1
+                print("record_id: \(record_id), event_id: \(nextEventId)")
+                let postDictRecord = [["record_id": record_id,
+                     "redcap_repeat_instrument": "cough_event",
+                     "redcap_repeat_instance": nextEventId,
+                     "username": username,
+                     "device_id": device_id,
+                     "time": time,
+                     "longitude": longitude,
+                     "latitude": latitude,
+                     "filename": sound_name,
+                     "cough_event_complete": 2]]
+                let jsonDataRecord = try? JSONSerialization.data(withJSONObject: postDictRecord, options: [])
+                let jsonStringRecord = String(data: jsonDataRecord!, encoding: .utf8)!
+                let postDictParam = ["token": "E4A94D7B2ADEEFA84A30B836DFC91354",
+                                     "content": "record",
+                                     "format": "json",
+                                     "type": "flat",
+                                     "overwriteBehavior": "normal",
+                                     "forceAutoNumber": "false",
+                                     "data": jsonStringRecord,
+                                     "returnContent": "count",
+                                     "returnFormat": "json"]
+                var postString = ""
+                for (key, value) in postDictParam {
+                    postString += key + "=" + value + "&"
+                }
+                postString.removeLast()
+                let postData = postString.data(using: .utf8)
+                
+                let task = URLSession.shared.uploadTask(with: request, from: postData) { (data, response, error) in
+                    guard error == nil && data != nil else {
+                        print("Sending Error")
+                        return
+                    }
+                    if let httpStatus = response as? HTTPURLResponse
+                    {
+                        if httpStatus.statusCode != 200 {
+                            print("1_Failed Status code = \(httpStatus.statusCode)")
+                        } else {
+                            print("Event uploaded.")
+                            var Baseurl = "https://redcap.ovpr.uga.edu/api/"
+                            Baseurl = Baseurl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+                            let requestUrl = URL(string: Baseurl)
+                            var request = URLRequest(url: requestUrl!)
+                            request.httpMethod = "POST"
+                            let boundary = "---------------------------14737809831466499882746641449"
+                            request.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+                            request.addValue("application/json", forHTTPHeaderField: "Accept")
+                            var postbody = Data()
+                            let postDict = ["token": "E4A94D7B2ADEEFA84A30B836DFC91354",
+                                            "content": "file",
+                                            "action": "import",
+                                            "record": record_id,
+                                            "field": "filename",
+                                            "returnFormat": "json",
+                                            "repeat_instance": nextEventId] as [String : Any]
+                            let postBoundary = "\r\n--\(boundary)\r\n".data(using: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
+                            for (key, value) in postDict {
+                                postbody.append(postBoundary!)
+                                if let anEncoding = "Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n\(value)".data(using: String.Encoding(rawValue: String.Encoding.utf8.rawValue)) {
+                                    postbody.append(anEncoding)
+                                }
+                            }
+                            postbody.append(postBoundary!)
+                            if let anEncoding = "Content-Disposition: form-data; name=\"file\"; filename=\"\(sound_name)\" \r\n".data(using: String.Encoding(rawValue: String.Encoding.utf8.rawValue)) {
+                                postbody.append(anEncoding)
+                            }
+                            if let anEncoding = "Content-Type: audio/wav\r\n\r\n".data(using: String.Encoding(rawValue: String.Encoding.utf8.rawValue)) {
+                                postbody.append(anEncoding)
+                            }
+                            if let wavData = readFileData(filename: "record.wav") {
+                                postbody.append(wavData)
+                            }
+                            if let anEncoding = "\r\n--\(boundary)--\r\n".data(using: String.Encoding(rawValue: String.Encoding.utf8.rawValue)) {
+                                postbody.append(anEncoding)
+                            }
+                            UserDefaults.standard.set(nextEventId, forKey: "nextEventId")
+                            
+                            let task = URLSession.shared.uploadTask(with: request, from: postbody) { (data, response, error) in
+                                guard error == nil && data != nil else {
+                                    print("Sending Error")
+                                    return
+                                }
+                                if let httpStatus = response as? HTTPURLResponse
+                                {
+                                    if httpStatus.statusCode != 200 {
+                                        print("2_Failed Status code = \(httpStatus.statusCode)")
+                                    } else {
+                                        print("File uploaded.")
+                                    }
+                                }
+                            }
+                            task.resume()
+                        }
+                    }
+                }
+                task.resume()
+            }
         }
+    }
+    
+    public func validateRecordId(RecordId: String, completionHandler: @escaping (_ recordInfo: [[String: Any]]) -> ())
+    {
+        let globalQueue = DispatchQueue.global()
         
+        //use the global queue , run in asynchronous
+        globalQueue.async {
+            var Baseurl = "https://redcap.ovpr.uga.edu/api/"
+            Baseurl = Baseurl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+            let requestUrl = URL(string: Baseurl)
+            var request = URLRequest(url: requestUrl!)
+            request.httpMethod = "POST"
+            request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+            request.addValue("application/json", forHTTPHeaderField: "Accept")
+            
+            let queryString = "token=E4A94D7B2ADEEFA84A30B836DFC91354&content=record&format=json&type=flat&records[0]=\(RecordId)&fields[0]=name&fields[1]=email&rawOrLabel=raw&rawOrLabelHeaders=raw&exportCheckboxLabel=false&exportSurveyFields=false&exportDataAccessGroups=false&returnFormat=json"
+            // return [{"name":"username","email":"xxx@yyy.com"}]
+            
+            let queryData = queryString.data(using: .utf8)
+            
+            let task = URLSession.shared.uploadTask(with: request, from: queryData) { (data, response, error) in
+                guard error == nil && data != nil else {
+                    print("Sending Error")
+                    return
+                }
+                if let httpStatus = response as? HTTPURLResponse, let data = data
+                {
+                    if httpStatus.statusCode != 200 {
+                        print("Failed Status code = \(httpStatus.statusCode)")
+                    } else {
+                        do {
+                            if let recordInfoDict = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
+                                completionHandler(recordInfoDict)
+                            }
+                        } catch {
+                            print(error.localizedDescription)
+                        }
+                    }
+                }
+            }
+            task.resume()
+        }
     }
     
     public func uploadRawSound()

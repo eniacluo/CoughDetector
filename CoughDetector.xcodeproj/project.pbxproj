@@ -27,6 +27,9 @@
 		D78F4AFE1D60C01A00012A69 /* EAGLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78F4AFB1D60C01A00012A69 /* EAGLView.swift */; };
 		D78F4AFF1D60C05500012A69 /* BufferManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78F4AF31D60BF3300012A69 /* BufferManager.swift */; };
 		D79AEF1C1D60C37E00584688 /* DCRejectionFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79AEF1B1D60C37E00584688 /* DCRejectionFilter.swift */; };
+		F001731E21817C0700C59980 /* ResultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F001731D21817C0700C59980 /* ResultManager.swift */; };
+		F0623BA021A3E01600B75F1E /* ValidatePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0623B9F21A3E01600B75F1E /* ValidatePageViewController.swift */; };
+		F062EE8E21919C5B008D1E7B /* CustomSettingStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F062EE8D21919C5B008D1E7B /* CustomSettingStoryboard.storyboard */; };
 		F06A21D020CF09640065F988 /* dict.txt in Resources */ = {isa = PBXBuildFile; fileRef = F06A21CA20CF09640065F988 /* dict.txt */; };
 		F06A21D120CF09640065F988 /* scream in Resources */ = {isa = PBXBuildFile; fileRef = F06A21CB20CF09640065F988 /* scream */; };
 		F06A21D220CF09640065F988 /* cough in Resources */ = {isa = PBXBuildFile; fileRef = F06A21CC20CF09640065F988 /* cough */; };
@@ -60,6 +63,7 @@
 		F0B3161920C3200700AD394B /* HTrain.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B3160820C3200700AD394B /* HTrain.c */; };
 		F0B3161A20C3200700AD394B /* HMath.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B3160920C3200700AD394B /* HMath.c */; };
 		F0B3161B20C3200700AD394B /* HFB.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B3160B20C3200700AD394B /* HFB.c */; };
+		F0B76A1A216E04170056801B /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B76A19216E04170056801B /* LocationService.swift */; };
 		F0DC453920C4F411003AFE70 /* hcopy.conf in Resources */ = {isa = PBXBuildFile; fileRef = F0DC453220C4F411003AFE70 /* hcopy.conf */; };
 		F0DC453A20C4F411003AFE70 /* gram.txt in Resources */ = {isa = PBXBuildFile; fileRef = F0DC453320C4F411003AFE70 /* gram.txt */; };
 		F0DC453E20C59372003AFE70 /* hvite.conf in Resources */ = {isa = PBXBuildFile; fileRef = F0DC453D20C59372003AFE70 /* hvite.conf */; };
@@ -119,6 +123,9 @@
 		D78F4AFB1D60C01A00012A69 /* EAGLView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EAGLView.swift; sourceTree = "<group>"; };
 		D79AEF181D60C2F200584688 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		D79AEF1B1D60C37E00584688 /* DCRejectionFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DCRejectionFilter.swift; sourceTree = "<group>"; };
+		F001731D21817C0700C59980 /* ResultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultManager.swift; sourceTree = "<group>"; };
+		F0623B9F21A3E01600B75F1E /* ValidatePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatePageViewController.swift; sourceTree = "<group>"; };
+		F062EE8D21919C5B008D1E7B /* CustomSettingStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CustomSettingStoryboard.storyboard; sourceTree = "<group>"; };
 		F06A21CA20CF09640065F988 /* dict.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dict.txt; sourceTree = "<group>"; };
 		F06A21CB20CF09640065F988 /* scream */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = scream; sourceTree = "<group>"; };
 		F06A21CC20CF09640065F988 /* cough */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cough; sourceTree = "<group>"; };
@@ -174,6 +181,7 @@
 		F0B3160A20C3200700AD394B /* HVQ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HVQ.h; sourceTree = "<group>"; };
 		F0B3160B20C3200700AD394B /* HFB.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HFB.c; sourceTree = "<group>"; };
 		F0B3160C20C3200700AD394B /* HAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HAudio.h; sourceTree = "<group>"; };
+		F0B76A19216E04170056801B /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		F0DC453220C4F411003AFE70 /* hcopy.conf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hcopy.conf; sourceTree = "<group>"; };
 		F0DC453320C4F411003AFE70 /* gram.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = gram.txt; sourceTree = "<group>"; };
 		F0DC453D20C59372003AFE70 /* hvite.conf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hvite.conf; sourceTree = "<group>"; };
@@ -223,6 +231,10 @@
 				D78F4AF51D60BF3300012A69 /* DSPHelper.swift */,
 				F0B315B020BDDA1400AD394B /* WebService.swift */,
 				F07CEEA120C3454100E5D064 /* FileStringTool.swift */,
+				F0B76A19216E04170056801B /* LocationService.swift */,
+				F001731D21817C0700C59980 /* ResultManager.swift */,
+				F062EE8D21919C5B008D1E7B /* CustomSettingStoryboard.storyboard */,
+				F0623B9F21A3E01600B75F1E /* ValidatePageViewController.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -488,6 +500,7 @@
 				F0DC453A20C4F411003AFE70 /* gram.txt in Resources */,
 				F06A21D120CF09640065F988 /* scream in Resources */,
 				F0F962AC211D3486002877C9 /* uga-logo.png in Resources */,
+				F062EE8E21919C5B008D1E7B /* CustomSettingStoryboard.storyboard in Resources */,
 				F06A21D320CF09640065F988 /* speech in Resources */,
 				F06A21D220CF09640065F988 /* cough in Resources */,
 			);
@@ -543,12 +556,14 @@
 				F0B3161920C3200700AD394B /* HTrain.c in Sources */,
 				D78F4AFE1D60C01A00012A69 /* EAGLView.swift in Sources */,
 				F07CEE9C20C33FF500E5D064 /* HRec.c in Sources */,
+				F001731E21817C0700C59980 /* ResultManager.swift in Sources */,
 				D78F4AF11D60BEAF00012A69 /* CAStreamBasicDescription.swift in Sources */,
 				F0B3161A20C3200700AD394B /* HMath.c in Sources */,
 				F0B3161320C3200700AD394B /* HCopy.c in Sources */,
 				F0F962A8211892BB002877C9 /* WriteStreamOperation.swift in Sources */,
 				F0B3161B20C3200700AD394B /* HFB.c in Sources */,
 				F0B3160D20C3200700AD394B /* HAudio.c in Sources */,
+				F0B76A1A216E04170056801B /* LocationService.swift in Sources */,
 				F07CEEA220C3454100E5D064 /* FileStringTool.swift in Sources */,
 				F0B3161120C3200700AD394B /* HUtil.c in Sources */,
 				D78F4AFC1D60C01A00012A69 /* AudioController.swift in Sources */,
@@ -581,6 +596,7 @@
 				F0F962A4211892BB002877C9 /* Operation.swift in Sources */,
 				D79AEF1C1D60C37E00584688 /* DCRejectionFilter.swift in Sources */,
 				F0F962A0211892BB002877C9 /* FileUploadOperation.swift in Sources */,
+				F0623BA021A3E01600B75F1E /* ValidatePageViewController.swift in Sources */,
 				F0F962A3211892BB002877C9 /* DirectoryCreationOperation.swift in Sources */,
 				F0F962A5211892BB002877C9 /* Session.swift in Sources */,
 				F0B3161620C3200700AD394B /* HParm.c in Sources */,
