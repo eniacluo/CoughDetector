@@ -36,6 +36,11 @@
 	<string>MainWindow</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>aurioTouch uses the Microphone for audio input.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+		<string>location</string>
+	</array>
 	<key>UIStatusBarHidden</key>
 	<true/>
 	<key>UISupportedInterfaceOrientations</key>

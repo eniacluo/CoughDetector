@@ -459,6 +459,11 @@
 					1D6058900D05DD3D006BFB54 = {
 						DevelopmentTeam = 8D96QHUAP6;
 						LastSwiftMigration = 0930;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};

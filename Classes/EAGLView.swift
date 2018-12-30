@@ -93,6 +93,8 @@ class EAGLView: UIView {
     private var labelSensitivity: UILabel!
     private var sliderSensitivity: UISlider!
     
+    var isDeveloperMode: Bool = false
+    
     // You must implement this
     override class var layerClass: AnyClass {
         return CAEAGLLayer.self
@@ -121,28 +123,23 @@ class EAGLView: UIView {
             fatalError("cannot initialize EAGLView")
         }
         
-        l_fftData = UnsafeMutablePointer.allocate(capacity: audioController.bufferManagerInstance.FFTOutputBufferLength)
-        bzero(l_fftData, size_t(audioController.bufferManagerInstance.FFTOutputBufferLength * MemoryLayout<Float32>.size))
-        
-        if !LocationService.sharedInstance.isConfigured {
-            LocationService.sharedInstance.configureLocationManager()
-        }
-        
         self.setupGLView()
         self.drawView()
         
         self.setupUIViews()
-
-        // Set up the view to refresh at 20 hz
-        self.setAnimationInterval(1.0/20.0)
-        self.startAnimation()
     }
     
     @objc func buttonStartPressed()
     {
-        let bufferManager = audioController.bufferManagerInstance
-        if !bufferManager.isStartSession {
-            bufferManager.isStartSession = true
+        if !audioController.isStartSession {
+            audioController.startSession()
+            // Remain or Delete: Showing FFT result??
+            l_fftData = UnsafeMutablePointer.allocate(capacity: audioController.bufferManagerInstance.FFTOutputBufferLength)
+            bzero(l_fftData, size_t(audioController.bufferManagerInstance.FFTOutputBufferLength * MemoryLayout<Float32>.size))
+            // Start Location Service
+            if !LocationService.sharedInstance.isConfigured {
+                LocationService.sharedInstance.configureLocationManager()
+            }
             buttonStart.isEnabled = false
             buttonStop.isEnabled = true
             switchRecord.isHidden = false
@@ -154,14 +151,16 @@ class EAGLView: UIView {
             audioController.playButtonPressedSound()
             self.setupViewForSpectrum()
             self.clearTextures()
+            // Set up the view to refresh at 20 hz
+            self.setAnimationInterval(1.0/20.0)
+            self.startAnimation()
         }
     }
     
     @objc func buttonStopPressed()
     {
-        let bufferManager = audioController.bufferManagerInstance
-        if bufferManager.isStartSession {
-            bufferManager.isStartSession = false
+        if audioController.isStartSession {
+            audioController.stopSession()
             buttonStart.isEnabled = true
             buttonStop.isEnabled = false
             switchRecord.isHidden = true
@@ -172,6 +171,7 @@ class EAGLView: UIView {
             textField.isHidden = true
             audioController.playButtonPressedSound()
             DetectionResultOverlay.removeFromSuperview()
+            l_fftData?.deallocate()
         }
     }
     
@@ -266,17 +266,21 @@ class EAGLView: UIView {
     
     
     @objc func startAnimation() {
-        animationTimer = Timer.scheduledTimer(timeInterval: animationInterval, target: self, selector: #selector(self.drawView as () -> ()), userInfo: nil, repeats: true)
-        animationStarted = Date.timeIntervalSinceReferenceDate
-        audioController.startIOUnit()
+        if audioController.isStartSession {
+            animationTimer = Timer.scheduledTimer(timeInterval: animationInterval, target: self, selector: #selector(self.drawView as () -> ()), userInfo: nil, repeats: true)
+            animationStarted = Date.timeIntervalSinceReferenceDate
+            audioController.startIOUnit()
+        }
     }
     
     
     func stopAnimation() {
-        animationTimer?.invalidate()
-        animationTimer = nil
-        // !!!!!!  need to make sure audioController has been running
-        audioController.stopIOUnit()
+        if audioController.isStartSession {
+            animationTimer?.invalidate()
+            animationTimer = nil
+            // !!!!!!  need to make sure audioController has been running
+            //audioController.stopIOUnit()
+        }
     }
     
     
@@ -722,7 +726,7 @@ class EAGLView: UIView {
     
     private func drawView(_ sender: AnyObject, forTime time: TimeInterval) {
         if !audioController.audioChainIsBeingReconstructed {  //hold off on drawing until the audio chain has been reconstructed
-            if audioController.bufferManagerInstance.isStartSession {
+            if audioController.isStartSession {
                 if !initted_spectrum { self.setupViewForSpectrum() }
                 self.drawSpectrum()
                 self.displayRecentDetectResult()

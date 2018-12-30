@@ -55,6 +55,7 @@ class AudioController: NSObject, AURenderCallbackDelegate {
     var _audioPlayer: AVAudioPlayer?   // for button pressed sound
     
     var muteAudio: Bool
+    var isStartSession: Bool = false
 
     private(set) var audioChainIsBeingReconstructed: Bool = false
     
@@ -82,7 +83,7 @@ class AudioController: NSObject, AURenderCallbackDelegate {
             if _bufferManager.isSendingRealtimeData {
                 _bufferManager.copyAudioDataToSendingBuffer(ioPtr[0].mData?.assumingMemoryBound(to: Float32.self), inNumFrames: Int(inNumberFrames))
             }
-            if _bufferManager.isStartSession {
+            if isStartSession {
                 _bufferManager.copyAudioDataToFrameBuffer(ioPtr[0].mData?.assumingMemoryBound(to: Float32.self), inNumFrames: Int(inNumberFrames))
             }
             // mute audio if needed
@@ -102,7 +103,7 @@ class AudioController: NSObject, AURenderCallbackDelegate {
         _dcRejectionFilter = nil
         muteAudio = true
         super.init()
-        self.setupAudioChain()
+        //self.setupAudioChain()
     }
     
     
@@ -194,7 +195,7 @@ class AudioController: NSObject, AURenderCallbackDelegate {
             
             // we are going to play and record so we pick that category
             do {
-                try sessionInstance.setCategory(AVAudioSessionCategoryPlayAndRecord)
+                try sessionInstance.setCategory(AVAudioSessionCategoryPlayAndRecord )
             } catch let error as NSError {
                 try XExceptionIfError(error, "couldn't set session's audio category")
             } catch {
@@ -327,6 +328,30 @@ class AudioController: NSObject, AURenderCallbackDelegate {
     
     func playButtonPressedSound() {
         _audioPlayer?.play()
+    }
+    
+    func startSession() {
+        setupAudioChain()
+        startIOUnit()
+        isStartSession = true
+    }
+    
+    func stopSession() {
+        stopIOUnit()
+        do {
+            // Configure the audio session
+            let sessionInstance = AVAudioSession.sharedInstance()
+            try sessionInstance.setActive(false)
+        } catch let e as CAXException {
+            NSLog("Error returned from stopAudioSession: %d: %@", Int32(e.mError), e.mOperation)
+        } catch _ {
+            NSLog("Unknown error returned from stopAudioSession")
+        }
+        // deallocate memory
+        _bufferManager = nil
+        _dcRejectionFilter = nil
+        isStartSession = false
+        
     }
     
     private func setupAudioChain() {

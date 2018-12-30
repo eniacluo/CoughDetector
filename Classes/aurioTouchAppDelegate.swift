@@ -51,6 +51,9 @@ class aurioTouchAppDelegate: NSObject, UIApplicationDelegate {
         application.isIdleTimerDisabled = true
         
         window?.makeKeyAndVisible()
+        UIApplication.shared.beginReceivingRemoteControlEvents()
+        // to make sure audio recording session resume after interruptions
+        // this comes from StackOverflow and people do not know why as well
         
     }
     
