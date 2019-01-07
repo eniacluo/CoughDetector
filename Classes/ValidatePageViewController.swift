@@ -58,7 +58,10 @@ class ValidatePageViewController: UIViewController{
                 self.labelInforming.isHidden = false
                 self.buttonOk.isHidden = false
                 self.buttonCancel.isHidden = false
-                self.txtName.text = recordInfo[0]["name"]! as? String
+                if let name = recordInfo[0]["name"]! as? String {
+                    self.txtName.text = name
+                    UserDefaults.standard.set(name, forKey: "Username")
+                }
                 self.txtEmail.text = recordInfo[0]["email"]! as? String
                 self.dismiss(animated: true, completion: nil)
             }

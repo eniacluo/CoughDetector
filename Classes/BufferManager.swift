@@ -128,8 +128,8 @@ class BufferManager {
                     isStartSound = false
                     let copyBufferCount = ((mFrameBufferIndex - startBufferIndex + kNumFrameBuffers) % kNumFrameBuffers + 1)
                     print("Count: \(copyBufferCount)")
-                    if copyBufferCount >= 10 && copyBufferCount <= 16 {
-                        //the length should be between 10*1024/44100=232ms to 15*1024/44100=348ms
+                    if copyBufferCount >= 8 && copyBufferCount <= 16 {
+                        //the length should be between 8*1024/44100=185ms to 15*1024/44100=348ms
                         MFCCBuffers = UnsafeMutablePointer.allocate(capacity: copyBufferCount * kDefaultFrameSamples)
                         var copyMFCCSampleIndex = 0
                         for i in startBufferIndex..<startBufferIndex + copyBufferCount {

@@ -108,11 +108,13 @@ class DSPHelper {
         if result != "no result" {
             if result.contains("NON-COUGH") {
                 resultManager.latestResultForDisplay = "NON-COUGH"
+                resultManager.addNewCoughEvent(isCough: false)
             } else {
                 resultManager.latestResultForDisplay = "COUGH"
+                resultManager.addNewCoughEvent(isCough: true)
             }
             resultManager.prepareResultForDisplay()
-            resultManager.uploadResultToServer()
+            //resultManager.uploadResultToServer()
         }
     }
 }

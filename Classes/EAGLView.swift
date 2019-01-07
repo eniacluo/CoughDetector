@@ -94,6 +94,7 @@ class EAGLView: UIView {
     private var sliderSensitivity: UISlider!
     
     var isDeveloperMode: Bool = false
+    private var developerModeTrigger: UInt32 = 0
     
     // You must implement this
     override class var layerClass: AnyClass {
@@ -202,6 +203,30 @@ class EAGLView: UIView {
         resultManager.eventString = ""
         resultManager.eventCount = 0
         labelEvent.text = ""
+        // Hidden: Trigger Developer Mode - Click Clear Button five times
+        // before everything start
+        if (!audioController.isStartSession) {
+            developerModeTrigger += 1
+            if (developerModeTrigger == 5) {
+                developerModeTrigger = 0
+                isDeveloperMode = !isDeveloperMode
+                if (isDeveloperMode) {
+                    /*
+                    textField.frame = CGRect(x: 105, y: 100, width: 90, height: 30)
+                    addSubview(labelRecord)
+                    addSubview(switchRecord)
+                    addSubview(labelSensitivity)
+                    addSubview(sliderSensitivity)
+                    */
+                    let customSettingStoryboard = UIStoryboard(name: "CustomSettingStoryboard", bundle: nil)
+                    let settingBoardViewController = customSettingStoryboard.instantiateViewController(withIdentifier: "SettingBoardViewController")
+                    let naviController = UIApplication.shared.keyWindow?.rootViewController as! UINavigationController
+                    naviController.pushViewController(settingBoardViewController, animated: true)
+                }
+            }
+        } else {
+            developerModeTrigger = 0
+        }
     }
     
     @objc func userDidNameChanged()
@@ -317,6 +342,23 @@ class EAGLView: UIView {
         // Make a UIImage out of the CGImage
         img_ui = UIImage(cgImage: img_cg!)
         
+        labelName = UILabel(frame: CGRect(x: 25, y: 100, width: 325, height: 30))
+        labelName.textAlignment = NSTextAlignment.left
+        labelName.textColor = UIColor.white
+        labelName.text = "Name:"
+        labelName.font = UIFont.boldSystemFont(ofSize: 20.0)
+        labelName.backgroundColor = UIColor.clear
+        labelName.isHidden = true
+        //addSubview(labelName)
+        
+        textField.frame = CGRect(x: 105, y: 100, width: 240, height: 30)
+        textField.textColor = UIColor.black
+        textField.borderStyle = .roundedRect
+        textField.isHidden = true
+        textField.addTarget(self, action: #selector(userDidNameChanged), for: .editingChanged)
+        textField.text = UserDefaults.standard.string(forKey: "Username") ?? "User"
+        //addSubview(textField)
+        
         // Create the image view to hold the background rounded rect which we just drew
         DetectionResultOverlay = UIImageView(image: img_ui)
         DetectionResultOverlay.frame = CGRect(x: 25, y: 210, width: 325, height: 100)
@@ -363,7 +405,6 @@ class EAGLView: UIView {
         labelRecord.font = UIFont.boldSystemFont(ofSize: 20.0)
         labelRecord.backgroundColor = UIColor.clear
         labelRecord.isHidden = true
-        addSubview(labelRecord)
         
         switchRecord = UISwitch(frame: CGRect(x: 290, y: 100, width: 80, height: 30))
         switchRecord.isHidden = true
@@ -371,7 +412,6 @@ class EAGLView: UIView {
         switchRecord.tintColor = UIColor.white
         switchRecord.onTintColor = UIColor(red: 169/255.0, green: 0/255.0, blue: 36/255.0, alpha: 1.0)
         switchRecord.addTarget(self, action: #selector(switchRecordToggled), for: .valueChanged)
-        addSubview(switchRecord)
         
         labelSensitivity = UILabel(frame: CGRect(x: 25, y: 140, width: 150, height: 40))
         labelSensitivity.textAlignment = NSTextAlignment.left
@@ -380,7 +420,6 @@ class EAGLView: UIView {
         labelSensitivity.font = UIFont.boldSystemFont(ofSize: 20.0)
         labelSensitivity.backgroundColor = UIColor.clear
         labelSensitivity.isHidden = true
-        addSubview(labelSensitivity)
         
         sliderSensitivity = UISlider(frame: CGRect(x: 165, y: 140, width: 170, height: 40))
         sliderSensitivity.minimumValue = 0.005
@@ -390,7 +429,6 @@ class EAGLView: UIView {
         sliderSensitivity.isContinuous = false
         sliderSensitivity.value = 0.025 - 0.01
         sliderSensitivity.isHidden = true
-        addSubview(sliderSensitivity)
         
         let buttonClear = UIButton(frame: CGRect(x: 25, y: 500, width: 325, height: 40))
         buttonClear.setTitle("Clear", for: UIControlState.normal)
@@ -401,23 +439,6 @@ class EAGLView: UIView {
         buttonClear.layer.cornerRadius = 5.0
         buttonClear.layer.borderWidth = 1.0
         addSubview(buttonClear)
-        
-        labelName = UILabel(frame: CGRect(x: 25, y: 100, width: 325, height: 30))
-        labelName.textAlignment = NSTextAlignment.left
-        labelName.textColor = UIColor.white
-        labelName.text = "Name:"
-        labelName.font = UIFont.boldSystemFont(ofSize: 20.0)
-        labelName.backgroundColor = UIColor.clear
-        labelName.isHidden = true
-        addSubview(labelName)
-        
-        textField.frame = CGRect(x: 105, y: 100, width: 90, height: 30)
-        textField.textColor = UIColor.black
-        textField.borderStyle = .roundedRect
-        textField.isHidden = true
-        textField.addTarget(self, action: #selector(userDidNameChanged), for: .editingChanged)
-        textField.text = UserDefaults.standard.string(forKey: "Username") ?? "User"
-        addSubview(textField)
         
         // Create the text view which shows the size of our oscilloscope window as we pinch/zoom
         labelEvent = UILabel(frame: CGRect(x: 25, y: 290, width: 300, height: 150))

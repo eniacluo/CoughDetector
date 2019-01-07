@@ -92,6 +92,7 @@ class AudioController: NSObject, AURenderCallbackDelegate {
                     memset(ioPtr[i].mData, 0, Int(ioPtr[i].mDataByteSize))
                 }
             }
+
         }
         
         return err;
@@ -294,7 +295,9 @@ class AudioController: NSObject, AURenderCallbackDelegate {
             var propSize = SizeOf32(UInt32.self)
             try XExceptionIfError(AudioUnitGetProperty(self._rioUnit!, kAudioUnitProperty_MaximumFramesPerSlice, kAudioUnitScope_Global, 0, &maxFramesPerSlice, &propSize), "couldn't get max frames per slice on AURemoteIO")
             
-            self._bufferManager = BufferManager(maxFramesPerSlice: Int(maxFramesPerSlice))
+            if(self._bufferManager == nil) {
+                self._bufferManager = BufferManager(maxFramesPerSlice: Int(maxFramesPerSlice))
+            }
             self._dcRejectionFilter = DCRejectionFilter()
             
             
@@ -348,10 +351,8 @@ class AudioController: NSObject, AURenderCallbackDelegate {
             NSLog("Unknown error returned from stopAudioSession")
         }
         // deallocate memory
-        _bufferManager = nil
         _dcRejectionFilter = nil
         isStartSession = false
-        
     }
     
     private func setupAudioChain() {

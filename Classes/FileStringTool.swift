@@ -238,3 +238,14 @@ public func deleteAllFiles()
         
     }
 }
+
+public func renameFile(fileFrom: String, fileTo: String)
+{
+    let fileFromURL = getFileURL(filename: fileFrom)
+    let fileToURL = getFileURL(filename: fileTo)
+    do {
+        try FileManager.default.moveItem(at: fileFromURL, to: fileToURL)
+    } catch {
+        print(error)
+    }
+}

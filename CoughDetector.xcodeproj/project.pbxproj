@@ -28,6 +28,7 @@
 		D78F4AFF1D60C05500012A69 /* BufferManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78F4AF31D60BF3300012A69 /* BufferManager.swift */; };
 		D79AEF1C1D60C37E00584688 /* DCRejectionFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79AEF1B1D60C37E00584688 /* DCRejectionFilter.swift */; };
 		F001731E21817C0700C59980 /* ResultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F001731D21817C0700C59980 /* ResultManager.swift */; };
+		F009095121DA7F0200FDA58B /* SettingBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009095021DA7F0200FDA58B /* SettingBoardViewController.swift */; };
 		F0623BA021A3E01600B75F1E /* ValidatePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0623B9F21A3E01600B75F1E /* ValidatePageViewController.swift */; };
 		F062EE8E21919C5B008D1E7B /* CustomSettingStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F062EE8D21919C5B008D1E7B /* CustomSettingStoryboard.storyboard */; };
 		F06A21D020CF09640065F988 /* dict.txt in Resources */ = {isa = PBXBuildFile; fileRef = F06A21CA20CF09640065F988 /* dict.txt */; };
@@ -64,6 +65,7 @@
 		F0B3161A20C3200700AD394B /* HMath.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B3160920C3200700AD394B /* HMath.c */; };
 		F0B3161B20C3200700AD394B /* HFB.c in Sources */ = {isa = PBXBuildFile; fileRef = F0B3160B20C3200700AD394B /* HFB.c */; };
 		F0B76A1A216E04170056801B /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B76A19216E04170056801B /* LocationService.swift */; };
+		F0D3E24B21DD0004009FC8F6 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D3E24A21DD0004009FC8F6 /* Reachability.swift */; };
 		F0DC453920C4F411003AFE70 /* hcopy.conf in Resources */ = {isa = PBXBuildFile; fileRef = F0DC453220C4F411003AFE70 /* hcopy.conf */; };
 		F0DC453A20C4F411003AFE70 /* gram.txt in Resources */ = {isa = PBXBuildFile; fileRef = F0DC453320C4F411003AFE70 /* gram.txt */; };
 		F0DC453E20C59372003AFE70 /* hvite.conf in Resources */ = {isa = PBXBuildFile; fileRef = F0DC453D20C59372003AFE70 /* hvite.conf */; };
@@ -124,6 +126,7 @@
 		D79AEF181D60C2F200584688 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		D79AEF1B1D60C37E00584688 /* DCRejectionFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DCRejectionFilter.swift; sourceTree = "<group>"; };
 		F001731D21817C0700C59980 /* ResultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultManager.swift; sourceTree = "<group>"; };
+		F009095021DA7F0200FDA58B /* SettingBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingBoardViewController.swift; sourceTree = "<group>"; };
 		F0623B9F21A3E01600B75F1E /* ValidatePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatePageViewController.swift; sourceTree = "<group>"; };
 		F062EE8D21919C5B008D1E7B /* CustomSettingStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CustomSettingStoryboard.storyboard; sourceTree = "<group>"; };
 		F06A21CA20CF09640065F988 /* dict.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dict.txt; sourceTree = "<group>"; };
@@ -182,6 +185,7 @@
 		F0B3160B20C3200700AD394B /* HFB.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HFB.c; sourceTree = "<group>"; };
 		F0B3160C20C3200700AD394B /* HAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HAudio.h; sourceTree = "<group>"; };
 		F0B76A19216E04170056801B /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		F0D3E24A21DD0004009FC8F6 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		F0DC453220C4F411003AFE70 /* hcopy.conf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hcopy.conf; sourceTree = "<group>"; };
 		F0DC453320C4F411003AFE70 /* gram.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = gram.txt; sourceTree = "<group>"; };
 		F0DC453D20C59372003AFE70 /* hvite.conf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hvite.conf; sourceTree = "<group>"; };
@@ -235,6 +239,7 @@
 				F001731D21817C0700C59980 /* ResultManager.swift */,
 				F062EE8D21919C5B008D1E7B /* CustomSettingStoryboard.storyboard */,
 				F0623B9F21A3E01600B75F1E /* ValidatePageViewController.swift */,
+				F009095021DA7F0200FDA58B /* SettingBoardViewController.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -251,6 +256,7 @@
 			isa = PBXGroup;
 			children = (
 				F06F758720D0A27E00617973 /* Images.xcassets */,
+				F0B3160420C3200600AD394B /* coughDetector-Bridging-Header.h */,
 				F0B315B620C2F53A00AD394B /* HTK */,
 				D79AEF181D60C2F200584688 /* LICENSE.txt */,
 				2B869E111D51590F00995BDC /* ReadMe.md */,
@@ -324,7 +330,6 @@
 		F0B315B620C2F53A00AD394B /* HTK */ = {
 			isa = PBXGroup;
 			children = (
-				F0B3160420C3200600AD394B /* coughDetector-Bridging-Header.h */,
 				F07CEE9720C33FF400E5D064 /* HDict.c */,
 				F07CEE9820C33FF400E5D064 /* HDict.h */,
 				F07CEE9920C33FF400E5D064 /* HMap.c */,
@@ -409,6 +414,7 @@
 		F74ADD0E0DDA24AA0046BEC2 /* PublicUtility */ = {
 			isa = PBXGroup;
 			children = (
+				F0D3E24A21DD0004009FC8F6 /* Reachability.swift */,
 				D78F4AEB1D60BEAF00012A69 /* CABitOperations.swift */,
 				D78F4AEC1D60BEAF00012A69 /* CADebugMacros.swift */,
 				D78F4AEE1D60BEAF00012A69 /* CAXException.swift */,
@@ -580,6 +586,7 @@
 				F0B3161820C3200700AD394B /* HModel.c in Sources */,
 				F0B315DD20C2F93700AD394B /* esignal.c in Sources */,
 				D78F4AFD1D60C01A00012A69 /* aurioTouchAppDelegate.swift in Sources */,
+				F009095121DA7F0200FDA58B /* SettingBoardViewController.swift in Sources */,
 				D71281B52071FDED003CAAFC /* OOPExceptions.swift in Sources */,
 				F0B315EC20C31FD200AD394B /* esig_asc.c in Sources */,
 				F07CEE9D20C33FF500E5D064 /* HDict.c in Sources */,
@@ -594,6 +601,7 @@
 				F0B3161520C3200700AD394B /* HLabel.c in Sources */,
 				F0F962A6211892BB002877C9 /* StreamOperation.swift in Sources */,
 				F0B3161020C3200700AD394B /* HVQ.c in Sources */,
+				F0D3E24B21DD0004009FC8F6 /* Reachability.swift in Sources */,
 				F07CEE9E20C33FF500E5D064 /* HMap.c in Sources */,
 				D78F4AFF1D60C05500012A69 /* BufferManager.swift in Sources */,
 				D78F4AEF1D60BEAF00012A69 /* CABitOperations.swift in Sources */,
@@ -639,7 +647,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = 8D96QHUAP6;
-				GCC_C_LANGUAGE_STANDARD = ansi;
+				GCC_C_LANGUAGE_STANDARD = gnu89;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -657,7 +665,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.sensorweb.uga.coughdetection;
 				PRODUCT_NAME = CoughDetector;
 				SDKROOT = iphoneos;
-				SWIFT_OBJC_BRIDGING_HEADER = "HTK/coughDetector-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "coughDetector-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 4.0;
@@ -678,7 +686,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COPY_PHASE_STRIP = YES;
 				DEVELOPMENT_TEAM = 8D96QHUAP6;
-				GCC_C_LANGUAGE_STANDARD = ansi;
+				GCC_C_LANGUAGE_STANDARD = gnu89;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = CoughDetector_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
@@ -693,7 +701,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.sensorweb.uga.coughdetection;
 				PRODUCT_NAME = CoughDetector;
 				SDKROOT = iphoneos;
-				SWIFT_OBJC_BRIDGING_HEADER = "HTK/coughDetector-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "coughDetector-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 4.0;
