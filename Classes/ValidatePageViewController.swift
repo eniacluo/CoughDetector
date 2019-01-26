@@ -11,11 +11,6 @@ import UIKit
 class ValidatePageViewController: UIViewController{
     
     @IBOutlet var txtRecordId: UITextField!
-    @IBOutlet var txtName: UITextField!
-    @IBOutlet var txtEmail: UITextField!
-    @IBOutlet var labelName: UILabel!
-    @IBOutlet var labelEmail: UILabel!
-    @IBOutlet var labelInforming: UILabel!
     @IBOutlet var buttonOk: UIButton!
     @IBOutlet var buttonCancel: UIButton!
     
@@ -51,18 +46,8 @@ class ValidatePageViewController: UIViewController{
             }
             DispatchQueue.main.async {
                 // Update UI from background thread
-                self.labelName.isHidden = false
-                self.labelEmail.isHidden = false
-                self.txtName.isHidden = false
-                self.txtEmail.isHidden = false
-                self.labelInforming.isHidden = false
                 self.buttonOk.isHidden = false
                 self.buttonCancel.isHidden = false
-                if let name = recordInfo[0]["name"]! as? String {
-                    self.txtName.text = name
-                    UserDefaults.standard.set(name, forKey: "Username")
-                }
-                self.txtEmail.text = recordInfo[0]["email"]! as? String
                 self.dismiss(animated: true, completion: nil)
             }
         }
@@ -73,15 +58,8 @@ class ValidatePageViewController: UIViewController{
     {
         txtRecordId.text = ""
         txtRecordId.endEditing(true)
-        labelName.isHidden = true
-        labelEmail.isHidden = true
-        txtName.isHidden = true
-        txtEmail.isHidden = true
-        labelInforming.isHidden = true
         buttonOk.isHidden = true
         buttonCancel.isHidden = true
-        txtName.text = ""
-        txtEmail.text = ""
     }
     
     @IBAction func buttonClearClick(_ sender: UIButton) {
